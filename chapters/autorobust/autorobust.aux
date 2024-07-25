@@ -1,0 +1,223 @@
+\relax 
+\providecommand\zref@newlabel[2]{}
+\providecommand\hyper@newdestlabel[2]{}
+\@writefile{toc}{\contentsline {chapter}{\numberline {4}AutoRobust}{64}{chapter.4}\protected@file@percent }
+\@writefile{lof}{\addvspace {10\p@ }}
+\@writefile{lot}{\addvspace {10\p@ }}
+\@writefile{loa}{\addvspace {10\p@ }}
+\newlabel{ch:autorobust}{{4}{64}{AutoRobust}{chapter.4}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.1}Introduction}{64}{section.4.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {4.2}Background \& Related Work}{66}{section.4.2}\protected@file@percent }
+\newlabel{sec:backgroundauto}{{4.2}{66}{Background \& Related Work}{section.4.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2.1}Malware detection}{67}{subsection.4.2.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2.2}Problem-Space Attacks}{68}{subsection.4.2.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2.3}Defenses \& Mitigations}{68}{subsection.4.2.3}\protected@file@percent }
+\newlabel{eqn:adv_trainauto}{{4.1}{69}{Defenses \& Mitigations}{equation.4.2.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2.4}Research Gap}{70}{subsection.4.2.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {4.3}Threat Model}{71}{section.4.3}\protected@file@percent }
+\newlabel{sec:threatauto}{{4.3}{71}{Threat Model}{section.4.3}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.4}AutoRobust}{72}{section.4.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.4.1}Approach}{72}{subsection.4.4.1}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {4.1}{\ignorespaces \textbf  {Comparison between traditional gradient-based attacks and AutoRobust.} The dotted path shows a typical gradient-based attack: first perturbing to $\mathbf  {x} + \boldsymbol  {\delta }$ then projecting to $\mathbf  {x} + \boldsymbol  {\delta }^\prime $ in the \emph  {feasible} problem-space $\Lambda $. Our approach (dense path) that employs transformations $\alpha _t$ in succession, moves by definition \textit  {only} within the feasible problem space $\Lambda $. The background displays a gradient field over the value of the discriminant function $h(\mathbf  {x})$, with negative values (green) for the target class. The thick solid area $\Phi $ represents the feasible feature-space, while the areas denoted by $\Lambda $ represent the feasible problem-space mapped to $\Phi $.}}{73}{figure.caption.24}\protected@file@percent }
+\newlabel{fig:grad}{{4.1}{73}{\textbf {Comparison between traditional gradient-based attacks and AutoRobust.} The dotted path shows a typical gradient-based attack: first perturbing to $\mathbf {x} + \boldsymbol {\delta }$ then projecting to $\mathbf {x} + \boldsymbol {\delta }^\prime $ in the \emph {feasible} problem-space $\Lambda $. Our approach (dense path) that employs transformations $\alpha _t$ in succession, moves by definition \textit {only} within the feasible problem space $\Lambda $. The background displays a gradient field over the value of the discriminant function $h(\mathbf {x})$, with negative values (green) for the target class. The thick solid area $\Phi $ represents the feasible feature-space, while the areas denoted by $\Lambda $ represent the feasible problem-space mapped to $\Phi $}{figure.caption.24}{}}
+\newlabel{th:pspr}{{4.4.1}{74}{Problem-Space p-Robustness}{theorem.4.4.1}{}}
+\newlabel{eqn:expect}{{4.2}{74}{Approach}{equation.4.4.2}{}}
+\newlabel{eqn:expect2}{{4.3}{74}{Approach}{equation.4.4.3}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.2}{\ignorespaces Schematic depiction of the AutoRobust pipeline. In the inner loop, the RL agent attacks the model and generates adversarial reports. In the outer loop, the model is retrained with standard minibatch gradient descent on clean \textit  {and} adversarial reports.}}{75}{figure.caption.25}\protected@file@percent }
+\newlabel{fig:autorobust}{{4.2}{75}{Schematic depiction of the AutoRobust pipeline. In the inner loop, the RL agent attacks the model and generates adversarial reports. In the outer loop, the model is retrained with standard minibatch gradient descent on clean \textit {and} adversarial reports}{figure.caption.25}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.4.2}Explanation-guided Hardening}{76}{subsection.4.4.2}\protected@file@percent }
+\newlabel{sec:explainer}{{4.4.2}{76}{Explanation-guided Hardening}{subsection.4.4.2}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.5}Methodology}{77}{section.4.5}\protected@file@percent }
+\newlabel{dataset}{{4.5}{77}{Methodology}{section.4.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.5.1}Dataset}{77}{subsection.4.5.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.5.2}Representation}{78}{subsection.4.5.2}\protected@file@percent }
+\newlabel{sec:representation}{{4.5.2}{78}{Representation}{subsection.4.5.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.5.3}Transformations}{79}{subsection.4.5.3}\protected@file@percent }
+\newlabel{sec:trans}{{4.5.3}{79}{Transformations}{subsection.4.5.3}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {4.1}{\ignorespaces Feasible transformations by feature category}}{81}{table.caption.26}\protected@file@percent }
+\newlabel{table:capabilities}{{4.1}{81}{Feasible transformations by feature category}{table.caption.26}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.6}Adversarial Binaries}{81}{section.4.6}\protected@file@percent }
+\newlabel{sebsec:binaries}{{4.6}{81}{Adversarial Binaries}{section.4.6}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.7}Evaluation}{82}{section.4.7}\protected@file@percent }
+\newlabel{sec:eval}{{4.7}{82}{Evaluation}{section.4.7}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.7.1}Evaluation Setup}{83}{subsection.4.7.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.7.2}Metrics}{84}{subsection.4.7.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.7.3}Results}{84}{subsection.4.7.3}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {4.2}{\ignorespaces Performance of AutoRobust (AR), gradient-based (GB) adversarial training, and the original vanilla HMIL model considering the two perturbation budgets, 1K and 2K. The metrics displayed are: Score (of the origin class), Attack Success Rate (ASR), Clean Accuracy (C.Acc), and Robust Accuracy (R.Acc), all reported on the same hold-out test set.}}{85}{table.caption.27}\protected@file@percent }
+\newlabel{tbl:results}{{4.2}{85}{Performance of AutoRobust (AR), gradient-based (GB) adversarial training, and the original vanilla HMIL model considering the two perturbation budgets, 1K and 2K. The metrics displayed are: Score (of the origin class), Attack Success Rate (ASR), Clean Accuracy (C.Acc), and Robust Accuracy (R.Acc), all reported on the same hold-out test set}{table.caption.27}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.3}{\ignorespaces Progression of Attack Success Rate (blue), Clean Accuracy (yellow), and Robust Accuracy (green) over the 15 iterations of adversarial training. For each metric, the mean with one standard deviation are displayed, as we do multiple runs where hyperparameters and random seeds for selecting samples vary.}}{86}{figure.caption.28}\protected@file@percent }
+\newlabel{fig:training}{{4.3}{86}{Progression of Attack Success Rate (blue), Clean Accuracy (yellow), and Robust Accuracy (green) over the 15 iterations of adversarial training. For each metric, the mean with one standard deviation are displayed, as we do multiple runs where hyperparameters and random seeds for selecting samples vary}{figure.caption.28}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.7.4}Explanations}{87}{subsection.4.7.4}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {4.4}{\ignorespaces The most frequent explanations as returned by the HMIL model explainer, over the 15 iterations. As for each iteration the number of episodes varies, we normalize explanations to a percentage over the whole iteration; mean values with one standard deviation are plotted.}}{88}{figure.caption.29}\protected@file@percent }
+\newlabel{fig:explanations}{{4.4}{88}{The most frequent explanations as returned by the HMIL model explainer, over the 15 iterations. As for each iteration the number of episodes varies, we normalize explanations to a percentage over the whole iteration; mean values with one standard deviation are plotted}{figure.caption.29}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.8}Discussion}{89}{section.4.8}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {4.9}Conclusion}{91}{section.4.9}\protected@file@percent }
+\@setckpt{chapters/autorobust/autorobust}{
+\setcounter{page}{92}
+\setcounter{equation}{3}
+\setcounter{enumi}{3}
+\setcounter{enumii}{0}
+\setcounter{enumiii}{0}
+\setcounter{enumiv}{0}
+\setcounter{footnote}{2}
+\setcounter{mpfootnote}{0}
+\setcounter{part}{0}
+\setcounter{chapter}{4}
+\setcounter{section}{9}
+\setcounter{subsection}{0}
+\setcounter{subsubsection}{0}
+\setcounter{paragraph}{0}
+\setcounter{subparagraph}{0}
+\setcounter{figure}{4}
+\setcounter{table}{2}
+\setcounter{su@anzahl}{0}
+\setcounter{parentequation}{0}
+\setcounter{DTLrowi}{2}
+\setcounter{DTLrowii}{0}
+\setcounter{DTLrowiii}{0}
+\setcounter{DTLrow}{9}
+\setcounter{lstnumber}{1}
+\setcounter{section@level}{1}
+\setcounter{Item}{8}
+\setcounter{Hfootnote}{7}
+\setcounter{bookmark@seq@number}{71}
+\setcounter{lofdepth}{1}
+\setcounter{lotdepth}{1}
+\setcounter{r@tfl@t}{0}
+\setcounter{LT@tables}{0}
+\setcounter{LT@chunks}{0}
+\setcounter{tabx@nest}{0}
+\setcounter{listtotal}{0}
+\setcounter{listcount}{0}
+\setcounter{liststart}{0}
+\setcounter{liststop}{0}
+\setcounter{citecount}{0}
+\setcounter{citetotal}{0}
+\setcounter{multicitecount}{0}
+\setcounter{multicitetotal}{0}
+\setcounter{instcount}{190}
+\setcounter{maxnames}{10}
+\setcounter{minnames}{1}
+\setcounter{maxitems}{3}
+\setcounter{minitems}{1}
+\setcounter{citecounter}{0}
+\setcounter{maxcitecounter}{0}
+\setcounter{savedcitecounter}{0}
+\setcounter{uniquelist}{0}
+\setcounter{uniquename}{0}
+\setcounter{refsection}{0}
+\setcounter{refsegment}{0}
+\setcounter{maxextratitle}{0}
+\setcounter{maxextratitleyear}{0}
+\setcounter{maxextraname}{2}
+\setcounter{maxextradate}{0}
+\setcounter{maxextraalpha}{0}
+\setcounter{abbrvpenalty}{5000}
+\setcounter{highnamepenalty}{5000}
+\setcounter{lownamepenalty}{2500}
+\setcounter{maxparens}{3}
+\setcounter{parenlevel}{0}
+\setcounter{blx@maxsection}{0}
+\setcounter{mincomprange}{10}
+\setcounter{maxcomprange}{100000}
+\setcounter{mincompwidth}{1}
+\setcounter{afterword}{0}
+\setcounter{savedafterword}{0}
+\setcounter{annotator}{0}
+\setcounter{savedannotator}{0}
+\setcounter{author}{0}
+\setcounter{savedauthor}{0}
+\setcounter{bookauthor}{0}
+\setcounter{savedbookauthor}{0}
+\setcounter{commentator}{0}
+\setcounter{savedcommentator}{0}
+\setcounter{editor}{0}
+\setcounter{savededitor}{0}
+\setcounter{editora}{0}
+\setcounter{savededitora}{0}
+\setcounter{editorb}{0}
+\setcounter{savededitorb}{0}
+\setcounter{editorc}{0}
+\setcounter{savededitorc}{0}
+\setcounter{foreword}{0}
+\setcounter{savedforeword}{0}
+\setcounter{holder}{0}
+\setcounter{savedholder}{0}
+\setcounter{introduction}{0}
+\setcounter{savedintroduction}{0}
+\setcounter{namea}{0}
+\setcounter{savednamea}{0}
+\setcounter{nameb}{0}
+\setcounter{savednameb}{0}
+\setcounter{namec}{0}
+\setcounter{savednamec}{0}
+\setcounter{translator}{0}
+\setcounter{savedtranslator}{0}
+\setcounter{shortauthor}{0}
+\setcounter{savedshortauthor}{0}
+\setcounter{shorteditor}{0}
+\setcounter{savedshorteditor}{0}
+\setcounter{labelname}{0}
+\setcounter{savedlabelname}{0}
+\setcounter{institution}{0}
+\setcounter{savedinstitution}{0}
+\setcounter{lista}{0}
+\setcounter{savedlista}{0}
+\setcounter{listb}{0}
+\setcounter{savedlistb}{0}
+\setcounter{listc}{0}
+\setcounter{savedlistc}{0}
+\setcounter{listd}{0}
+\setcounter{savedlistd}{0}
+\setcounter{liste}{0}
+\setcounter{savedliste}{0}
+\setcounter{listf}{0}
+\setcounter{savedlistf}{0}
+\setcounter{location}{0}
+\setcounter{savedlocation}{0}
+\setcounter{organization}{0}
+\setcounter{savedorganization}{0}
+\setcounter{origlocation}{0}
+\setcounter{savedoriglocation}{0}
+\setcounter{origpublisher}{0}
+\setcounter{savedorigpublisher}{0}
+\setcounter{publisher}{0}
+\setcounter{savedpublisher}{0}
+\setcounter{language}{0}
+\setcounter{savedlanguage}{0}
+\setcounter{origlanguage}{0}
+\setcounter{savedoriglanguage}{0}
+\setcounter{pageref}{0}
+\setcounter{savedpageref}{0}
+\setcounter{textcitecount}{0}
+\setcounter{textcitetotal}{0}
+\setcounter{textcitemaxnames}{0}
+\setcounter{biburlbigbreakpenalty}{100}
+\setcounter{biburlbreakpenalty}{200}
+\setcounter{biburlnumpenalty}{0}
+\setcounter{biburlucpenalty}{0}
+\setcounter{biburllcpenalty}{0}
+\setcounter{smartand}{1}
+\setcounter{bbx:relatedcount}{0}
+\setcounter{bbx:relatedtotal}{0}
+\setcounter{AlgoLine}{0}
+\setcounter{algocfline}{2}
+\setcounter{algocfproc}{2}
+\setcounter{algocf}{2}
+\setcounter{ALC@unique}{7}
+\setcounter{ALC@line}{7}
+\setcounter{ALC@rem}{0}
+\setcounter{ALC@depth}{0}
+\setcounter{caption@flags}{6}
+\setcounter{continuedfloat}{0}
+\setcounter{subfigure}{2}
+\setcounter{subtable}{0}
+\setcounter{mdf@globalstyle@cnt}{0}
+\setcounter{mdfcountframes}{0}
+\setcounter{mdf@env@i}{0}
+\setcounter{mdf@env@ii}{0}
+\setcounter{mdf@zref@counter}{6}
+\setcounter{lstlisting}{0}
+\setcounter{theorem}{0}
+\setcounter{proposition}{0}
+}

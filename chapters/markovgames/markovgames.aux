@@ -1,0 +1,224 @@
+\relax 
+\providecommand\zref@newlabel[2]{}
+\providecommand\hyper@newdestlabel[2]{}
+\@writefile{toc}{\contentsline {chapter}{\numberline {5}Adversarial Markov Games}{92}{chapter.5}\protected@file@percent }
+\@writefile{lof}{\addvspace {10\p@ }}
+\@writefile{lot}{\addvspace {10\p@ }}
+\@writefile{loa}{\addvspace {10\p@ }}
+\newlabel{ch:markovgames}{{5}{92}{Adversarial Markov Games}{chapter.5}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.1}Introduction}{93}{section.5.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {5.2}Preliminaries}{94}{section.5.2}\protected@file@percent }
+\newlabel{sec:background}{{5.2}{94}{Preliminaries}{section.5.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2.1}Attacks \& Mitigations}{95}{subsection.5.2.1}\protected@file@percent }
+\newlabel{eqn:adv_train}{{5.1}{95}{Attacks \& Mitigations}{equation.5.2.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2.2}Stateful Defenses}{95}{subsection.5.2.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2.3}On Being Adaptive}{96}{subsection.5.2.3}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {5.1}{\ignorespaces In \gls {AML} adaptive means to invent new knobs that can bypass a defense (lower open set); in control theory it means the precise tuning of all known knobs. In this work, we reformulate adaptive to signify \textbf  {both}. In HSJA for example, radius, steps, and jumps are parameters of the attack, while rotate and translate are evasive transformations.}}{97}{figure.caption.30}\protected@file@percent }
+\newlabel{fig:adaptivity}{{5.1}{97}{In \gls {AML} adaptive means to invent new knobs that can bypass a defense (lower open set); in control theory it means the precise tuning of all known knobs. In this work, we reformulate adaptive to signify \textbf {both}. In HSJA for example, radius, steps, and jumps are parameters of the attack, while rotate and translate are evasive transformations}{figure.caption.30}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2.4}Research Gap}{98}{subsection.5.2.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {5.3}Theoretical Framework}{99}{section.5.3}\protected@file@percent }
+\newlabel{sec:approach}{{5.3}{99}{Theoretical Framework}{section.5.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.3.1}Attacks}{99}{subsection.5.3.1}\protected@file@percent }
+\newlabel{eqn:genpolicy}{{5.2}{100}{Attacks}{equation.5.3.2}{}}
+\newlabel{eqn:classifier}{{5.3}{100}{Attacks}{equation.5.3.3}{}}
+\newlabel{eqn:psi}{{5.4}{100}{Attacks}{equation.5.3.4}{}}
+\newlabel{eqn:opt}{{5.5}{100}{Attacks}{equation.5.3.5}{}}
+\newlabel{eqn:rew}{{5.6}{101}{Attacks}{equation.5.3.6}{}}
+\newlabel{prop:one}{{5.3.1}{102}{}{proposition.5.3.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.3.2}Defenses}{102}{subsection.5.3.2}\protected@file@percent }
+\newlabel{eqn:def}{{5.7}{102}{Defenses}{equation.5.3.7}{}}
+\newlabel{prop:two}{{5.3.2}{103}{}{proposition.5.3.2}{}}
+\newlabel{th:epg}{{5.3.1}{103}{Adversarial Policy Gradient}{theorem.5.3.1}{}}
+\newlabel{prop:3}{{5.3.3}{103}{}{proposition.5.3.3}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.2}{\ignorespaces Schematic model of an AMG environment. Due to the inherent uncertainty of behavior at either side of the interface, it is a partially observable RL environment mirrored for each agent where one's decisions become the other's observations.}}{104}{figure.caption.31}\protected@file@percent }
+\newlabel{fig:model}{{5.2}{104}{Schematic model of an AMG environment. Due to the inherent uncertainty of behavior at either side of the interface, it is a partially observable RL environment mirrored for each agent where one's decisions become the other's observations}{figure.caption.31}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.3.3}Adversarial Markov Games}{104}{subsection.5.3.3}\protected@file@percent }
+\newlabel{sec:AMG}{{5.3.3}{104}{Adversarial Markov Games}{subsection.5.3.3}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.4}Environment Specification}{106}{section.5.4}\protected@file@percent }
+\newlabel{sec:threat}{{5.4}{106}{Environment Specification}{section.5.4}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.3}{\ignorespaces Misdirection in a two-dimensional decision boundary. The adaptive defense controls a single parameter, the hypersphere radius around $c_0$ (the last known adversarial); for queries $x_t$ that fall within this hypersphere the model responds with a non-adversarial decision. $x_g$ is the starting sample, $x_c$ the original, and $x_b$ the best possible adversarial.}}{107}{figure.caption.32}\protected@file@percent }
+\newlabel{fig:boundary}{{5.3}{107}{Misdirection in a two-dimensional decision boundary. The adaptive defense controls a single parameter, the hypersphere radius around $c_0$ (the last known adversarial); for queries $x_t$ that fall within this hypersphere the model responds with a non-adversarial decision. $x_g$ is the starting sample, $x_c$ the original, and $x_b$ the best possible adversarial}{figure.caption.32}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.5}Evaluation}{109}{section.5.5}\protected@file@percent }
+\newlabel{sec:evaluation}{{5.5}{109}{Evaluation}{section.5.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.5.1}Evaluation Setup}{109}{subsection.5.5.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.5.2}Results}{112}{subsection.5.5.2}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {5.1}{\ignorespaces \textbf  {CIFAR-10 / BAGS}: ASR and mean $l_2$ perturbation for 1K, 2K, and 5K queries, against normally and adversarially trained models. C.Acc reports the clean accuracy on benign queries of the base model plus any defenses present; in the first two scenarios (no active defense) the baseline clean accuracy is reported. Yellow scenarios denote the baseline attack performance, green denote active and/or adaptive defenses, and red denote adaptive attacks. Scenarios 9-13 compare our Adaptive Attack (AA) and Adaptive Defense (AD) to Blacklight (BD) and OARS (OA).}}{113}{table.caption.33}\protected@file@percent }
+\newlabel{tab:BAGS_result}{{5.1}{113}{\textbf {CIFAR-10 / BAGS}: ASR and mean $l_2$ perturbation for 1K, 2K, and 5K queries, against normally and adversarially trained models. C.Acc reports the clean accuracy on benign queries of the base model plus any defenses present; in the first two scenarios (no active defense) the baseline clean accuracy is reported. Yellow scenarios denote the baseline attack performance, green denote active and/or adaptive defenses, and red denote adaptive attacks. Scenarios 9-13 compare our Adaptive Attack (AA) and Adaptive Defense (AD) to Blacklight (BD) and OARS (OA)}{table.caption.33}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {5.2}{\ignorespaces \textbf  {CIFAR-10 / HSJA}: ASR and mean $l_2$ perturbation for 1K, 2K, and 5K queries, against normally and adversarially trained models.}}{114}{table.caption.34}\protected@file@percent }
+\newlabel{tab:HSJA_result}{{5.2}{114}{\textbf {CIFAR-10 / HSJA}: ASR and mean $l_2$ perturbation for 1K, 2K, and 5K queries, against normally and adversarially trained models}{table.caption.34}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.6}Discussion}{115}{section.5.6}\protected@file@percent }
+\newlabel{sec:discussion}{{5.6}{115}{Discussion}{section.5.6}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {5.3}{\ignorespaces \textbf  {MNIST / BAGS}: ASR and mean $l_2$ perturbation for 1K, 2K, and 5K queries, against normally and adversarially trained models.}}{116}{table.caption.35}\protected@file@percent }
+\newlabel{tab:BAGS_resultM}{{5.3}{116}{\textbf {MNIST / BAGS}: ASR and mean $l_2$ perturbation for 1K, 2K, and 5K queries, against normally and adversarially trained models}{table.caption.35}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {5.4}{\ignorespaces \textbf  {MNIST / HSJA}: ASR and mean $l_2$ perturbation for 1K, 2K, and 5K queries, against normally and adversarially trained models.}}{117}{table.caption.36}\protected@file@percent }
+\newlabel{tab:HSJA_resultM}{{5.4}{117}{\textbf {MNIST / HSJA}: ASR and mean $l_2$ perturbation for 1K, 2K, and 5K queries, against normally and adversarially trained models}{table.caption.36}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.7}Conclusion}{118}{section.5.7}\protected@file@percent }
+\@setckpt{chapters/markovgames/markovgames}{
+\setcounter{page}{120}
+\setcounter{equation}{7}
+\setcounter{enumi}{13}
+\setcounter{enumii}{0}
+\setcounter{enumiii}{0}
+\setcounter{enumiv}{0}
+\setcounter{footnote}{2}
+\setcounter{mpfootnote}{0}
+\setcounter{part}{0}
+\setcounter{chapter}{5}
+\setcounter{section}{7}
+\setcounter{subsection}{0}
+\setcounter{subsubsection}{0}
+\setcounter{paragraph}{0}
+\setcounter{subparagraph}{0}
+\setcounter{figure}{3}
+\setcounter{table}{4}
+\setcounter{su@anzahl}{0}
+\setcounter{parentequation}{0}
+\setcounter{DTLrowi}{2}
+\setcounter{DTLrowii}{0}
+\setcounter{DTLrowiii}{0}
+\setcounter{DTLrow}{9}
+\setcounter{lstnumber}{1}
+\setcounter{section@level}{1}
+\setcounter{Item}{22}
+\setcounter{Hfootnote}{9}
+\setcounter{bookmark@seq@number}{88}
+\setcounter{lofdepth}{1}
+\setcounter{lotdepth}{1}
+\setcounter{r@tfl@t}{0}
+\setcounter{LT@tables}{0}
+\setcounter{LT@chunks}{0}
+\setcounter{tabx@nest}{0}
+\setcounter{listtotal}{0}
+\setcounter{listcount}{0}
+\setcounter{liststart}{0}
+\setcounter{liststop}{0}
+\setcounter{citecount}{0}
+\setcounter{citetotal}{0}
+\setcounter{multicitecount}{0}
+\setcounter{multicitetotal}{0}
+\setcounter{instcount}{284}
+\setcounter{maxnames}{10}
+\setcounter{minnames}{1}
+\setcounter{maxitems}{3}
+\setcounter{minitems}{1}
+\setcounter{citecounter}{0}
+\setcounter{maxcitecounter}{0}
+\setcounter{savedcitecounter}{0}
+\setcounter{uniquelist}{0}
+\setcounter{uniquename}{0}
+\setcounter{refsection}{0}
+\setcounter{refsegment}{0}
+\setcounter{maxextratitle}{0}
+\setcounter{maxextratitleyear}{0}
+\setcounter{maxextraname}{2}
+\setcounter{maxextradate}{0}
+\setcounter{maxextraalpha}{0}
+\setcounter{abbrvpenalty}{5000}
+\setcounter{highnamepenalty}{5000}
+\setcounter{lownamepenalty}{2500}
+\setcounter{maxparens}{3}
+\setcounter{parenlevel}{0}
+\setcounter{blx@maxsection}{0}
+\setcounter{mincomprange}{10}
+\setcounter{maxcomprange}{100000}
+\setcounter{mincompwidth}{1}
+\setcounter{afterword}{0}
+\setcounter{savedafterword}{0}
+\setcounter{annotator}{0}
+\setcounter{savedannotator}{0}
+\setcounter{author}{0}
+\setcounter{savedauthor}{0}
+\setcounter{bookauthor}{0}
+\setcounter{savedbookauthor}{0}
+\setcounter{commentator}{0}
+\setcounter{savedcommentator}{0}
+\setcounter{editor}{0}
+\setcounter{savededitor}{0}
+\setcounter{editora}{0}
+\setcounter{savededitora}{0}
+\setcounter{editorb}{0}
+\setcounter{savededitorb}{0}
+\setcounter{editorc}{0}
+\setcounter{savededitorc}{0}
+\setcounter{foreword}{0}
+\setcounter{savedforeword}{0}
+\setcounter{holder}{0}
+\setcounter{savedholder}{0}
+\setcounter{introduction}{0}
+\setcounter{savedintroduction}{0}
+\setcounter{namea}{0}
+\setcounter{savednamea}{0}
+\setcounter{nameb}{0}
+\setcounter{savednameb}{0}
+\setcounter{namec}{0}
+\setcounter{savednamec}{0}
+\setcounter{translator}{0}
+\setcounter{savedtranslator}{0}
+\setcounter{shortauthor}{0}
+\setcounter{savedshortauthor}{0}
+\setcounter{shorteditor}{0}
+\setcounter{savedshorteditor}{0}
+\setcounter{labelname}{0}
+\setcounter{savedlabelname}{0}
+\setcounter{institution}{0}
+\setcounter{savedinstitution}{0}
+\setcounter{lista}{0}
+\setcounter{savedlista}{0}
+\setcounter{listb}{0}
+\setcounter{savedlistb}{0}
+\setcounter{listc}{0}
+\setcounter{savedlistc}{0}
+\setcounter{listd}{0}
+\setcounter{savedlistd}{0}
+\setcounter{liste}{0}
+\setcounter{savedliste}{0}
+\setcounter{listf}{0}
+\setcounter{savedlistf}{0}
+\setcounter{location}{0}
+\setcounter{savedlocation}{0}
+\setcounter{organization}{0}
+\setcounter{savedorganization}{0}
+\setcounter{origlocation}{0}
+\setcounter{savedoriglocation}{0}
+\setcounter{origpublisher}{0}
+\setcounter{savedorigpublisher}{0}
+\setcounter{publisher}{0}
+\setcounter{savedpublisher}{0}
+\setcounter{language}{0}
+\setcounter{savedlanguage}{0}
+\setcounter{origlanguage}{0}
+\setcounter{savedoriglanguage}{0}
+\setcounter{pageref}{0}
+\setcounter{savedpageref}{0}
+\setcounter{textcitecount}{0}
+\setcounter{textcitetotal}{0}
+\setcounter{textcitemaxnames}{0}
+\setcounter{biburlbigbreakpenalty}{100}
+\setcounter{biburlbreakpenalty}{200}
+\setcounter{biburlnumpenalty}{0}
+\setcounter{biburlucpenalty}{0}
+\setcounter{biburllcpenalty}{0}
+\setcounter{smartand}{1}
+\setcounter{bbx:relatedcount}{0}
+\setcounter{bbx:relatedtotal}{0}
+\setcounter{AlgoLine}{0}
+\setcounter{algocfline}{2}
+\setcounter{algocfproc}{2}
+\setcounter{algocf}{2}
+\setcounter{ALC@unique}{7}
+\setcounter{ALC@line}{7}
+\setcounter{ALC@rem}{0}
+\setcounter{ALC@depth}{0}
+\setcounter{caption@flags}{2}
+\setcounter{continuedfloat}{0}
+\setcounter{subfigure}{0}
+\setcounter{subtable}{0}
+\setcounter{mdf@globalstyle@cnt}{0}
+\setcounter{mdfcountframes}{0}
+\setcounter{mdf@env@i}{0}
+\setcounter{mdf@env@ii}{0}
+\setcounter{mdf@zref@counter}{6}
+\setcounter{lstlisting}{0}
+\setcounter{theorem}{0}
+\setcounter{proposition}{0}
+}

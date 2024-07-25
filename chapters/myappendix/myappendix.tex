@@ -1,0 +1,804 @@
+% !TeX root = ../../thesis.tex
+
+\chapter{}\label{apx:recaptcha}
+
+\section{State and Action specifications}
+\label{appendix:b}
+
+\textbf{Piecewise agent}. Our state construction ignores the absolute values of the mouse origin and destination coordinates and maintains only their initial relative position.
+%For an environment to be solvable by dynamic programming or a \gls{RL} algorithm, it should exhibit the Markov property: the future is independent of the past given the present.
+%This means that the current state representation should encode all the history of information encountered and which are necessary in order to act on.
+%Formally, a state $S_t$ upholds the Markov property if and only if: $P(S_{t+1} | S_t) = P(S_{t+1} | S_1,..., S_t)$.
+A state extracted from a single frame with the coordinates of the mouse pointer and the destination coordinates is thus insufficient, as it does not include the speed that the pointer moves.
+Similar to frame stacking where \gls{RL} agents play Atari games \cite{Mnih2013}, the state representation here is a tuple that includes the current speed of the pointer in pixels per frame.
+
+%\textbf{Bezier mode}. The agent has an action space size of 4.
+%At each step, the agents receives target coordinates $[x,y]$ and executes a mouse trajectory together with a left-click at its end.
+%This trajectory is parameterised by duration $d$, hover $h$, and press $p$.
+%Then pauses for delay $t$.
+
+\textbf{Abstract agent}. The agent has an action space size of 4.
+At each step of the environment, one of three possible browsing actions can be executed: moving the mouse and clicking, scrolling, and typing.
+The agent selects which one to execute via action $A_1$, then the one selected is parameterised by actions $A_2,A_3,A_4$
+
+Mouse control is identical to Bezier mode and all timings listed are in \textit{seconds}.
+Scrolling is parameterised by duration $d$, press $p$, and a predefined number of scroll units $n$.
+If $n$ is not provided, a random integer is chosen in the range 6-8.
+The agent pauses for $p$ between each scroll unit and for $d$ halfway and at the end.
+
+Typing is parameterised by $h$ and $p$, rescaled to fall in ranges pertinent to keystroke dynamics: $h \in [0.12, 0.16]$ controlling inter-key interval, $p \in [0.085, 0.125]$ controlling key press duration.
+Text can be provided as input, otherwise characters are typed from a dictionary at random.
+
+\section{PPO Specifications}
+\label{appendix:a}
+
+We follow the official implementation by OpenAI.
+The policy network of PPO-Clip is updated by maximizing the objective function shown in Eq. \ref{appendix:objective}, taking multiple steps of mini-batch stochastic gradient ascent (SGA).
+
+\begin{equation}
+\begin{aligned}
+\theta_{k+1} =& \arg\max_{\theta} \frac{1}{|D_k|T}\sum_{\tau \in D_k}\sum_{t=0}^{T}min\bigg(\frac{\pi_\theta(a_t|s_t)}{\pi_{\theta_k}(a_t|s_t)}\\
+& \cdot A^{\pi_{\theta_k}}(s_t,a_t), g(\epsilon, A^{\pi_{\theta_k}}(s_t,a_t))\bigg)
+\label{appendix:objective}
+\end{aligned}
+\end{equation}
+
+where
+
+$$
+g(\epsilon, A)=
+\begin{cases}
+(1+\epsilon)A, A\geq0\\
+(1-\epsilon)A, A\leq0
+\end{cases}
+$$
+
+and $A$ is the advantage function, which is the difference between the $Q$ value for a given state - action pair and the value $V$ of the state: $A(s,a) = Q(s,a) - V(s)$.
+
+$\epsilon$ is a hyperparameter that controls how far the new policy is allowed to change in comparison to the old.
+A similar approach is followed in approximating the value function that represents the value of each state, by minimizing Eq. \ref{appendix:value} with stochastic gradient descent (SGD).
+
+\begin{equation}
+\phi_{k+1} = \arg\min_{\phi} \frac{1}{|D_k|T}\sum_{\tau \in D_k}\sum_{t=0}^{T}\big(V_\phi(s_t) - \hat{R}_t\big)^2
+\label{appendix:value}
+\end{equation}
+
+\begin{algorithm}
+\SetAlgoLined
+ Input: initial policy parameters $\theta_0$, initial value function parameters $\phi_0$\;
+ \For{$k$ = 0, 1, 2, ... do}{
+  Collect set of trajectories $D_k = {\tau_i}$ by running policy $\pi_k = \pi(\theta_k)$ in the environment.\;
+  Compute rewards $\hat{R}_t$.\;
+  Compute advantage estimates, $\hat{A}_t$ based on the current value function $V_{\phi_k}$.\;
+  Update the policy by maximizing the PPO-Clip objective (Eq. \ref{appendix:objective}) via stochastic gradient ascent with Adam.\;
+  Fit Value function (Eq. \ref{appendix:value}) by regression on mean-squared error with Adam.\;
+ }
+ \caption{PPO-Clip}
+ \label{alg:PPO-Clip}
+\end{algorithm}
+
+
+\begin{algorithm}
+\SetAlgoLined
+ Set request frequency $P$ in seconds\;
+ Set policy update frequency $u$ in steps\;
+ \For{episode $e$ = 1, 2, ... $M$ do}{
+  Observe the last score $s$ acquired\;
+  Retrieve new goal coordinates $x, y$\;
+  \For{step $t$ = 0, 1, ... $T$}{
+   Select distance $d$ and angle $g$\;
+   Calculate new coordinates $a, b$ based on $d, g$ and move cursor to them\;
+   \If {$t\pmod{u} == 0$}{
+    Update policy and value networks based on Eq. \ref{appendix:objective} and Eq. \ref{appendix:value}\;
+   }
+   \If {$t$ is terminal}{
+    Perform left mouse button click\;
+    Set $r_t$ based on Eq. \ref{eqn:rew}\;
+   }
+  }
+ }
+ \caption{Piecewise Agent}
+ \label{alg:piecewise}
+\end{algorithm}
+
+\begin{algorithm}
+\SetAlgoLined
+ Set max requests $n$ per episode\;
+ Set policy update frequency $u$ in steps\;
+ \For{episode $e$ = 1, 2, ... $M$ do}{
+   Get initial score $S_0$\;
+  \For{step $t$ = 0, 1, ... $T$}{
+   Select duration $d$, hover $h$, press $p$, and delay $f$\;
+   Perform a Bezier trajectory to goal coordinates $x, y$ with duration $d$\;
+   After hovering for $h$, press for $p$\;
+   \If {$t\pmod{u} == 0$}{
+    Update policy and value networks based on Eq. \ref{appendix:objective} and Eq. \ref{appendix:value}\;
+   }
+    Get score $S_t$\;
+    Set $r_t$ based on Eq. \ref{eqn:reward}\;
+    Sleep for $f$\;
+  }
+ }
+ \caption{Bezier Agent}
+ \label{alg:bez}
+\end{algorithm}
+
+The pseudocode for PPO-Clip is shown in algorithm \ref{alg:PPO-Clip}.
+The learning process for the Piecewise and Bezier agents are shown in Algorithms \ref{alg:piecewise} and \ref{alg:bez} respectively.
+Goal coordinates for Website A is the button that triggers the verification, and for Website B is the hyperlink for one of the subpages selected at random.
+
+\subsection{Architecture \& Hyperparameters}
+
+For both actor and critic networks, we opted for a 2 hidden layer fully-connected neural network.
+The architecture and hyperparameters are shown in Table \ref{appendix:hyper}.
+
+\begin{table}[h]
+\centering
+%\renewcommand*{\arraystretch}{1.2}
+\renewcommand*{\arraystretch}{1.05}
+%\begin{adjustbox}{max width=\textwidth}
+\begin{tabular}{|r|c|c|c|}
+%\cline{2-5}
+\toprule
+\textbf{Hyperparameter} &\bf Piecewise &\bf Bezier &\bf Abstract \\
+\midrule
+dense units & 64, 32 & 64, 32 & 64, 32 \\
+activation & tanh & tanh & tanh\\
+final activation & sigmoid & sigmoid & sigmoid\\
+optimizer & Adam & Adam & Adam\\
+action std & 0.2 & 1 & 1\\
+learning rate & 0.0003 & 0.0003 & 0.0003\\
+update & 20 & 10 & 10\\
+epochs & 80 & 80 & 80\\
+epsilon clip & 0.2 & 0.2 & 0.2\\
+gamma & 0.99 & 0.9 & 0.9\\
+max timesteps & 100 & 100 & 200\\
+max episodes & 100-800 & 4 & 4\\
+%\midrule
+%& \multicolumn{2}{c}{\cellcolor{orange!20} TCN} & \multicolumn{2}{c}{\cellcolor{orange!20} TCN AE}\\
+\bottomrule
+\end{tabular}
+\caption{Architecture and hyperparameters of PPO-Clip for Piecewise, Bezier, and Abstract agents.}
+%\end{adjustbox}
+\label{appendix:hyper}
+\end{table}
+
+\chapter{}\label{apx:autorobust}
+
+\appendix
+
+\section{Problem-space transformations}
+\label{app:transformations}
+In Section \ref{sec:eval} we presented the full range of functionality-preserving transformations on the specific feature space we are investigating in this work.
+As generating new binary variants for every modification performed is a considerable engineering effort and time consuming process, we developed a proof of concept (PoC) that covers the basic usage of every Windows API intercepted by capemon.
+
+\begin{itemize}[leftmargin=*]
+    \item In this PoC we implement the same exact logic that AutoRobust applies in the feature space.
+    \item We create a shared memory table that keeps track of all the name changes across program execution, so whenever one of the APIs of interest is called its argument was replaced accordingly as indicated by the modification.
+    \item This entry is then added to the shared table as a stage 1 modification; if there are successive modifications we do track them all for completeness.
+    \item From that moment on, whenever another API call is invoked, we do check if the original name is in one of the arguments and replace it according to our substitution history.
+    \item Depending on the API we employ different strategies for argument substitution. As we do not want to impact the original program behavior, we have to conform to the viable transformations for each API. For instance, creating a mutex allows for completely arbitrary names, for file generation we have to provide valid filepaths, and in command execution we need to ensure all previous modifications are reflected without introducing new random entries which could make the program crash. We preserve this reasoning in the feature space, as illustrated in \autoref{app:poc_report}.
+\end{itemize}
+
+Adapting our PoC to runtime modifications could include the aforementioned logic in a dll wrapped with the binary, as discussed in Section \ref{sebsec:binaries}.
+Under the specifics of dynamic analysis and our use-case, given access to the decisions of the model $\mathcal{M}$ attackers can generate adversarial binaries in the problem space with considerable automation, but with less granularity than AutoRobust: whatever modifications they make, they have to be packaged in batch to a new binary that will be subsequently analyzed by the sandbox.
+As the entries in the summary of the dynamic analysis report are not ordered, the placement of functions in adversarial binaries does not matter; as long as they return to the main functionality of the program with its internal state unaffected, these functions are allowed to interact with each other.
+
+\subsection{Functionality Preservation in AutoRobust}
+
+Here we outline in detail the modification procedure, which keeps track of the changed entries, and how it ensures that all changes propagate correctly throughout a dynamic analysis report. In order to do it, after the agent has performed a modification on the report, we seek for other occurrences of the same entry in different categories. In case we do, we perform the same modification on it and we do this for all the dynamic report categories \autoref{sec:representation}. 
+In that way the modifications performed will reflect both a viable report variant in the feature-space, and a binary with its functionality preserved in the problem-space.
+For this detailed explanation, we consider a malicious program that wants to modify the firewall rules.
+To do that, it needs to invoke \textbf{netsh} Windows utility, something we expect to appear in the category \textit{executed commands}: 
+
+\begin{lstlisting}[language=bash]
+netsh firewall add allowedprogram "C:\Users\John\AppData\Roaming\malicious.exe" "malicious.exe" ENABLE
+\end{lstlisting}
+
+Changing the command itself or its could inadvertently affect the original malware behavior. However, renaming the file from "malicious.exe" to another name, provided the new name is consistently referenced, would not affect the malware's functionality.
+An initial modification could be:
+
+\begin{lstlisting}[language=bash]
+netsh firewall add allowedprogram "C:\Users\John\AppData\Roaming\hello.exe" "hello.exe" ENABLE
+\end{lstlisting}
+
+Following a modification on the executed commands, our transformation logic performs a sweep of the entire report to identify all places that it is referenced; subsequently, every occurrence of "malicious.exe" is substituted with "hello.exe", for example corresponding entries within both the \textit{Files} and \textit{Write Files} sections.
+Such entries indicate not only the generation of the file but also the activities related to content modification associated with it and in order to be consistent we change those entries as well.
+Additionally, our investigation unveils instances within the \textit{executed commands} section that indicate subsequent efforts to execute the binary after adjustments had been made to the firewall settings.
+Our transformations ensure the modification of the filename in this case as well, in that way preserving the original functionality.
+
+This example helps to demonstrate how modifications are propagated around the executed commands category. The same reasoning is applied to the performed modifications that need to be reflected in other categories; for example changes in \textit{Write Keys} are reflected the \textit{Keys} section.
+Because we do not modify the binaries themselves, we can guarantee that for the granularity provided by our current feature space the transformations are coherent, working at the same abstraction level.
+
+\subsection{Dynamic Analysis Reports}
+\label{app:poc_report}
+To illustrate the feature space we are working with, and also demonstrate how effortless evading the HMIL model initially is, we include an example dynamic analysis report as well as its adversarial variant.
+\autoref{lst:example_report_or} shows the original report as generated through execution in our sandbox.
+
+\begin{lstlisting}[language=json, label=lst:example_report_or, caption=Original report entries]
+{
+  "summary": {
+    "files": [
+      "C:\\Users\\John\\AppData\\Local\\Temp\\\\xb0\\xa1\\xb0\\xa1\\xb0\\xa1\\xb0\\xa1\\xb0\\xa1\\xb0\\xa1\\xb0\\xa1\\xb0\\xa1\\xb0\\xa1\\xb0\\xa1\\xb0\\xa1\\xb0\\xa1\\xb0\\xa1\\xb0\\xa1\\xb0\\xa1\\xb0\\xa1\\xb0\\xa1\\xb0\\xa1\\xb0\\xa1\\xb0\\xa1\\xb0\\xa1\\xb0\\xa1\\xb0\\xa1\\xb0\\xa1\\xb0\\xa1\\xb0\\xa1\\xb0\\xa1\\xb0\\xa1\\xb0\\xa1\\xb0\\xa1\\xb0\\xa1\\xb0\\xa1\\xb0\\xa1",
+      "C:\\Users\\John\\AppData\\Local\\Temp\\03cb16b5aa21f4b0a10a8e3e.exe",
+      "C:\\vbxjf.exe"
+    ],
+    "read_files": [
+      "C:\\Users\\John\\AppData\\Local\\Temp\\03cb16b5aa21f4b0a10a8e3e.exe"
+    ],
+    "write_files": [
+      "C:\\vbxjf.exe"
+    ],
+    "delete_files": [],
+    "keys": [
+      "DisableUserModeCallbackFilter",
+      "HKEY_LOCAL_MACHINE\\Software\\Microsoft\\Windows NT\\CurrentVersion\\GRE_Initialize",
+      "HKEY_LOCAL_MACHINE\\SOFTWARE\\MICROSOFT\\WINDOWS NT\\CURRENTVERSION\\GRE_Initialize\\DisableMetaFiles"
+    ],
+    "read_keys": [
+      "DisableUserModeCallbackFilter",
+      "HKEY_LOCAL_MACHINE\\SOFTWARE\\MICROSOFT\\WINDOWS NT\\CURRENTVERSION\\GRE_Initialize\\DisableMetaFiles"
+    ],
+    "write_keys": [],
+    "delete_keys": [],
+    "executed_commands": [
+      "c:\\vbxjf.exe"
+    ],
+    "resolved_apis": [
+       "kernel32.dll.VirtualAlloc",
+      "kernel32.dll.VirtualProtect",
+      "kernel32.dll.VirtualFree",
+      "kernel32.dll.LoadLibraryA",
+      "kernel32.dll.GetProcAddress",
+      "kernel32.dll.ExitProcess",
+      "msvcrt.dll.atoi",
+      "shlwapi.dll.PathFileExistsA",
+      "user32.dll.wsprintfA",
+      "kernel32.dll.OpenProcess",
+      "kernel32.dll.VirtualAllocEx",
+      "kernel32.dll.WriteProcessMemory",
+      "kernel32.dll.WaitForSingleObject",
+      "kernel32.dll.VirtualFreeEx",
+      "kernel32.dll.GetProcessHeap",
+      "kernel32.dll.GetModuleHandleA",
+      "kernel32.dll.HeapAlloc",
+      "kernel32.dll.HeapFree",
+      "kernel32.dll.IsBadReadPtr",
+      "kernel32.dll.DeleteFileA",
+      "kernel32.dll.GetModuleFileNameA",
+      "kernel32.dll.CloseHandle",
+      "kernel32.dll.ReadFile",
+      "kernel32.dll.GetFileSize",
+      "kernel32.dll.CreateFileA",
+      "kernel32.dll.WriteFile",
+      "kernel32.dll.CreateProcessA",
+      "kernel32.dll.GetStartupInfoA",
+      "kernel32.dll.Sleep",
+      "kernel32.dll.FreeLibrary",
+      "msvcrt.dll.strchr",
+      "msvcrt.dll._CIfmod",
+      "user32.dll.TranslateMessage",
+      "user32.dll.DispatchMessageA",
+      "user32.dll.GetMessageA",
+      "user32.dll.MessageBoxA",
+      "user32.dll.PeekMessageA",
+      "user32.dll.GetWindowThreadProcessId"
+    ],
+    "mutexes": [],
+    "created_services": [],
+    "started_services": []
+  }
+}
+\end{lstlisting}
+
+On the other hand, \autoref{lst:example_report_adv} shows the same report after enough transformations have been applied so that it has successfully evaded the target classifier, i.e. classified as goodware.
+For simplicity, we report only the entries that have been modified.
+We can observe that our transformations change consistently the name of the files and the directory paths in which these are saved, propagating also the modification to \textit{executed commands} section.
+Then, our \gls{RL} agent also adds a mutex, which has no impact on the actual behavior of the original binary.
+
+\begin{lstlisting}[language=json,label=lst:example_report_adv, caption=Modified report entries]
+{
+  "summary": {
+    "files": [
+      "C:\\Users\\John\\AppData\\Local\\Saxon\\Temp\\sorage\\shrinal\\(*@\linebreak@*)podostemad\\hired\\oxyphenyl\\demonocracy\\Lapsana\\Kamasin\\(*@\linebreak@*)menoschesis\\spinnerular\\symptomless\\unknelled\\Cladocera\\lame\\(*@\linebreak@*)suspensively\\uncomparably\\Utopianize\\demigroat\\ovistic\\equalize\\(*@\linebreak@*)lounger\\staghunt\\Cascadia\\head\\overrule\\chichimecan\\(*@\linebreak@*)Edestosaurus\\berrigan\\booger\\cinurous\\unhurt\\gollar\\uraniid\\(*@\linebreak@*)blousing\\lunge\\recrease\\rage\\limy\\predefense\\spadger\\(*@\linebreak@*)Wykehamist\\taxidermist\\outcrier\\patchwork\\specular\\huffishness\\(*@\linebreak@*)tarnal\\cabin\\tenementary\\rectalgia\\cataplasis\\flavor\\(*@\linebreak@*)sprank\\rigor\\unwrinkle\\partitionary\\dancery\\demihigh\\(*@\linebreak@*)warrantee\\sherifate\\thereout\\fourteenthly\\mousefish\\(*@\linebreak@*)unfairylike\\tenaille\\iodobromite\\octoglot\\Cartist\\(*@\linebreak@*)heartscald\\wellsite\\triphony\\picturely\\zoning\\deal\\pyelectasis\\(*@\linebreak@*)unselfish\\marshite\\truckful\\beworn\\thriller\\divaricately\\Earnie",
+      "C:\\Users\\horseback\\zeuglodont\\supping\\aphasic\\institor.exe",
+      "C:\\surgeproof\\marionette.exe"
+      
+    ],
+    "read_files": [
+      "C:\\Users\\horseback\\zeuglodont\\supping\\aphasic\\institor.exe"
+    ],
+    "write_files": [
+      "C:\\surgeproof\\marionette.exe"
+    ],
+    "delete_files": [],
+    "keys": [
+      ...
+    ],
+    "read_keys": [
+      ...
+    ],
+    "write_keys": [],
+    "delete_keys": [],
+    "executed_commands": [
+      C:\\surgeproof\\marionette.exe}
+    ],
+    "resolved_apis": [
+      ...
+    ],
+    ("mutexes": ["Asjk"],
+    "created_services": [],
+    "started_services": []
+  }
+}
+\end{lstlisting}
+
+\section{HMIL \& RL Hyperparameters}
+\label{app:hyper}
+
+The model is retrained for a total of 15 iterations on the new adversarial examples generated, where in each iteration agents are trained from scratch.
+We cold-start new agents because agents from previous iterations often failed to evade the retrained model; this strongly indicates that knowing the capability set $\mathcal{C}$ is not sufficient to defend, as multiple different policies -- and thus multiple different distributions -- can result from it.
+We emphasize that robust accuracy is not a true indication of actual robustness; while evaluated on a test set, this comes from the \textit{same} distribution due to being generated by the same agent.
+The realistic level of robustness is evaluated only through a final round of attacks, with starting reports neither the model nor the agent have seen before.
+As is best practice in \gls{AML}, candidate reports are only those that are correctly classified by the model.
+
+\textbf{States \& Rewards}. For all agents, the state representation $s$ for a sample $x$ is its 32-dimensional embedding on the last layer before the fully connected of \gls{HMIL} model. 
+The reward functions we evaluate with are straightforward: we reward the score decrease in the source class and its increase in the target class, while optionally penalizing the total number of steps and any disallowed moves -- which if selected, are never allowed to go through.
+Table \ref{tbl:hyper} reports on all hyperparameters -- or ranges -- that we experimented with.
+Throughout our experiments, we observe that results are robust to hyperparameter selection.
+
+\begin{table}[h!]
+\centering
+\renewcommand*{\arraystretch}{1.05}
+\caption{Hyperparameters.}
+\begin{tabular}{|r|r|r|}
+\toprule
+\textbf{Hyperparameter} &\bf Binary &\bf Multiclass\\
+\midrule
+learning rate & e-3 -- 3e-3 & e-3 -- 3e-3 \\
+steps per episode & 1000 -- 2000 & 1000 -- 2000 \\
+steps per iteration & 5e4 -- 3e5 & 2e4 -- 2e5\\
+iterations & 15 & 15\\
+batch size RL& 32 & 32\\
+batch size HMIL& 128 & 128\\
+\bottomrule
+\end{tabular}
+\label{tbl:hyper}
+\end{table}
+
+\chapter{}\label{apx:markovgames}
+
+\section{Proofs}
+\label{apx:proofs}
+
+For a more intuitive understanding of the proofs, we first provide a high-level description of the attack fundamentals.
+\textbf{BAGS} \cite{brunner2019guessing} performs a random walk along the boundary between the adversarial and the non-adversarial regions, by first taking a random step orthogonal to the original image direction, then a source step towards it.
+The randomness in the directions searched is reduced by utilizing Perlin noise and masks computed on the difference between starting and original samples.
+\textbf{HSJA} \cite{chen2020hopskipjumpattack} operates in 3 stages: a binary search that places the current best adversarial on the decision boundary, an estimation step that computes the gradient at that point of the boundary, and projection step along the estimated gradient.
+These steps repeat until convergence.
+\vspace{1em}
+
+\textbf{[Proposition \ref{prop:one}]}
+\vspace{-1em}
+\begin{proof}
+The proof is constructed in two parts: first that an alternative decision function $D$ is required, and subsequently that a stateful representation of a query $x_t$ is also required.
+Let us denote by $x_c, x_g, x_t$ the original (unperturbed), the starting, and the current sample at step $t$ respectively.
+Given a target class $c_0 \in m$ we can define a function:
+\begin{equation}
+    S_{x_c}(x_t) = F_{c_0}(x_t) - \underset{c\neq c_0}{\max}(F_c(x_t))
+\label{eqn:S}
+\end{equation}
+
+HSJA operates in 3 stages that alternate until convergence or when the maximum query budget is reached: 1) A binary search between $x_g$ and $x_c$ that places $x_t$ on the decision boundary between the classes. 2) A gradient estimation stage that approximates $\nabla S(x_t)$. 3) A ``jump'' step along the direction of the gradient $\nabla S(x_t)$. For practicality we reiterate Eq. 9 of \cite{chen2020hopskipjumpattack} which denotes that the gradient direction is approximated via the following Monte Carlo estimate:
+
+\begin{equation}
+    \widetilde{\nabla S_{x_c}}(x_t,\delta) = \frac{1}{B} \sum_{b=1}^{B} \phi_{x_c}(x_t + \delta u_b)u_b
+\label{eqn:nabla}
+\end{equation}
+
+where $\{u_b\}_{b=1}^{B}$ are i.i.d. draws from the uniform distribution over the $d$-dimensional sphere, $\delta$ is a small positive parameter, and $\phi_{x_c}$ is the Boolean-valued function that all steps of HSJA rely on:
+\begin{equation}
+    \phi_{x_c}(x_t) = \text{sign}(S_{x_c}(x_t)) = 
+    \begin{cases}
+    1 & \text{if} \quad S(x_t) > 0,\\
+    -1 & \text{if} \quad S(x_t) \leq 0.
+    \end{cases}
+\label{eqn:boolphi}
+\end{equation}
+
+Given an initial sample $x_c$, in search of adversarial examples HSJA applies the following update function that sequentially updates $x_c$:
+\begin{equation}
+    x_{t+1} = a_{t}x_c + (1-a_t)\Biggl\{x_t + \xi_t \frac{\nabla S_{x_c}(x_t)}{\|\nabla S_{x_c}(x_t)\|_2}\Biggl\}
+\label{eqn:update}
+\end{equation}
+
+where $\xi_t$ is a positive step size and $a_t$ is a line search parameter in $[0,1]$ s.t. $S(x_{t+1}) = 0$, i.e. the next query lies on the boundary.
+%Now let us assume that the function space of the classifier $C$ is reduced to $\operatorname*{arg\,max}$, i.e. $C: \mathbb{R}^m \mapsto \mathbb{N}^m, \:C(x)=\operatorname*{arg\,max} F_c(x)$, then from Eq. \ref{eqn:classifier} and Eq. \ref{eqn:S} we have:
+Now let us assume that the decision function $D$ is $\operatorname*{arg\,max}$, i.e. $D: \mathbb{R}^m \mapsto \mathbb{N}^m, \:C(x) = D(F_c(x)) = \operatorname*{arg\,max} F_c(x)$, then from Eq. \ref{eqn:classifier} and Eq. \ref{eqn:S} we have:
+\begin{equation}
+\begin{aligned}
+    S_{x_c}(x_t) > 0 & \iff C(x_t) = c_0\\
+    S_{x_c}(x_t) < 0 & \iff C(x_t) \neq c_0\\
+    S_{x_c}(x_t) = 0 & \iff C(x_t) = \{c_0,a\},\:a\neq c_0\\
+    \implies S_{x_c}(x_t) \leq 0 & \iff C(x_t) \neq c_0\\
+\end{aligned}
+\label{eqn:sc}
+\end{equation}
+
+Let us define the function $\mathcal{I}$ of two variables:
+\begin{equation}
+    \mathcal{I}(a,b) :=
+    \begin{cases}
+    1 & \text{if} \quad a = b,\\
+    -1 & \text{if} \quad a \neq b.
+    \end{cases}
+\label{eqn:id}
+\end{equation}
+
+We can rewrite Eq. \ref{eqn:boolphi} through and Eq. \ref{eqn:id} and inequalities \ref{eqn:sc} as follows: 
+\begin{equation}
+    \phi(x_t) = \mathcal{I}(C(x_t), c_0)
+\label{eqn:phi}
+\end{equation}
+
+Provided that the gradient estimation happens at the decision boundary where $S(x_t) = 0$, Theorem 2 of \cite{chen2020hopskipjumpattack} guarantees that the estimation of stage 2 is an asymptotically unbiased direction of the true gradient:
+\begin{equation}
+  \widetilde{\nabla S_{x_c}}(x_t,\delta) \approx \nabla S_{x_c}(x_t), \delta \rightarrow 0
+\label{eqn:approx}
+\end{equation}
+
+For $b_t = 1- a_t$ and by plugging Eqs \ref{eqn:phi} \& \ref{eqn:approx} in Eq. \ref{eqn:nabla}, and the result in \ref{eqn:update}, we get:
+\begin{align}
+    &x_{t+1} = a_{t}x_c + b_t\Biggl\{x_t + \xi_t \frac{\nabla S_{x_c}(x_t)}{\|\nabla S_{x_c}(x_t)\|_2}\Biggl\} \notag \\
+    &= a_{t}x_c 
+    + b_t\Biggl\{x_t + \xi_t \frac{\frac{1}{B} \sum_{b=1}^{B} \phi_{x_c}(x_t + \delta u_b)u_b}{\|\frac{1}{B} \sum_{b=1}^{B} \phi_{x_c}(x_t + \delta u_b)u_b\|_2}\Biggl\} \label{eqn:all} \\
+    &= a_{t}x_c + b_t\Biggl\{x_t + \xi_t \frac{\frac{1}{B} \sum_{b=1}^{B} \mathcal{I}(C(x_t + \delta u_b), c_0)u_b}{\|\frac{1}{B} \sum_{b=1}^{B} \mathcal{I}(C(x_t + \delta u_b), c_0)u_b\|_2}\Biggl\} \notag
+\end{align}
+
+Recall that we assumed $C(x)=\operatorname*{arg\,max} F_c(x)$, then the updates in Eq. \eqref{eqn:all} are \textit{guaranteed} by Theorem 1 of HSJA \cite{chen2020hopskipjumpattack} to converge to a stationary point $x_b$ of Eq. \eqref{eqn:opt}.
+Given a standard threshold $\epsilon$ on imperceptibility and over $N$ adversarial episodes, this implies that $\mathbb{E}[\sum_{i=1}^{N}d(x^i_b,x^i_c)] < \epsilon$.
+As $C$ is the only term in the expression \eqref{eqn:all} that is affected by the model, we reach a contradiction and that an alternative classifier $C'$ is required, with $C(x)=D(F_c(x))$.
+As the discriminant function $F_c$ cannot change without retraining, it follows that $D'\neq \operatorname*{arg\,max}$, so that for the adversarial example $x_t$ misclassified as $c_0$, Eq. \ref{eqn:psi} can return -1:
+% an adversarial example $x_b, \; d(x_b,x_c) \leq \epsilon$
+
+
+\begin{equation}
+\begin{aligned}
+    C(x_t) = c_0  \Rightarrow \psi(x_t) = -1 \\
+    \therefore C(x_t) = \hat{c}, \: \hat{c} = \{c_0, m\setminus c_0, \varnothing\}
+\end{aligned}
+\end{equation}
+
+\noindent where the empty decision $\varnothing$ denotes rejection and $\{ m\setminus c_0\}$ denotes misdirection, i.e. intentional misclassification.
+
+Decision-based attacks initiate from examples $x_t$ that belong to the target class $c_0$; while for $t=0$, $x_t$ is not adversarial yet, it still is \textit{part of} an ongoing adversarial attack.
+To deter the attack, a perfect defender would have to misclassify/reject this example; yet if an identical but benign example $x_n$ was submitted, classifier $C$ should preserve its capacity to classify it correctly.
+For the identical examples $x_n = x_t$ we want $C(x_n) \neq C(x_t)$, something possible only with context.
+This context $\tau$, based on the sequence of incoming queries  $x \in \{x_t, t = 0,1,2,...,N\} \cup x_n$, can be provided as an additional argument to the decision function $D(\tau, F_c(x))$ s.t. while $x_n = x_t \implies D(\tau, F_c(x_n)) \neq D(\tau, F_c(x_t)) $.
+%proof 2 insufficiency of adv training: look into what PGD does. -> compose with contradiction: without the capacity to mislead/reject, the optimi eq2 WILL converge to an adv example, BECAUSE adv training cannot exhaustively cover all the adversarial examples and proactively model them in F, and also because BB attacks cannot be incorporated at training time.
+\label{prf:one}
+\end{proof}
+
+\textbf{[Theorem \ref{th:epg}]}
+\begin{proof}
+%the sequence $B'$ constructed by policy $\mathcal{E}_\theta$ consists of subsequences that occur in the distribution of benign sequences, so that under sufficient applications $h(B')$ can result to $0$.
+
+Let $H$ be a distance-based detector that based on a stateful representation $\mathcal{S}(\tau, x_t)$ decides if a query $x_t$ is adversarial or not, and we assume the candidate generation policy $\pi_\theta^\mathcal{A}$ can influence this representation through intrinsic parameters like source step size, or applying transformations the underlying model is invariant to \eqref{tbl:transforms}.
+For a predefined threshold $\delta$, if $\mathcal{S}(\tau, x_t) < \delta$ then $H(x_t) = 1$ indicating that $x_t$ is part of an adversarial attack, otherwise $H(x_t) = 0$.
+Now for a number $N$ of attack episodes of fixed length $L$ and a reward function $r(\tau) = \sum_{t=1}^{L}(1 - H(x_t))$, the objective to be maximized is the expected reward of the adversarial policy:
+
+\begin{equation}
+    \mathcal{J}(\theta) = \mathbb{E}_{\pi_\theta^\mathcal{A}}[r(\tau)] = \frac{1}{N}\sum_{i=1}^{N}r(\tau) = \frac{1}{N}\sum_{i=1}^{N}\sum_{t=1}^{L}(1 - H(x_t))
+\label{eqn:expectmarkov}
+\end{equation}
+
+As it is not possible to compute the derivative of an expectation, by using the Policy Gradient Theorem \cite{sutton1999policy} we can transform it to the expectation of the product of the reward and the gradient of the logarithm of the policy:
+
+\begin{equation}
+\begin{aligned}
+    \nabla \mathbb{E}_{\pi_\theta^{\mathcal{A}}} [r(\tau)] &= \mathbb{E}_{\pi_\theta^{\mathcal{A}}}[r(\tau)\nabla \log \pi_\theta(\tau)]\\
+    &= \mathbb{E}_{\pi_\theta^{\mathcal{A}}}[\sum_{t=1}^{L}(1 - H(x_t)) \nabla \log \pi_\theta^{\mathcal{A}}(\tau)]\\
+    &= \frac{1}{N}\sum_{i=1}^{N}\sum_{t=1}^{L}(1 - H(x_t)) \nabla \log \pi_\theta^{\mathcal{A}}(\tau)\\
+\label{eqn:rew_app}
+\end{aligned}
+\end{equation}
+
+To maximize this expectation empirically we sample $e$ episodes from the environment, compute the gradient of the policy $\nabla\log\pi_{\theta}^{\mathcal{A}}(\tau)$ and then update the policy with a learning step $a$, $\theta' = \theta + \alpha\cdot\sum_{0}^{e}r(\tau)\nabla\log\pi_{\theta}^{\mathcal{A}}(\tau)$.
+After this process has converged through gradient ascent, and as the maximum in Eq. \ref{eqn:expectmarkov} is attained for $\sum_{i=1}^{N}\sum_{t=1}^{L}H(x_t) = 0$, the obtained policy $\pi_\theta^\mathcal{A}$ will correspond to the optimally evasive one $\mathcal{E}$.
+\end{proof}
+
+\textbf{[Proposition \ref{prop:two}]}
+We annotate terms with $\mathcal{D}$ when an active defense $\pi_\phi^{\mathcal{D}}$ is present, and with $\cancel{\mathcal{D}}$ otherwise.
+\begin{proof}
+\textbf{BAGS}.
+This attack is in effect a gradual interpolation from $x_g$ towards $x_c$, by first taking orthogonal steps $x_s$ on the hypersphere around $x_c$ and then source steps towards $x_c$ in order to minimize $d(x_c - x_b)$, where $x_b$ is the best adversarial example found so far.
+The source step parameter $\epsilon = (1.3 - \min(\lambda_n, 1)) \cdot c$ --- with $\lambda_n$ the ratio of the $n$ last queries $x_t$ that are adversarial and $c$ a positive constant --- controls the projection towards $x_c$:
+\begin{equation}
+    x_t = x_s + \epsilon \cdot (x_c - x_s)
+\label{eqn:source}
+\end{equation}
+
+Then if we again assume that a non-zero amount of the adversarial queries $x_t$ is flagged as such by the defense, it follows that $\lambda^{\cancel{\mathcal{D}}}_n > \lambda^\mathcal{D}_n$ and from the definition of $\epsilon$ we get $\epsilon^\mathcal{D} < \epsilon^{\cancel{\mathcal{D}}}$.
+At given $t$, from Eq. \eqref{eqn:source} we get that $d(x_c,x^\mathcal{D}_t) > d(x_c, x^{\cancel{\mathcal{D}}}_t)$, and ceteris paribus the expectation \eqref{eqn:rew} will be larger with $\pi_\phi^{\mathcal{D}}$ present than without.
+
+\textbf{HSJA}.
+We denote the queries during gradient estimation as $x_n = x_t + \delta u$, $u \sim Uniform_{Sphere}(d)$, the ratio of those $x_n$ detected as adversarial by the active defense as $\eta \in [0,1]$, and the estimate $\widetilde{\nabla S_{x_c}}(x_t,\delta)$ as $u_t$.
+We investigate the behavior of active defenses as the ratio of detections $\eta$ goes to 1.
+
+For $\eta = 1 \implies \mathbb{E}[\phi_{x_c}(x_n)] = -1$, and as $u_b$ are uniformly distributed, from Eq. \eqref{eqn:nabla} we get:
+\begin{equation}
+\begin{aligned}
+    \lim_{\eta\to1} u_t &= \lim_{\eta\to1} \frac{1}{B} \sum_{b=1}^{B} \phi_{x_c}(x_t + \delta u_b)u_b = \frac{1}{B} \sum_{b=1}^{B} -u_b
+\label{eqn:limit}
+\end{aligned}
+\end{equation}
+
+%Under no defense, $\eta = 0$
+%For large enough $B$, Eq. \eqref{eqn:limit} goes to 0.
+At the limit of detection we observe that the gradient estimate $u_t$ behaves like a uniformly drawn vector around $x_t$ of shrinking size.
+By the Law of Large Numbers, as $B$ increases the average direction of $u_t$ will align with the expected value: that is a random direction on the unit hypersphere.
+However, due to the $\frac{1}{B}$ term, the size of $u_t$ goes to 0.
+From Eq. \eqref{eqn:limit} then we get: $\lim_{\eta\to1} u_t = 0$.
+The gradient estimation step is followed by the ``jump'' step that computes $x_{t+1}$ as follows:
+\begin{equation}
+    x_{t+1} = x_t + \xi {u_t}
+\end{equation}
+
+As the ratio of detections $\eta$ approaches 1, we observe that the adversarial iterates $x_{t+1}$ converge prematurely: then all else being equal and for given $t$, $d(x_c,x^\mathcal{D}_t) > d(x_c, x^{\cancel{\mathcal{D}}}_t)$.
+
+\end{proof}
+
+\section{On States \& Rewards}
+\label{apx:rew}
+\textbf{[States]}. In POMDPs a single observation cannot constitute a Markovian state as typically there is some of dependence on the state history.
+Partial observability is handled by either using recurrent architectures for the policy and value networks, or by engineering a state that includes past information: in this work we opt for the later.
+
+For BAGS, the adversary uses an 8-dimensional state representation with the following information normalized in the range $[0,1]$ : current amount of queries $i$, average queries that are adversarial $a$, the initial gap $g$, the current gap $d$, the location $l = \frac{d}{g}$, the slope $s = m - l$ where $m$ is a moving average of the location, the frequency of improvement $f$, and $r$ which is a moving average of the perturbation reduction $n$, 
+In HSJA the state representation is slightly different: $r = \frac{n}{g}$, and $f = \frac{1}{j}$ with $j$ number of jump steps in last iteration.
+
+Regarding the defense, for HSJA (and to a lesser extent BAGS) it has been difficult to engineer a representative state for policies to effectively learn on.
+The knowledge of the attack internals and fundamentals, geometric properties and distances, model activations and logits, and any combination thereof, did not suffice.
+Ultimately we turned to pure computation to learn a state representation for the defensive agent.
+This representation is a 64-dimensional embedding of a CNN trained with triplet loss, on data generated by HSJA and benign queries, where the input is a tensor where the last query is subtracted from the 25 most recent adversarial queries and then stacked together.
+
+\textbf{[Rewards]}.
+
+The concrete definitions of the rewards for each type of agent are:
+
+\begin{itemize}[leftmargin=*]
+    \setlength\itemsep{0.5em}
+    \item BAGS adversary: with $x \in [1,50]$ the number of queries to a better adversarial example and $t$ the maximum queries: $\textbf{R1} = \frac{n\cdot x}{g} $ if $n > 0$ else 0 \text{\textbar} $\textbf{R2} = \frac{n}{g\cdot(x+1)} $ if $n > 0$ else 0 \text{\textbar} $\textbf{R3} = (1-\sqrt{\frac{d}{g}})^2 - (1-\sqrt{\frac{d+n}{g}})^2$ \text{\textbar} $\textbf{R4} = \sqrt{i} \cdot R2$ \text{\textbar} $\textbf{R5} = |\log(d/g)|$ if $i\geq t$ else 0 \text{\textbar} $\textbf{R6} = \sqrt[4]{i} \cdot a$ \text{\textbar} $\textbf{R7} = R4 + R6$.
+    \item HSJA adversary: with $e$ the gradient estimation steps: $\textbf{R1} = 2 \cdot n$ \text{\textbar} $\textbf{R2} = \frac{-e}{1000} + R1$ \text{\textbar} $\textbf{R3} = \frac{10\cdot n}{d} $ \text{\textbar} $\textbf{R4} = \frac{1}{d}$ \text{\textbar} $\textbf{R5} = \frac{2\cdot (g - d)}{g}$ if $i\geq t$ else 0 \text{\textbar} $\textbf{R6} = 2\cdot (0.5 - |\frac{a+1}{2} - 0.5|) + b$, where $b = \frac{j}{20}$ if $j<3$ else 0 \text{\textbar} $\textbf{R7} = R3 + R6$ | $\textbf{R8} = R5 + R6$.
+    \item BAGS defender: where $x_g$ is the starting sample, $x_t$ the last query, $x_b$ the best adversarial so far, $s_t$ the average step size between queries, $h \in [0,1]$ the last action of the defender, $z \in [0,1]$ the $\ell_2$ distance of $x_t$ and the last known adversarial query in embedding space, $x$: $\textbf{R1} = |\log(0.1 g + \lVert x_g, x_b \rVert _{\ell_2})| \cdot 0.1$ \text{\textbar} $\textbf{R2} = |\log_{10}s_t| $ \text{\textbar} $\textbf{R3} = \frac{g}{\lVert x_g, x_t \rVert}$ \text{\textbar} $\textbf{R4} = - \psi (x_t)$, where $\psi$ is Eq. \ref{eqn:psi} \text{\textbar} $\textbf{R5} = h - z$.
+    \item HSJA defender: where $x_{BS}$ are queries during the binary search: $\textbf{R1} = 1 - 2(\frac{\lVert x_g, x_b \rVert}{g})$ \text{\textbar} $\textbf{R2} = h - z$ \text{\textbar} $\textbf{R3} = R2 - 2\psi (x_{BS})$ \text{\textbar} $\textbf{R4} = - \lVert \psi(x_{BS}) \rVert$ \text{\textbar} $\textbf{R5} = R2$ if $\psi(x_t)$ else $2\cdot R2$.
+    \item For both BAGS and HSJA defenders, the aforementioned are the rewards when $x_t$ is adversarial; when it is benign, the reward is $R = 1 - h$ if the model responded correctly, otherwise $R = -1$.
+\end{itemize}
+
+\begin{table}[ht!]
+\centering
+\renewcommand*{\arraystretch}{1.05}
+\caption{Input Transformations.}
+\begin{tabular}{r|r|r}
+\toprule
+\textbf{Input Transformations} &\bf Magnitude &\bf Probability\\
+\midrule
+Brightness \& Contrast & 0 -- 0.5 & 0 -- 1\\
+Random Horizontal Flip & -- & 0 -- 1\\
+Random Vertical Flip & -- & 0 -- 1\\
+Sharpness & 0.8 -- 1.8 & 0 -- 1 \\
+Perspective & 0.25 -- 0.5 & 0 -- 1 \\
+Rotation & \textdegree 0 -- \textdegree 180 & 0 -- 1\\
+Uniform Pixel Scale & 0.8 -- 1.2 & 0 -- 1 \\
+Crop \& Resize & 0.6 -- 1 & 0 -- 1\\
+Translation & -0.2 -- 0.2 & 0 -- 1\\
+\bottomrule
+\end{tabular}
+\label{tbl:transforms}
+\end{table}
+
+% \section{Empirical vs. Adaptive Evasion}
+
+% So far our evaluations have focused on optimizing attack performance and evasiveness \emph{jointly}.
+% We are also interested in highlighting and measuring the potential of adaptively controlling the evasive actions \emph{without} controlling the attack parameters themselves, against our proposed defensive agents.
+% To compare how effective are adaptive evasive actions to the empirically defined ones, we evaluate them along with the approach of Chen et al. \cite{chen2020stateful}, configured as described in their work.
+% we keep everything else \textit{exactly} the same and the attacks themselves use their default, non-adaptive parameters: we want to isolate the effect of evasive actions alone.
+% Table \ref{tab:blind} compares the results between the empirical (yellow) and adaptive control (red) settings, and as we can observe our approach consistently outperforms the empirical definition of evasive transformations.
+% Additionally, we note that the evasive agents were trained \textbf{only} in the upper half of the table, that is against non adversarially trained models: notably, adaptively controlling evasive actions transfers to other models too.
+
+% \begin{table}[!ht]
+% %\small
+% \centering
+%   \caption{Performance comparison (in $l_2$ perturbation) between empirical input transformations (yellow scenarios) and the adaptive control of the same transformations (red scenarios) on CIFAR-10. Bottom half of the table is against adversarially trained models.}
+% %  \begin{tabular}{c|p{0.7cm}p{0.7cm}p{0.6cm}|p{0.7cm}p{0.7cm}p{0.7cm}}
+%   \begin{tabular}{c|rrr|rrr}
+%     \toprule
+%       \multirow{3}{*}{Scenario} & \multicolumn{6}{c}{\textbf{CIFAR-10 Gap: 20.01}} \\
+%       &
+%       \multicolumn{3}{c}{BAGS} &
+%       \multicolumn{3}{c}{HSJA}\\
+%       \cline{2-7}
+%     & {1K} & {2K} & {5K} & {1K} & {2K} & {5K}\\
+%       \toprule
+%     \raggedright\textbf{\textcolor{orange!70}{BA-VD}} & \cellcolor{t58!40} 8.66 & \cellcolor{t59!40} 8.44 & \cellcolor{t60!40} 8.24 & \cellcolor{t48!40} 10.55 & \cellcolor{t51!40} 9.93 & \cellcolor{t55!40} 9.29\\
+%     \raggedright\textbf{\textcolor{purple!70}{CA-VD}} & \cellcolor{t60!40} 8.18 & \cellcolor{t62!40} 7.92 & \cellcolor{t63!40} 7.63 & \cellcolor{t61!40} 8.14 & \cellcolor{t68!40} 6.76 & \cellcolor{t77!40} 5.04\\
+%     \cline{2-7}
+%     \raggedright\textbf{\textcolor{orange!70}{BA-TD}} & \cellcolor{t56!40} 8.96 & \cellcolor{t58!40} 8.70 & \cellcolor{t59!40} 8.44 & \cellcolor{t43!40} 11.62 & \cellcolor{t47!40} 10.85 & \cellcolor{t51!40} 10.09\\
+%     \raggedright\textbf{\textcolor{purple!70}{CA-TD}}  & \cellcolor{t58!40} 8.62 & \cellcolor{t60!40} 8.26 & \cellcolor{t62!40} 7.95 & \cellcolor{t46!40} 11.06 & \cellcolor{t49!40} 10.46 & \cellcolor{t52!40} 9.78\\
+%     \cline{2-7}
+%     \raggedright\textbf{\textcolor{orange!70}{BA-AD}} & \cellcolor{t17!40} 16.78 & \cellcolor{t20!40} 16.07 & \cellcolor{t26!40} 14.87 & \cellcolor{t48!40} 10.58 & \cellcolor{t51!40} 9.88 & \cellcolor{t55!40} 9.16\\
+%     \raggedright\textbf{\textcolor{purple!70}{CA-AD}}  & \cellcolor{t53!40} 9.72 & \cellcolor{t55!40} 9.30 & \cellcolor{t57!40} 8.91 & \cellcolor{t50!40} 10.22 & \cellcolor{t52!40} 9.73 & \cellcolor{t56!40} 9.10\\
+%     \midrule
+%     \raggedright\textbf{\textcolor{orange!70}{BA-VD}} & \cellcolor{t59!40} 8.47 & \cellcolor{t60!40} 8.26 & \cellcolor{t61!40} 8.05 & \cellcolor{t50!40} 10.21 & \cellcolor{t52!40} 9.76 & \cellcolor{t55!40} 9.33\\
+%     \raggedright\textbf{\textcolor{purple!70}{CA-VD}}  & \cellcolor{t64!40} 7.53 & \cellcolor{t66!40} 7.11 & \cellcolor{t68!40} 6.72 & \cellcolor{t52!40} 9.87 & \cellcolor{t56!40} 9.10 & \cellcolor{t62!40} 7.81\\
+%     \cline{2-7}
+%     \raggedright\textbf{\textcolor{orange!70}{BA-TD}}  & \cellcolor{t59!40} 8.40 & \cellcolor{t60!40} 8.21 & \cellcolor{t62!40} 7.95 & \cellcolor{t43!40} 11.58 & \cellcolor{t47!40} 10.88 & \cellcolor{t50!40} 10.13\\
+%     \raggedright\textbf{\textcolor{purple!70}{CA-TD}}  & \cellcolor{t50!40} 7.44 & \cellcolor{t68!40} 6.78 & \cellcolor{t71!40} 6.14 & \cellcolor{t43!40} 11.62 & \cellcolor{t48!40} 10.70 & \cellcolor{t51!40} 10.02\\
+%     \cline{2-7}
+%     \raggedright\textbf{\textcolor{orange!70}{BA-AD}}  & \cellcolor{t16!40} 16.97 & \cellcolor{t20!40} 16.13 & \cellcolor{t26!40} 15.02 & \cellcolor{t48!40} 10.67 & \cellcolor{t51!40} 10.00 & \cellcolor{t54!40} 9.43\\
+%     \raggedright\textbf{\textcolor{purple!70}{CA-AD}} & \cellcolor{t54!40} 9.34 & \cellcolor{t58!40} 8.66 & \cellcolor{t60!40} 8.34 & \cellcolor{t51!40} 10.08 & \cellcolor{t53!40} 9.62 & \cellcolor{t56!40} 9.07\\
+%     \bottomrule
+%   \end{tabular}
+%   \label{tab:blind}
+% \end{table}
+
+% \section{Additional Experiments}
+% Besides CIFAR-10, We followed the same evaluation protocol to assess all the scenarios mentioned in Section \ref{sec:evaluation} also on the MNIST dataset; the results are shown in Table \ref{tab:result1}.
+
+
+\subsection{Base Rate of Attacks}
+\label{baserate}
+
+In all the evaluations so far we use a fixed probability $P(adv)=0.5$ that an incoming query is adversarial.
+To assess how our adaptive stateful defenses (Scenarios 4 \& 6) perform in the complete absence of attacks, we evaluate them with $P(adv)=0$ \textit{without} retraining; the results are shown in Table~\ref{tbl:zero}.
+We observe a small reduction in the accuracy on clean samples that can be attributed to the considerably different base rate of adversarial and benign queries.
+Note however that as the probability of adversarial queries is an intrinsic property of each environment, if the base rate of attacks changes the defensive agents can be retrained to adjust to it.
+
+\begin{table}[h]
+\small
+\caption{Clean accuracy on CIFAR-10 for scenarios 4 \& 6, where $P(adv)$ denotes the probability that a query is part of an attack.}
+\centering
+\renewcommand*{\arraystretch}{1.05}
+\begin{tabular}{c|r|r|r|r|r|}
+\toprule
+\multirow{2}{*}{\parbox{1cm}{\centering Adv.\\Trained}} & \multirow{2}{*}{$P(adv)$} & \multirow{2}{*}{BAGS4} & \multirow{2}{*}{BAGS6} & \multirow{2}{*}{HSJA4} & \multirow{2}{*}{HSJA6} \\
+& & & & & \\
+\midrule
+\multirow{2}{*}{\xmark} & 0.5 & 91.55 & 91.38 & 91.59 & 91.62 \\
+& 0.0 & 90.91 & 90.95 & 90.48 & 90.86 \\
+\midrule
+\multirow{2}{*}{\cmark} & 0.5 & 87.61 & 87.50 & 87.58 & 87.68 \\
+& 0.0 & 87.02 & 87.11 & 86.70 & 86.98 \\
+\bottomrule
+\end{tabular}
+\label{tbl:zero}
+\end{table}
+
+\section{Models \& Hyperparameters}
+\label{apx:hyper}
+The image classification models we use are ResNet-20 for CIFAR-10 and a standard 2 convolutional / 2 fully-connected layer NN for MNIST.
+For adversarially training models, we follow the canonical approach as described in \cite{wang2019convergence}: the model is trained for 20 epochs, where the first 10 are trained normally and the last 10 on batches containing additional adversarial examples generated with 40 steps of PGD.
+For learning the similarity space, that is the metric space where defensive agents control the radius of interception around which a query is adversarial or not, we use a Siamese CNN.
+This network is trained with contrastive loss, where dissimilar examples are generated by adding Gaussian noise and performing evasive transformations on the input from the list in Table \ref{tbl:transforms}.
+%To learn the state representation for the defensive agents, we train a CNN with triplet loss on data generated by HSJA and random benign queries.
+%The training hyperparameters for the CNNs used in our work are shown in Table \ref{tbl:tcn}.
+For the PPO agents trained for each scenario, we use the open source library Stable-Baselines3 \footnote{https://github.com/DLR-RM/stable-baselines3}. Policies are parameterized by a two fully-connected layer NN; the hyperparameter search space is shown in Table \ref{tbl:agents}.
+
+\begin{table}[t!]
+\centering
+\renewcommand*{\arraystretch}{1.05}
+\caption{Hyperparameter space for the PPO agent.}
+\begin{tabular}{|r|r|r|}
+\toprule
+\textbf{Hyperparameter} &\bf BAGS &\bf HSJA\\
+\midrule
+learning rate & 3e-3 -- 1e-4 & 3e-3 -- 1e-4 \\
+episode steps & 600 -- 3000 & 1000 -- 5000 \\
+total steps & 1e5 -- 4e5 & 2e4 -- 2e5\\
+batch size & 32 -- 128 & 32 -- 64\\
+buffer & 2048 -- 2048 & 64 -- 1024 \\
+epochs & 20 -- 20 & 20 -- 20 \\
+gamma & 0.85 -- 0.99 & 0.9 -- 0.99\\
+\bottomrule
+\end{tabular}
+\label{tbl:agents}
+\end{table}
+
+\subsection{Blacklight \& OARS}
+
+For evaluating Blacklight \cite{li2022blacklight} and OARS \cite{feng2023stateful} we use their default hyperparameters without tuning them, as those are provided in the publicly available implementations.
+In particular, as OARS spends 200 extra queries per episode to adapt the proposal distribution, we add those to the evaluation budget.
+Additionally, as our defense is not rejection based, we replace the rejection decision with a non-adversarial one.
+
+%\begin{table*}[!t]
+%\centering
+%  \begin{tabular}{>{\centering}m{0.1\textwidth}|>{\centering}m{0.09\textwidth}|rr|rr|rr|rr}
+%    \toprule
+%      \multirow{3}{*}{Adv. Trained} & \multirow{3}{*}{Scenario} & \multicolumn{8}{c}{\textbf{CIFAR-10 Gap: 20.010}} \\
+%      & &
+%      \multicolumn{2}{c}{1K Queries} &
+%      \multicolumn{2}{c}{2K Queries} &
+%      \multicolumn{2}{c}{5K Queries} &
+%      \multicolumn{2}{c}{Benign Acc.} \\
+%      \cline{3-10}
+%      & & {BAGS} & {HSJA} & {BAGS} & {HSJA} & {BAGS} & {HSJA} & {BAGS} & {HSJA}\\
+%      \toprule
+%    \multirow{6}{*}{\xmark} & \raggedright\cellcolor{orange!25}\textbf{(0) BA-VD} & 8.675 & 10.552 & 8.436 & 9.932 & 8.240 & 9.293 & 91.69 & 91.68 \\
+%    & \raggedright\cellcolor{purple!25}\textbf{(0) CA-VD} & 8.180 & 8.136 & 7.924 & 6.764 & 7.632 & 5.045 & 91.68 & 91.70\\
+%    \cline{3-10}
+%    & \raggedright\cellcolor{orange!25}\textbf{(1) BA-TD} & 8.955 & 11.620 & 8.698 & 10.850 & 8.444 & 10.090 & 91.33 & 91.10\\
+%    & \raggedright\cellcolor{purple!25}\textbf{(1) CA-TD} & 8.620 & 11.060 & 8.259 & 10.456 & 7.948 & 9.782 & 91.53 & 91.25\\
+%    \cline{3-10}
+%    & \raggedright\cellcolor{orange!25}\textbf{(2) BA-AD} & 16.778 & 10.580 & 16.073 & 9.884 & 14.868 & 9.160 & 90.69 & 91.56 \\
+%    & \raggedright\cellcolor{purple!25}\textbf{(2) CA-AD} & 9.720 & 10.220 & 9.297 & 9.728 & 8.912 & 9.098 & 91.67 & 91.71 \\
+%    \midrule
+%    \multirow{6}{*}{\cmark} & \raggedright\cellcolor{orange!25}\textbf{(0) BA-VD} & 8.474 & 10.212 & 8.255 & 9.764 & 8.045 & 9.330 & 87.74 & 87.74 \\
+%    & \raggedright\cellcolor{purple!25}\textbf{(0) CA-VD} & 7.532 & 9.868 & 7.112 & 9.105 & 6.722 & 7.808 & 87.74 & 87.74 \\
+%    \cline{3-10}
+%    & \raggedright\cellcolor{orange!25}\textbf{(1) BA-TD} & 8.401 & 11.580 & 8.205 & 10.879 & 7.950 & 10.127 & 87.74 & 87.15 \\
+%    & \raggedright\cellcolor{purple!25}\textbf{(1) CA-TD} & 7.444 & 11.616 & 6.777 & 10.701 & 6.141 & 10.020 & 87.67 & 87.51 \\
+%    \cline{3-10}
+%    & \raggedright\cellcolor{orange!25}\textbf{(2) BA-AD} & 16.968 & 10.671 & 16.133 & 10.000 & 15.022 & 9.433 & 86.83 & 87.58 \\
+%    & \raggedright\cellcolor{purple!25}\textbf{(2) CA-AD} & 9.336 & 10.079 & 8.655 & 9.616 & 8.342 & 9.066 & 87.73 & 87.76 \\
+%    \bottomrule
+%  \end{tabular}
+%  \caption{Mean $l_2$ perturbation for 1K, 2K, and 5K queries on CIFAR-10. The evaluation compares the query blinding technique with empirically optimal parameters (yellow scenarios) against the adaptive control of the same transformations (red scenarios). Training the adaptive control took place only the upper half of the table, i.e. against non adversarially trained models: as we observe, this optimal control also outperforms empirical parameters when transferred to other models (lower half of the table).}
+%  \label{tab:blind}
+%\end{table*}
+
+% \begin{table*}[!ht]
+% \centering
+%   \caption{Mean $l_2$ perturbation for 1K, 2K, and 5K queries and accuracy on clean data for MNIST. The evaluation scenarios are identical to Tables~\ref{tab:result2} and~\ref{tab:result3}.}
+%   \begin{tabular}{c|c|rrrr|rrrr|rr}
+%     \toprule
+%       \multirow{3}{*}{\parbox{1cm}{\centering Adv.\\Trained}} & \multirow{3}{*}{Scenario} &
+%       \multicolumn{8}{c}{\textbf{MNIST Gap = 10.62}} \\
+%       & &
+%       \multicolumn{4}{c}{BAGS} &
+%       \multicolumn{4}{c}{HSJA} &
+%       \multicolumn{2}{c}{Clean Acc.} \\
+%       \cline{3-12}
+%       & & {1K} & {2K} & {5K} & {ASR} & {1K} & {2K} & {5K} & {ASR} & {BAGS} & {HSJA}  \\
+%       \toprule
+%     \multirow{14}{*}{\xmark} & \raggedright\textbf{\textcolor{orange!70}{0: VA-ND}} & 5.30 &  5.28 & 5.26 & \textcolor{t3!100}{\textbf{3\%}} & 3.59 & 3.07 & 2.61 & \textcolor{t73!100}{\textbf{73\%}} & 99.37 & 99.37\\
+%     & \raggedright\textbf{\textcolor{purple!70}{1: AA-ND}} & 2.74 & 2.57 & 2.47 & \textcolor{t78!100}{\textbf{78\%}} & 3.61 & 3.09 & 2.60 & \textcolor{t74!100}{\textbf{74\%}} & 99.37 & 99.37\\
+%     & \raggedright\textbf{\textcolor{teal!70}{2: VA-VD}} & 7.44 & 6.66 & 5.63 & \textcolor{t22!100}{\textbf{22\%}} & 5.82 & 5.78 & 5.73 & \textcolor{t2!100}{\textbf{2\%}} & 99.34 & 99.20\\
+%     & \raggedright\textbf{\textcolor{purple!70}{3: AA-VD}} & 3.79 & 3.66 & 3.44 & \textcolor{t29!100}{\textbf{29\%}} & 3.54 & 3.09 & 2.77 & \textcolor{t61!100}{\textbf{61\%}} & 99.37 & 99.31\\
+%     & \raggedright\textbf{\textcolor{teal!70}{4: VA-AD}} & 10.57 & 10.57 & 10.57 & \textcolor{t0!100}{\textbf{0\%}} & 10.05 & 10.05 & 10.05 & \textcolor{t0!100}{\textbf{0\%}} & 99.31 & 99.30 \\
+%     & \raggedright\textbf{\textcolor{purple!70}{5: AA-TD}} &  3.57 &  3.29 &  3.14 & \textcolor{t39!100}{\textbf{39\%}} & 5.00 &  3.97 &  3.38 & \textcolor{t36!100}{\textbf{36\%}} & 99.32 & 98.84 \\
+%     & \raggedright\textbf{\textcolor{teal!70}{6: TA-AD}} & 10.62 & 10.62 & 10.62 & \textcolor{t0!100}{\textbf{0\%}} & 10.23 & 10.23 & 10.18 & \textcolor{t0!100}{\textbf{0\%}} & 99.28 & 99.34\\
+%     & \raggedright\textbf{\textcolor{purple!70}{7: AA-AD}} &  4.89 &  4.89 &  4.86 & \textcolor{t8!100}{\textbf{8\%}} & 5.06 & 4.76 &  4.38 & \textcolor{t36!100}{\textbf{36\%}} & 99.31 & 99.35\\
+%     & \raggedright\textbf{\textcolor{teal!70}{8: AA-AD}} & 10.62 & 10.62 & 10.62 & \textcolor{t0!100}{\textbf{0\%}} &  10.21 &  10.21 &  10.21 & \textcolor{t0!100}{\textbf{0\%}} & 99.32 & 99.23\\
+%     \cline{2-12}
+%     & \raggedright\textbf{\textcolor{orange!70}{09: VA-BD}} & 10.62 & 10.62 & 10.62 & \textcolor{t0!100}{\textbf{0\%}} &  5.65 & 5.65 & 5.65 & \textcolor{t2!100}{\textbf{2\%}} & 99.37 & 99.37 \\
+%     & \raggedright\textbf{\textcolor{purple!70}{10: OA-BD}} & 10.62 & 10.62 & 10.62 & \textcolor{t0!100}{\textbf{0\%}} & 4.53 & 4.00 & 3.15 & \textcolor{t46!100}{\textbf{46\%}} & 99.37 & 99.37 \\
+%     & \raggedright\textbf{\textcolor{purple!70}{11: AA-BD}} & 3.83 & 3.69 & 3.60 & \textcolor{t17!100}{\textbf{17\%}} & 4.18 & 3.66 & 3.19 & \textcolor{t52!100}{\textbf{52\%}} & 99.37 & 99.37 \\
+%     & \raggedright\textbf{\textcolor{teal!70}{12: OA-TD}} & 10.62 & 10.62 & 10.62 & \textcolor{t0!100}{\textbf{0\%}} & 10.21 & 10.20 & 10.20 & \textcolor{t0!100}{\textbf{0\%}} & 99.22 & 99.28 \\
+%     & \raggedright\textbf{\textcolor{teal!70}{13: OA-AD}} & 10.62 & 10.62 & 10.62 & \textcolor{t0!100}{\textbf{0\%}} & 10.21 & 10.20 & 10.20 & \textcolor{t0!100}{\textbf{0\%}} & 99.32 & 99.28 \\
+%     \midrule
+%     \multirow{14}{*}{\cmark} & \raggedright\textbf{\textcolor{orange!70}{0: VA-ND}} &  5.26 &  5.25 &  5.24 & \textcolor{t2!100}{\textbf{2\%}} &  4.61 &  4.04 &  3.41 & \textcolor{t30!100}{\textbf{30\%}} & 99.15 & 99.15\\
+%     & \raggedright\textbf{\textcolor{purple!70}{1: AA-ND}} &  3.28 &  3.08 &  2.96 & \textcolor{t51!100}{\textbf{51\%}} &  4.59 &  3.97 &  3.35 & \textcolor{t34!100}{\textbf{34\%}} & 99.15 & 99.15\\
+%     & \raggedright\textbf{\textcolor{teal!70}{2: VA-VD}} &  7.70 &  6.86 &  5.86 & \textcolor{t17!100}{\textbf{17\%}} &  5.81 &  5.78 &  5.76 & \textcolor{t2!100}{\textbf{2\%}} & 99.14 & 99.12\\
+%     & \raggedright\textbf{\textcolor{purple!70}{3 AA-VD}} &  4.18 &  4.08 &  3.86 & \textcolor{t22!100}{\textbf{22\%}} &  4.63 &  4.27 &  3.86 & \textcolor{t25!100}{\textbf{25\%}} & 99.13 & 99.15 \\
+%     & \raggedright\textbf{\textcolor{teal!70}{4: VA-AD}} & 10.55 & 10.55 & 10.55 & \textcolor{t0!100}{\textbf{0\%}} & 10.02 & 10.02 & 10.02 & \textcolor{t0!100}{\textbf{0\%}} & 99.09 & 99.08\\
+%     & \raggedright\textbf{\textcolor{purple!70}{5: AA-TD}} &  4.04 &  3.74 &  3.54 & \textcolor{t27!100}{\textbf{27\%}} &  5.82 &  5.09 &  4.26 & \textcolor{t16!100}{\textbf{16\%}} & 99.11 & 98.78 \\
+%     & \raggedright\textbf{\textcolor{teal!70}{6: TA-AD}} & 10.62 & 10.62 & 10.62 & \textcolor{t0!100}{\textbf{0\%}} & 10.20 & 10.20 & 10.20 & \textcolor{t0!100}{\textbf{0\%}} & 99.06 & 99.06\\
+%     & \raggedright\textbf{\textcolor{purple!70}{7: AA-AD}} &  5.59 &  5.56 &  5.56 & \textcolor{t5!100}{\textbf{5\%}} &  5.47 &  5.16 &  4.99 & \textcolor{t14!100}{\textbf{14\%}} & 99.09 & 99.13\\
+%     & \raggedright\textbf{\textcolor{teal!70}{8: AA-AD}} & 10.62 & 10.62 & 10.62 & \textcolor{t0!100}{\textbf{0\%}} & 10.12 & 10.12 & 10.12 & \textcolor{t0!100}{\textbf{0\%}} & 99.10 & 99.01 \\
+%     \cline{2-12}
+%     & \raggedright\textbf{\textcolor{orange!70}{09: VA-BD}} & 10.62 & 10.62 & 10.62 & \textcolor{t0!100}{\textbf{0\%}} & 5.65 & 5.64 & 5.64 & \textcolor{t1!100}{\textbf{1\%}} & 99.15 & 99.15\\
+%     & \raggedright\textbf{\textcolor{purple!70}{10: OA-BD}} & 10.62 & 10.62 & 10.62 & \textcolor{t0!100}{\textbf{0\%}} & 5.18 & 4.80 & 4.11 & \textcolor{t17!100}{\textbf{17\%}} & 99.15 & 99.15 \\
+%     & \raggedright\textbf{\textcolor{purple!70}{11: AA-BD}} & 4.31 & 4.07 & 3.96 & \textcolor{t13!100}{\textbf{13\%}} & 5.04 & 4.65 & 4.20 & \textcolor{t19!100}{\textbf{19\%}} & 99.15 & 99.15 \\
+%     & \raggedright\textbf{\textcolor{teal!70}{12: OA-TD}} & 10.62 & 10.62 & 10.62 & \textcolor{t0!100}{\textbf{0\%}} & 10.26 & 10.26 & 10.26 & \textcolor{t0!100}{\textbf{0\%}} & 99.00 & 99.06\\
+%     & \raggedright\textbf{\textcolor{teal!70}{13: OA-AD}} & 10.62 & 10.62 & 10.62 & \textcolor{t0!100}{\textbf{0\%}} & 10.26 & 10.26 & 10.26 & \textcolor{t0!100}{\textbf{0\%}} & 99.10 & 99.06 \\
+%     \bottomrule
+%   \end{tabular}
+%   \label{tab:result1}
+% \end{table*}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Keep the following \cleardoublepage at the end of this file, 
+% otherwise \includeonly includes empty pages.
+\cleardoublepage
+
+% vim: tw=70 nocindent expandtab foldmethod=marker foldmarker={{{}{,}{}}}

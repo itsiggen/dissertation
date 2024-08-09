@@ -9,13 +9,13 @@ Moreover, while these advances are remarkable from multiple perspectives like th
 
 It is still commonplace for \gls{AI} models to be trained and deployed with minimal consideration for their resilience against adversarial attacks.
 Inherently adversarial contexts, like cybersecurity, exacerbate the generalization challenges these models already face by causing worst-case scenarios and distribution shifts, while facing many threats beyond model evasion.
-The main contribution of this dissertation is the methodological investigation and evaluation of the robustness of AI models which expose an interface to the real world, in a wide range of contexts and modalities: from web automation and adversarial malware, to the archetypal testbed of \gls{AML}, image classification.
+The main contributions of this dissertation are on the methodological investigation and evaluation of the robustness of AI models which expose an interface to the real world, in a wide range of domains and modalities: from web automation and adversarial malware, to the archetypal testbed of \gls{AML}, image classification.
 Throughout our work, we provide several important takeaways and insights.
-As \gls{AI} capabilities keep improving, the competition between automation or imitation and their detection will eventually favor the first, even when the internals of detection are unknown.
-Secondly, that the promise of generalization beyond the training set is often false and even concealed by the performance on clean, non-adversarial test sets.
+First, that as \gls{AI} capabilities keep improving, the competition between automation or imitation and their detection will eventually favor the first, even when the internals of detection are unknown.
+Secondly, that the promise of generalization beyond the training set often false and misrepresented by the performance on clean, non-adversarial test sets.
 This underlines the importance of adversarial training, as a process of identification and removal of spurious correlations and brittle features that adversaries can exploit for evasion.
 Finally, in certain domains adaptive adversaries can bypass model hardening defenses like adversarial training, and both active and adaptive defenses are necessitated.
-Resilience in cybersecurity is therefore achieved by optimizing and adapting attacks, a prerequisite for uncovering their full potential, in order to learn effective counters and policies for adaptive defenses.
+Resilience in cybersecurity is therefore achieved by fully optimized adaptive attacks, prerequisites for uncovering their full potential, in order to find counterfactuals to harden the model with as well as learn effective counters through adaptive defenses.
 
 The growing integration of \gls{AI} in the decision-making process of various systems introduces substantial security risks, particularly when these systems can be interfaced with.
 A recurring principle in this dissertation is that having such an interface exposed, one that can be queried or interacted with, suffices for attackers to exploit the underlying model in various ways.
@@ -24,17 +24,17 @@ However, as we gradually transition parts of our decision-making to AI, addition
 As the environments these AI models operate in form closed loops with their users, we do not only train and impart capabilities to these \gls{AI} models by generating data ourselves, we ourselves are also trained in turn.
 That is to say in the future we will have to reckon not only with adversarial attacks against \gls{AI}, but also with the adversarial use of \gls{AI} against people, from something seemingly innocuous like engagement optimization to the brazenly antisocial like mass misinformation campaigns.
 
-In this dissertation we demonstrate how effective adversarial attacks can be even when they assume nothing of the underlying decision-making process; in an increasingly adversarial landscape, for robust and trustworthy \gls{AI} it does not suffice to have models resilient to attacks through adversarial training, adaptive defense mechanisms, and alignment.
+In this dissertation we demonstrate how effective adversarial attacks can be even when they assume nothing about the underlying decision-making process; in an increasingly adversarial landscape, for robust and trustworthy \gls{AI} it does not suffice to have models resilient to attacks through adversarial training, adaptive defense mechanisms, and alignment.
 Beyond AI security lies AI safety, where the concern is not merely protecting these systems from adversaries, but with ensuring that they do not function as adversaries themselves and that their decisions align with ethical principles and societal values; naturally one should ask whose principles and values precisely.
 Currently, this means of the companies that create these models and their willingness to stay within  regulatory frameworks.
-The risks are further aggravated by the lack of consistent interpretation and explainability of \gls{AI} decisions, something that obscures our understanding and their accountability by making difficult to challenge or rectify erroneous or biased outcomes.
-We also need, as researchers and citizens, to reflect on what our own reward mechanisms are and how these can be misaligned or manipulated.
-As our personal data is prerequisite for all the extraordinary capabilities of contemporary \gls{AI}, perhaps then and to mitigate risks, instead of removing them from circulation it would be preferable to properly democratize the results: the models and their capabilities to be open and public, and with complete public oversight over their decision-making.
+The risks are further aggravated by the lack of explainability and consistent interpretation of the decisions, even with \gls{XAI}, something that obscures our understanding and their accountability by making difficult to challenge or rectify erroneous or biased outcomes.
+As researchers and citizens, we also have to reflect on what our own reward mechanisms are and how these can be misaligned or manipulated.
+As our own data, skills, and what makes us human are prerequisites for all the extraordinary capabilities of contemporary \gls{AI}, perhaps then and to mitigate risks, instead of removing them from circulation it would be preferable to properly democratize the results: the models and their capabilities to be open and public, and with complete public oversight over their decision-making.
 
 \section{Summary of Contributions}
-This dissertation is composed by a comprehensive examination of the vulnerabilities inherent in black-box systems that employ some form of AI-based decision-making.
-Specifically, we investigate CAPTCHA services to tell humans and bots apart, dynamic analysis based malware detection and how to harden it against evasion, and more generally adaptive attacks and defenses and the competitive game they form.
-In these three distinct yet interconnected domains, we reveal the idiosyncrasies and complexities of the interactions between attacks and defense mechanisms.
+This dissertation is composed by a comprehensive examination of the vulnerabilities inherent in black-box, AI-based systems.
+Specifically, we investigate the most widely adopted CAPTCHA service that tells humans and bots apart, dynamic analysis based malware detection and how to harden it against evasion, and more generally adaptive attacks and defenses in the competitive game they form.
+In these three distinct yet interconnected domains, we reveal the particularities and complexities of the interactions between attacks and defense mechanisms, with the goal to make the underlying models function according to their specification.
 
 Our investigation into the Google reCAPTCHA v3 service highlighted its susceptibility to adversarial attacks, where the web broswing automation framework we developed reaches an evasion rate up to 99.6\%.
 Through our study we underscore that while bot detection which differentiate humans from bots through continuous behaviometric evaluation is an indispensable tool, it inadvertently creates the conditions of its own obsolescence.
@@ -55,58 +55,72 @@ We demonstrate that active defenses, which control how the system responds, are 
 to model hardening when facing decision-based attacks; then how these defenses can be circumvented by adaptive attacks, only to finally elicit active and adaptive defenses.
 Most importantly, through our AMG framework we simplify the complex task of learning in cybersecurity environments with multiple adversaries by modeling competing agency as part of the environment; in this way we allow the computation of optimal defensive strategies with single agent \gls{RL}.
 
-In general, our studies provide critical insights for robust and trustworthy \gls{AI} as the arms race between attackers and defenders is constantly evolving.
-The threat that adaptive adversaries pose, even with minimal assumptions on their side, and the vulnerabilities exposed through our work point to a common and central theme—-- robust learning and inference can only be achieved through optimal attacks first, and active and adaptive defense mechanisms afterwards.
+As a body of work, our research provides critical insights for robust and trustworthy \gls{AI} as the arms race between attackers and defenders is constantly evolving.
+The threat that adaptive adversaries pose, even with minimal assumptions on their side, and the vulnerabilities exposed through our work point to a common and central theme -- robust learning and inference can only be achieved through optimal and adaptive attacks first, and active and adaptive defense mechanisms afterwards.
 In reCAPTCHA v3 for instance, continuous behaviometric evaluation would require constant adaptation to counteract any automation that evades detection.
-With AutoRobust we demonstrate that \gls{RL} can change increase the robustness of ML-based malware detection systems by identifying and mitigating exploitable features from near zero to complete.
+With AutoRobust we demonstrate that we can increase the robustness of ML-based malware detection systems from near zero to complete, by identifying and mitigating exploitable features.
 Finally, our AMG framework provides a methodology for understanding and countering decision-based attacks,  and what the latter entail: a landscape of ever-evolving adaptive adversaries.
 
 Finally, a lot of researchers have pointed to the fact that adversarial attacks, at least the way the are performed so far, largely remain an academic exercise and do not reflect realistic scenarios~\cite{apruzzese2023real}.
-Yet as we have consistently shown throughout or work, adaptive attackers pose a considerable threat against real-world AI-based systems: the moment these are deployed serious vulnerabilities are inadvertently introduced.
-Our evidence is not limited to a handful of empirical results, as in every case we perform a rigorous theoretical analysis that confirms and indicates that our findings are no aberrations.
-As we have demonstrated with AutoRobust however, in the case of antivirus systems their underlying models can be both exceedingly vulnerable to adversaries \textit{and} effectively rectified to correctly detect adversarial malware.
-Collaborative efforts between academia and industry will be crucial in ensuring robust \gls{AI} systems as adversarial threats will continue to proliferate.
-In this dissertation, and besides the individual practical results, we provide a critical foundation for understanding and addressing these vulnerabilities by assembling insights from diverse domains, and pave the way for developing more resilient and trustworthy learning and inference.
+Yet as we have consistently shown throughout or work, adaptive attackers pose a considerable threat against real-world AI-based systems, and the moment these systems are deployed serious vulnerabilities are inadvertently introduced.
+Our evidence is not limited to a handful of empirical results, as in every case we perform a rigorous theoretical analysis that indicates and confirms that our findings are no aberrations.
+Nevertheless, as we have demonstrated with AutoRobust, in the case of antivirus systems their underlying models can be both exceedingly vulnerable to adversaries \textit{and} effectively rectified to correctly detect adversarial malware.
+Collaborative efforts between academia and industry will be crucial in ensuring the deployment of robust \gls{AI} systems as adversarial threats will continue to proliferate.
+In this dissertation, and besides the individual practical results, we provide a foundation for understanding and addressing these vulnerabilities by assembling insights from diverse domains, and pave the way for developing more resilient and trustworthy learning and inference.
 
 \section{The Road Ahead}
 
-Our work opens many promising paths for future research.
-Beyond the three specific contexts we investigated, our research converges around these themes: more sophisticated agent training, enhancing and combining defense mechanisms, and expanding to other application domains.
-For example, AutoRobust can incorporate any other functionality-preserving technique for generating adversarial malware in the problem space, and is easily extensible to other contexts.
-Dynamic analysis based malware detection can further benefit from character-level modification policies of the reports, by leveraging large language models (LLMs) to adapt and generate adversarial reports through classifier feedback.
-With our AMG framework, we can learn optimal offensive and defensive policies beyond image classification models, as our adversarial policy gradient theorem indicates that any combination of adversarial goals, be it performance, stealthiness, or disruption, can be optimized in a gradient based manner, even in the complete black-box case and in any modality.
-Furthermore, in our work we have always modeled the opponent as part of the environment; this is often a necessary simplification that allows effective defensive policies to be learned.
-Depending on the domain and the sophistication of its prevalent threats, future studies can incorporate explicit opponent modeling.
+Through our work we open multiple promising paths for future research.
+Beyond the three concrete domains we investigated, our research opens several other lines of inquiry: a) training more sophisticated agents with expanded and more general capabilities, b) enhancing and combining both static (hardening) and adaptive (misdirection) defense mechanism, and c) expanding to other domains where, due to the problem-feature space gap, problem space adversarial attacks are relatively unexplored.
 
-The rapid progress in \gls{AI} together with its hurried adoption the has ushered in an era where the potential benefits and risks are both considerable.
+Specifically, AutoRobust can incorporate any other functionality-preserving capabilities for generating adversarial malware in the problem space, that a growing range of related work is exploring~\cite{demetrio2021functionality, demetrio2021adversarial, labaca2021realizable, labaca2021aimed}.
+Furthermore, as we showed in both the AutoRobust and AMG chapters, any combination of adversarial goals, be it performance, stealthiness, or disruption, can be optimized in a gradient based manner, even in the complete black-box case and in any modality.
+This makes our approach easily extensible to a wide range of contexts where adversarial attacks are tpyically counfounded by both lack of access to the model and the non-invertibility of perturbations back to the problem space.
+Such examples include LLMs, autonomous vehicles, spam and network intrusion detection, and any other environment that contains observable agentic behavior.
+
+Furthermore, with AutoRobust we bring to light a crucial and commonplace limitation when AI models are naively trained without respect to adversarial agency; namely that they can be exceedingly vulnerable to adversarial examples and spurious correlations.
+As we have demonstrated in this work however, it is very feasible to mitigate these threats by hardening the model with realistic adversaries.
+In dynamic analysis report based malware detection specifically, future work can explore more potent modification policies that are able to adjust reports at the character level.
+This can be done by leveraging modern LLMs to learn the intrinsic structure of reports and subsequently adapt the generation policy based on direct feedback from classifier under attack.
+
+Finally, throught our research we have always modeled the opponent as part of the environment; this is often a necessary simplification that renders the environment stationary and in that way stabilizing the learning of policies.
+Depending on the domain and the sophistication of its prevalent threats, future studies can incorporate explicit opponent modeling and recursive reasoning where agents hold beliefs about each other.
+In the study of opponent modeling, considering other agent policies as stationary and part of the environment is equivalent to \textit{0th} level recursive reasoning:
+the agent models how the opponent behaves based on the observed history, but \emph{not} how the opponent \emph{would} behave based on how the agent behaves~\cite{albrecht2018autonomous, wen2019probabilistic}.
+Intrinsically adversarial environments, like cybersecurity and games, show the highest potential to benefit from explicit opponent modelling.
+
+\section{Concluding Remarks}
+
+The rapid progress in \gls{AI} together with its quick adoption the has ushered in an era where the potential benefits and risks are both considerable.
 LLMs and foundation models in general exhibit a multitude of impressive capabilities, however they also arrive with a host of issues: they are susceptible to prompt injection to produce unsafe content, can sometimes provide incorrect, misleading, offensive, or biased information, can be used to generate malware or phishing emails, and put at risk livelihood of multiple creative occupations.
 Despite continuous efforts to snuff out their failure modes, LLMs remain exceedingly vulnerable.
-As we trace out in this dissertation, a good indication of the level of maturity and reliability of defenses is the level of sophistication of the employed attacks.
-At the time of writing, attacks against LLMs employ predominantly brute force and ad hoc techniques, indicating that it still is a very promising and unexplored field, but also that we do not have a principled understanding yet on the severity and range of vulnerabilities.
+As we trace out in this dissertation, a good indication of the level of maturity and reliability of defenses is the level of sophistication and optimality of the employed attacks.
+At the time of writing, attacks against LLMs employ predominantly brute force and ad hoc techniques, indicating that it still is a very promising and unexplored field, but also that we do not have yet a principled understanding on the severity and range of vulnerabilities.
 
 Regarding \gls{AI} safety, the most widely employed technique so far is \gls{AI} alignment, the process of ensuring that the goals and behavior of \gls{AI} are consistent with human values and adhere to ethical constraints.
-Attempting to instill ethical behavior to models when they still cannot perform any form of actual reasoning but only simulate it, often conflicts with the statistical correlations and biases present in their training data.
+Attempting to instill ethical behavior to models when they still cannot perform any form of actual reasoning but so far only simulate it, often conflicts with the statistical correlations and biases present in their training data.
 But even if that was considered solved, the task of aligning AI to human values is confounded by the inherent limitations and fallibility of human reasoning itself.
 The specification problem is central to this endeavor: instilling the behavior we desire to \gls{AI} through specifying its goals and objectives.
-Designing reward functions, learning from human behavior through \gls{IRL}, and ambitious value learning, are some approaches to that end, which aims to capture the essence of what we care about and then to optimize it beyond our performance limitations.
-But just like humans do, AI systems can exhibit behavior that, while formally compliant with the specification, deviate from the intended goals. 
+Designing reward functions, learning from human behavior through \gls{IRL}, and ambitious value learning, are some approaches to that end, which aim to capture the essence of what we as humans care about to then be optimized beyond our performance limitations.
+But just like we do, AI systems can exhibit behavior that, while formally compliant with the specification, deviate from the intended goals. 
 
 Alignment to human values faces multiple challenges.
 First, there is no consensus on which these values are.
 Secondly, values are in flux and shaped by our environment.
-Finally, often values themselves are often replaced by reward or penalty schemes, for instance emissions taxes.
+Finally, values themselves are often replaced by reward or penalty schemes, for instance emissions taxes.
 We are still not very good at solving our own long term problems as this requires cooperation in a vastly decentralized and competitive world.
-The safety landscape of \gls{AI} is further complicated by the malleability of human values and our inability to interpret how systems interact at scale.
-Consider how entities like Google and OpenAI changed over time, the two most promiment pillars of \gls{AI} research and development today.
-Google went from search engines and knowledge retrieval to an ad serving company; OpenAI from non-profit and having an explicit mission to democratize \gls{AI} to for-profit and having everything closed-source.
-This dynamic underscores the risk of AI systems becoming tools that perpetuate and amplify misalignments already existing between economic incentives and societal goals.
-The promise and hopeful outcome is that, down the line, \gls{AGI} greatly improves on our performance while conforming to our values; a conceivable outcome is that it outperforms us, but on goals that are already misaligned.
+The safety landscape of \gls{AI} is further complicated by this malleability in human values and our inability to understand and interpret how systems interact at scale.
+Consider how entities like Google and OpenAI changed over time, arguably the two most promiment organisations for \gls{AI} research and development today.
+Google's fiduciary responsibility transitioned from search engines and knowledge retrieval to ad services; OpenAI transitioned from a non-profit company with an explicit mission to democratize \gls{AI} to a for-profit with closed-source models.
+This tendency underscores the risk of AI systems becoming tools that perpetuate and amplify misalignments already existing between economic incentives and societal goals.
+The promise and hopeful outcome is that, down the line, \gls{AGI} greatly improves on our capabilities while conforming to our values; a conceivable outcome is that it will outperform us indeed, but on goals that are slightly to catastrophically misaligned.
 
 In conclusion, while the existential risks from AI might be exaggerated, they might also be completely off the mark, at least in terms of urgency.
-In our collective imagination the most prominent \gls{AI} misalignment example might be an AI takeover and subsequent annihilation of humanity; in practice, such misalignments already manifest as loss of collective agency and ability to steer ourselves, as we gradually transition towards black-box, unaccountable \gls{AI} decision-making that is subtle and pervasive, from the books and news articles to the ads and ideas we are recommended.
-In this dissertation we provided a comprehensive investigation of how to secure and ensure the correct reasoning of black-box \gls{AI} systems.
-Besides their failure modes however, as responsible researchers we have to understand the short and long term consequences as we continue to integrate AI into various facets of life.
-Through alignment techniques and critical reflection on how these systems affect us, we can also secure and ensure that their influence and impact will be beneficial.
+In our collective imagination the most prominent misalignment example might be an \gls{AI} takeover and subsequent annihilation of humanity.
+In practice, such misalignments already manifest as loss of collective agency and ability to steer ourselves and our environments, as we gradually transition towards black-box, unaccountable \gls{AI} decision-making that remains obscure yet pervasive, from the books and news articles to the ads and ideas that we are recommended.
+In this dissertation we provided a comprehensive investigation of how to secure and ensure the correct functioning of black-box \gls{AI} systems.
+Besides the immediate failure modes however, as responsible researchers we have to understand and investigate the short and long term consequences of integrating \gls{AI} into various facets of life.
+By using alignment techniques and through a critical reflection on how these systems affect us, we can also secure and ensure that their influence and impact will be beneficial.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Keep the following \cleardoublepage at the end of this file, 

@@ -8,38 +8,50 @@
 Alan Turing's seminal 1950 paper ``Computing Machinery and Intelligence'' opens with a simple question: can machines think?
 74 years later, a rigorous and formal definition of thinking, and intelligence in general, is still eluding us.
 Reasoning, creativity, pattern recognition, problem solving, generalization, planning, optimization; while intelligence accepts a multitude of broad and imprecise definitions, when asked what are the definitive aspects of intelligence, ironically we cannot but self-referentially point to ourselves.
+Furthermore, the advent of generative AI with its capability to model linguistic, reasoning, and creative capacities all the more closely, blurs the line even further between ``real'' and ``artificial'' intelligence, between the original and the simulacrum; could it be mere computation that goes on in our brains?
+Besides the philosophical line of inquiry, there is immense -- and lucrative -- promise of \gls{AI} towards automating both menial and creative human activities \cite{benjamin1935work}, yet the hurried and uncritical adoption of \gls{AI} solutions contains considerable risks.
 
-The advent of generative AI with its capability to model linguistic, reasoning, and creative capacities all the more closely, blurs the line even further between ``real'' and ``artificial'' intelligence, between the original and the simulacrum; could it be merely computation that goes on in our brains? 
-Besides the philosophical line of inquiry, there is immense --- and lucrative --- promise of generative AI towards automating both menial and creative human activities \cite{benjamin1935work}.
-While generative AI tools proliferate, the sole methodology able to demarcate humans and machines originates still from that 74 year old paper: the Turing Test.
-Also known as the imitation game, today it is an inadequate approach as the burgeoning \gls{AI} capabilities are rapidly phasing it out of relevance.
+Today, a wide range of systems employ \gls{AI} to detect, classify, or infer on data, a range that will only keep expanding.
+Approached generally, these systems perform some form of decision-making in the enviroments they reside: based on their observed inputs, they produce a range of outputs that are directly or indirectly communicated back to the user.
+Without being exhaustive, such AI-enabled systems include malware, bot, fraud, and intrusion detection, facial recognition, credit scoring, autonomous vehicles, image classification, and more recently any system powered by LLMs: from code generation to customer service.
+No matter how statistically prevalent, all of these environments contain adversaries.
+Therefore, for systems that expose public interfaces a false sense of security can be disastrous, as multiple threats can induce erroneous decisions and prevent the \gls{AI} models from behaving according to their specification.
+One such threat is the thriving and of increasing sophistication bot activity online.
+Such automation is often powered by AI, while the sole methodology for demarcating humans and machines still originates from that 74 year old paper, the Turing Test.
+Also known as the imitation game, Turing tests have been widely deployed online as Captchas to hinder bots and automation.
+Yet the Turing test is no longer an adequate approach, as the burgeoning \gls{AI} capabilities are rapidly phasing it out of relevance.
 
-Turing tests have materialized in the form of CAPTCHAs, that is Completely Automated Public Turing test to tell Computers and Humans Apart, and have been widely deployed to stave of the proliferation of bots and automation on the web.
-CAPTHCAs are just one example of systems deployed on the web that use \gls{AI} to detect, classify, or infer on data, and that are currently under threat.
-Approached more generally, these systems perform some form of decision-making, based on their observed inputs, and produce a range of outputs that in some form or another are communicated back to the user.
-Without being exhaustive, such AI-enabled systems include malware, bot, fraud, and intrusion detection, facial recognition, credit scoring, autonomous vehicles, image classification, and more recently any system powered by LLMs: from customer assistance to code completion.
-This dissertation is composed by an investigation of adversarial attacks and defenses on three of those categories that span diverse contexts and modalities; specifically bot detection, malware detection, and image classification, the archetypal playground of \gls{AML}.
+% Captcha is just one type of AI-based system that faces adversarial threats.
+In this dissertation we explore the security and correct functioning of AI-based systems under attack, one of them being Google reCAPTCHA.
+Concretely, we scope on decision-based evasion attacks, a pervasive type of threat that these systems face when exposed to the real-world, and explore potential defenses and mitigations.
+In an ever-changing landscape of threats and mitigations, adversaries as well as defenses have to constantly adapt to stay at the top of their game.
+The systems we investigate are situated in three distinct domains that also represent diverse modalities: bot detection, malware detection, and image classification.
+While image classification might initially appear a less relevant domain for cybersecurity, and in some regards it is, it still is the domain where all foundational \gls{AML} research is performed.
+In the sections that follow, we introduce the aforementioned attacks and defenses in each domain we investigate, as well as what actually means to be ``adaptive''.
 
 \section{Adaptive Attacks and Defenses}
 
-The environments that the aforementioned systems are part of are typically adversarial.
-This indicates that besides the existing threats only at the implementation level, they have to reckon with threats also at the logical level, specifically on the information that their \gls{AI} modules process as inputs.
-Even when these systems decisions' are not directly divulged to the user, like in the case of reCAPTCHA v3, they inadvertently constitute feedback; if additionally these systems can be consistently queried, a feedback loop is created that adversaries can use to \textit{adaptively} control their attacks.
-Defenses on the other hand have been consistently ineffective or bypassed, something that gave rise to a methodological shift in the robustness literature: no defensive results are reliable unless the evaluation is performed with \textit{adaptive} attackers.
+Networked systems have historically been vulnerable to multiple types of attacks, from DDoS and malware to spoofing and packet sniffing.
+It comes as no suprise then that the environments modern AI-based systems inhabit are inherently adversarial.
+One key difference however is that, besides the threats existing at various communication (\gls{OSI}) layers, they now have to additionally reckon with threats at the logical level, specifically through the information that their \gls{AI} models process as inputs.
+Even when the models' decisions are not directly divulged to the user, like in the case of reCAPTCHA v3, they inadvertently constitute feedback.
+If additionally these systems can be consistently queried, a feedback loop is created that adversaries can use to \textit{adaptively} control their attacks~\cite{astrom1995adaptive}.
+Defenses on the other hand have been consistently ineffective or bypassed, something that gave rise to a methodological shift in the robustness literature: no defensive results are reliable unless the evaluation is performed with \textit{adaptive} attackers~\cite{madry2017towards}.
 Note the dual use of adaptive here; in \gls{AML}, “adaptive” by convention refers to attacks with full knowledge of how a defense works and the tools to bypass it.
 In this dissertation, we expand the term to include adaptive control, defined as the ability of a system to self-adapt: automatically reconfigure and optimize itself in response to feedback received from the environment.
 In all the three domains we investigate, we discover that adaptive adversaries, in the comprehensive sense we introduce, pose a much higher threat than their non-adaptive versions do.
 
 Defensive \gls{AML} research is often confounded by a clear conflict of interest, namely how much effort is made in adapting and optimizing any attacks employed.
 Furthermore, it often happens that attacks and their parameters are suboptimal out-of-the-box when applied in different environments~\cite{croce2020reliable}.
-Finally, adversaries might apply evasive actions on the the input -- for instance transformations the model is invariant to -- with the goal to bypass existing defenses; as the performance and evasiveness of an attack are typically in a natural trade-off, these are non-trivial to combine.
-For the three aforementioned reasons we discover that, unless attacks are performed in a \textit{fully} adaptive manner, the empirical results are unreliable and incomplete.
-For a thorough and representative evaluation of robustness then, the first step is to turn adaptive any attacks employed.
+Finally, adversaries might apply evasive actions on the the input -- for instance transformations the model is invariant to -- with the goal to bypass active defenses~\cite{chen2020stateful,li2022blacklight}.
+As the performance of an attack and how evasive it is to detection are two properties in trade-off, they are non-trivial to combine.
+For the three aforementioned reasons we discover that, unless attacks are performed in a \textit{fully} adaptive manner, any results on the empirical robustness are unreliable and incomplete.
+For a thorough and representative evaluation then, the first step is to turn adaptive any attacks employed.
 
 The second step is to ask if the same can be done for defenses.
 The state-of-practice and most widely used defense, irrespective of domain or modality, is adversarial training.
 Adversarial training constitutes a counterfactual investigation on the inputs of the model, and before or during the training of a model it asks the following question: what are all the \textit{valid} ways that something could be different, and still be the \textit{same} thing.
-Perceived differently, adversarial training is a deliberate out-of-distribution investigation, under the specific structural and variational constraints that have to be respected and are not shared between domains.
+Perceived differently, adversarial training is a deliberate \gls{OOD} investigation, under the specific structural and variational constraints that have to be respected and are not shared between domains.
 Adversarial training is typically performed in white-box fashion, meaning that the input perturbations are computed through the gradients of the model's computational graph in an end-to-end fashion.
 Even if we assumed full white-box access to the model and its analytical expressions, any discontinuity makes the computation of gradients impossible, from a simple argmax in next token prediction to the prominent gap between problem and feature (representation) spaces that some domains have.
 In our work we discover that in such domains it is preferable to perform adversarial training through the problem space while respecting the constraints that the domain has, as it outperforms gradient-based solutions.
@@ -55,11 +67,11 @@ In a wide range of image classification models and attack plus defense scenarios
 
 \section{The Imitation Game}
 
-Traditionally, CAPTCHAs have employed explicit challenges that only humans could solve.
+Traditionally, Captchas have employed explicit challenges that only humans could solve.
 At some point however, these challenges became more difficult to solve for humans than for automated methods based on \gls{AI}.
-Thus recently a paradigm shift took place where newer CAPTCHAs ditched the ``puzzle'' approach and instead focused on behavior in order to tell humans and machines apart; the challenge was still there, but now implicit rather than explicit.
+Thus recently a paradigm shift took place where newer Captchas ditched the ``puzzle'' approach and instead focused on behavior in order to tell humans and machines apart; the challenge was still there, but now implicit rather than explicit.
 Ironically, such challenges or puzzles assist in the progressive refinement of the very thing they were designed to defend against: as the detection get better, so does the imitation.
-In the long and recurring cycle of CAPTCHAs being introduced and broken, reCAPTCHA v3 by Google is the first to change the rules of the game: while before the nature of the challenge was explicit in the form of a puzzle or test, now it was obfuscated through the observation of undisclosed behavioral variables.
+In the long and recurring cycle of Captchas being introduced and broken, reCAPTCHA v3 by Google is the first to change the rules of the game: while before the nature of the challenge was explicit in the form of a puzzle or test, now it was obfuscated through the observation of undisclosed behavioral variables.
 Security through obscurity however does not last; Google reCAPTCHA v3, a widely adopted real-world defense against bots, can be easily bypassed.
 Moreover, as we will further demonstrate later, the detection tool itself can function as an instructor for perfecting the imitation of human behavior, with weak assumptions on the adversary.
 
@@ -71,7 +83,7 @@ Over a period of fifteen months in various web environments and a wide range of 
 Furthermore, we show that an adversary can exploit the implicit challenge itself in order to learn a web browsing behaviour that flies under the radar of the most widely used automation detector at the time.
 Finally, we perform a state-of-the-art explainability approach to quantitatively evaluate how different factors of our automation tools influence the score.
 
-As CAPTCHAs are transitioning towards behavioral aspects, and as AI capabilities are becoming more comprehensive, the competition in differentiating between human interaction and its imitation accelerates.
+As Captchas are transitioning towards behavioral aspects, and as AI capabilities are becoming more comprehensive, the competition in differentiating between human interaction and its imitation accelerates.
 Such imitation however, no matter how refined and identical to human, would be a stretch to claim that is the result of intelligence or cognition.
 Rather, one would be correct in pointing out that it was indistinguishable for the discriminative model under question.
 Therein lies the main limitation of telling humans and machines apart through discriminative methods: given sufficient modeling capacity and computation---both of which have been scaling extremely well so far---the competition between imitator and detector will eventually favor the former.
@@ -98,7 +110,7 @@ As a result of collecting and curating them however, data inexorably contain art
 This phenomenon poses a considerable obstacle in deploying naively trained models in security critical domains that willfully collect data, as these shortcut features will be present and can be used for evasion.
 
 Malware detection in particular has historically been vulnerable to both evasion and spurious correlations, vulnerabilities that are further aggravated by adopting ML-based solutions.
-In our second work and in a broad collaboration between multiple universities and industrial partners, we investigate the \gls{ML}-based module of a widely known commercial antivirus, with the objective to harden it against adversarial malware.
+In our second work and in a broad collaboration between multiple universities and industrial partners, we investigate the \gls{AI}-based module of a widely known commercial antivirus, with the objective to harden it against adversarial malware.
 Adversarial training as is conventionally applied was not applicable,
 Adversarial training, the most reliable defensive technique is not applicable out of the box in this domain, for the principal reason that gradient-based perturbations rarely map back to feasible problem-space programs. 
 We introduce a novel \gls{RL} approach for constructing adversarial examples, to subsequently adversarially train the model against evasion.
@@ -111,7 +123,7 @@ Secondly, that with our offensive approach and a few adversarial retraining iter
 Our results highlight the importance of performing adversarial training before any ML-based component or system goes into production.
 In that way we demonstrate that constructing realistic and representative adversarial examples is not a mere academic exercise, but that also functions as concrete methodology for deploying intelligent systems robust to real-world adversaries.
 
-\textbf{Publication Data:} \fullcite{cortellazzi2024train}
+\textbf{Publication Data:} \fullcite{tisngenopoulos2024train}
 
 \section{From Adaptive Attacks to Adaptive Defenses}
 
@@ -148,20 +160,20 @@ In our work we demonstrate how our approach outperforms both attacks and defense
 \section{The Broader Picture}
 % \section{Other Contributions}
 
-This section serves as a means to put my three major research contributions in perspective, how they came to be research questions in the first place, how they connect with each other, as well as to present other related research results and activities.
+This section serves as a means to put the three major research contributions in perspective, how they came to be research questions in the first place, how they connect with each other, and finally to present other related research results and activities.
 As researchers, we are often motivated by a powerful but often unstructured drive to understand how things work.
-While already working as a research assistant in 2017, and before I even considered pursuing a PhD, out of curiosity and happenstance I had the fortune to read the first paper that subsequently sparked the whole field of \gls{AML}: ``Intriguing Properties of Neural Networks''~\cite{szegedy2013intriguing}.
-I was instantly fascinated by the perplexing phenomenon of adversarial examples, as well as their straightforward and elegant formulation.
+It was in 2017, and before I even considered pursuing a PhD, that out of curiosity and happenstance I had the fortune to read the first paper that subsequently sparked the whole field of \gls{AML}: ``Intriguing Properties of Neural Networks''~\cite{szegedy2013intriguing}.
+At the time, adversarial examples were a puzzling novelty, and I was instantly absorbed by their straightforward but elegant formulation and the perplexing phenonmenon.
 This knowledge compelled me to pursue a more rigorous and deeper understanding of these admittedly intriguing properties: why, where, and how they happen.
 
-When I started my PhD trajectory on \gls{AML}, I discovered that almost the totality of the related work had a prominent shortcoming: unrealistic assumptions on the level of access the adversary has to the model.
-That is to say the vast majority of the attacks, and therefore defenses too, where assuming white-box access, an unrepresentative threat model for real-world deployed AI-based systems.
-The are three prominent reasons why white-box attacks face serious challenges in real-world applications:
+When I intially started working on \gls{AML}, I discovered a prevalent shortcoming in almost the entirety of the related work: unrealistic assumptions on the level of access the adversary has to the model.
+The vast majority of the attacks, and therefore defenses too, where assuming white-box access; an threat model that is completely unrepresentative for real-world deployed AI-based systems.
+While white-box access is typically considered a given from the defensive perspective, this is not always the case for the offensive. Specifically, there are three prominent reasons why white-box, gradient-based attacks face serious challenges and limitations in realistic scenarios:
 
 \begin{itemize}
-    \item As model sizes and complexity increase, so does the difficulty to interpret what these models learn precisely, and therefore to intuitively explain modes of failure like adversarial examples.
     \item Many models have discontinuities in their closed-form expressions; a simple argmax -- for instance in modern autoregressive LLMs -- or merely having discrete outputs, suffices to render a model non-differentiable.
-    \item Even when a model would be end-to-end differentiable, all real-world attacks are confounded by the non-invertibility of the feature perturbations back to the original object that these features represent.
+    \item Even when a model would be end-to-end differentiable, practical attacks when performed in the real-world are confounded by the non-invertibility of the feature perturbations back to the original object that these features represent.
+    \item Finally, as model size and complexity increase, it quickly becomes intractable to interpret what these models actually learn solely based on the gradients, without using some form of higher-order features or concepts that are semantically meaningful in the problem space~\cite{kim2018interpretability}.
 \end{itemize}
 
 \begin{figure}
@@ -171,15 +183,18 @@ The are three prominent reasons why white-box attacks face serious challenges in
     \label{fig:pipe}
 \end{figure}
 
-In \autoref{fig:pipe} I illustrate the full pipeline of an abstract malware detection model, from the problem-space sample, through the feature-space representation, to the final output space of $\{0,1\}$.
-The leftward arrows indicate the varying degrees of access an adversary can have.
-More specifically, black-box attacks are further divided into score-based and decision-based, depending on the access of the adversary to the model probabilities or just discrete decisions respectively.
+Due to the aforementioend reasons, there are domains and use cases where performing the attacks through the problem space is preferable, and can lead to a more principled understanding of the vulnerabilities present.
+To illustrate the distinction between problem-space and feature-space attacks, as well as situate them in a practical use case, \autoref{fig:pipe} depicts the full pipeline of a general malware detection model.
+It starts from the sample as it occurs in the problem space, followed representation in the feature-space, the model, to the probabilities in $[0,1]$ and the decision space $\{0,1\}$.
+The leftward arrows under the pipeline indicate the varying degrees of access an adversary can have.
+Black-box attacks are further divided into score-based and decision-based depending on the access of the adversary to the model, the probabilities or just discrete decisions respectively.
 White-box attacks on the other hand, have a full closed-form description of the model up to the feature representation.
+Finally, the inverse mapping is a non-trivial challenge that confounds all domains where a gap between the problem and the feature space exists.
 
-To best of my knowledge at the time, decision-based represented the most realistic form of adversarial attack against deployed models or systems.
-Thus I embarked on a line of inquiry that focused predominantly on black-box attacks, where ultimately the objective was to make learning robust to attacks.
-It was then that I realized that when one operates in black-box environments, which cybersecurity contexts typically are, then for a rigorous evaluation of a system's vulnerability we \textit{have to} optimize any attacks employed.
-Otherwise any ad-hoc methods or heuristics -- often used in offensive security research -- are not going to provide any principled understanding on the realistic level of threat.
+For real-world deployed models or systems, decision-based atatcks used to represent and still are the most realistic form of attack.
+My work has thus opened lines of inquiry that primarily focused on black-box and decision-based attacks, with the ultimate objective to make models robust to them.
+It quickly became apparent that when operating in black-box environments, which cybersecurity contexts typically are, then for a rigorous evaluation of a system's vulnerability we \textit{have to} optimize any attacks employed.
+Ad-hoc approaches or heuristics that are often used in offensive security research, are not going to provide any principled understanding on the realistic level of threat.
 To this end, \gls{RL} offered an ideal formalism and was a good candidate methodology for optimizing black-box functions in cybersecurity use-cases, due to several intrinsic characteristics:
 
 \begin{itemize}
@@ -190,10 +205,27 @@ To this end, \gls{RL} offered an ideal formalism and was a good candidate method
     \item Function Approximation: With neural networks parameterizing the policy, RL can handle high-dimensional or continuous state and action spaces.
 \end{itemize}
 
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.99\textwidth]{pillars.pdf}
+    \caption{Schematic depiction of an environment that encompasses attacks and defenses on a black-box AI model, and all the agents involved. We indicate where our three works (I, II, III) are situated with respect to each component or agent.}
+    \label{fig:pillars}
+\end{figure}
+
 As previously presented in this introduction, the core of this dissertation is comprised of three major works on the security and robustness of AI-based systems against adversarial attacks.
-During my PhD trajectory however, I have pursued a wide range of research questions,
-in collaboration with other colleagues, and participated in several research projects, all falling under the \gls{ML} or \gls{AML} umbrellas.
-These resulted in several other publications, which I summarize below.
+These three works have several common underpinnings and build naturally upon each other.
+To situate them in the broader \gls{AML} landscape, \autoref{fig:pillars} depicts an overview of a typical environment for black-box attack and defenses, as well as what is the focus in each of our works.
+Our attack against Google reCAPTCHA v3, as an attack against a proprietary, real-world system, is in essene the optimization of an adversaril attack against the black-box system, through the information that this system divulges alone.
+Our AutoRobust paper takes this a step further.
+As the owners now of the detection model, we employ the process of optimizing attacks through the problem space to adversarially train the model.
+Finally, our third work integrates all the above.
+It optimizes attacks and their evasion tools, it hardens models againt evasion, and adds furthermore another defensive layer, namely active and adaptive defenses.
+
+Besides these three major works, during my PhD trajectory I have pursued a wide range of research questions, in collaboration with other colleagues from KU Leuven and abroad.
+I had the privilege to do a research visit in King's College London and University College London, a period and opportunity fundamental to my growth as a researcher and a person.
+During this time I have also participated in several research projects and co-authored a book chapter, all falling under the cybersecurity and \gls{AML} umbrellas.
+Below, I summarize my activities relevant to this dissertation that have also resulted in publications:
 
 \textbf{AutoAttacker: A Reinforcement Learning Approach for Black-box Adversarial Attacks.}
 Our initial foray into generating adversarial examples with \gls{RL} was successful, and led to my first publication, a workshop paper accepted at Euro S\&P 2019.
@@ -238,38 +270,38 @@ This study is therefore accessible both to a security audience without in-depth 
 \fullcite{hernandez2022adversarial}
 \end{myleftbar}
 
-\textbf{Chained Anomaly Detection Models for Federated Learning: An Intrusion Detection Case Study}
-The major challenge that we address in this work is that in a federated learning setup, an adversary has many more opportunities to poison one of the local machine learning models with malicious training samples, thereby influencing the outcome of the federated learning and evading detection.
-We present a solution where contributing parties in federated learning can be held accountable and have their model updates audited.
-We describe a permissioned blockchain-based federated learning method where incremental updates to an anomaly detection machine learning model are chained together on the distributed ledger.
-By integrating federated learning with blockchain technology, our solution supports the auditing of machine learning models without the necessity to centralize the training data.
-Experiments with a realistic intrusion detection use case and an autoencoder for anomaly detection illustrate that the increased complexity caused by blockchain technology has a limited performance impact on the federated learning, varying between 5 and 15\%, while providing full transparency over the distributed training process of the neural network.
-Furthermore, our federated learning solution can be generalized and applied to more sophisticated neural network architectures and other use cases.
+% \textbf{Chained Anomaly Detection Models for Federated Learning: An Intrusion Detection Case Study}
+% The major challenge that we address in this work is that in a federated learning setup, an adversary has many more opportunities to poison one of the local machine learning models with malicious training samples, thereby influencing the outcome of the federated learning and evading detection.
+% We present a solution where contributing parties in federated learning can be held accountable and have their model updates audited.
+% We describe a permissioned blockchain-based federated learning method where incremental updates to an anomaly detection machine learning model are chained together on the distributed ledger.
+% By integrating federated learning with blockchain technology, our solution supports the auditing of machine learning models without the necessity to centralize the training data.
+% Experiments with a realistic intrusion detection use case and an autoencoder for anomaly detection illustrate that the increased complexity caused by blockchain technology has a limited performance impact on the federated learning, varying between 5 and 15\%, while providing full transparency over the distributed training process of the neural network.
+% Furthermore, our federated learning solution can be generalized and applied to more sophisticated neural network architectures and other use cases.
 
-\begin{myleftbar}
-\fullcite{preuveneers2018chained}
-\end{myleftbar}
+% \begin{myleftbar}
+% \fullcite{preuveneers2018chained}
+% \end{myleftbar}
 
-\textbf{Resource Usage and Performance Trade-offs for Machine Learning Models in Smart Environments}
-Finally, we perform a study on multi-objective optimization for ML models, where the best performing model, its architecture and parameters for a given task are ideally automatically determined through a hyperparameter tuning process.
-At the same time, edge computing is an emerging distributed computing paradigm that aims to bring computation and data storage closer to the location where they are needed to save network bandwidth or reduce the latency of requests.
-The challenge we address in this work is that hyperparameter tuning does not take into consideration resource trade-offs when selecting the best model for deployment in smart environments.
-The most accurate model might be prohibitively expensive to computationally evaluate on a resource constrained node at the edge of the network.
-We propose a multi-objective optimization solution to find acceptable trade-offs between model accuracy and resource consumption to enable the deployment of ML models in resource constrained smart environments.
-We demonstrate the feasibility of our approach by means of an anomaly detection use case.
-Additionally, we evaluate the extent that transfer learning techniques can be applied to reduce the amount of training required by reusing previous models, parameters and trade-off points from similar settings.
+% \textbf{Resource Usage and Performance Trade-offs for Machine Learning Models in Smart Environments}
+% Finally, we perform a study on multi-objective optimization for ML models, where the best performing model, its architecture and parameters for a given task are ideally automatically determined through a hyperparameter tuning process.
+% At the same time, edge computing is an emerging distributed computing paradigm that aims to bring computation and data storage closer to the location where they are needed to save network bandwidth or reduce the latency of requests.
+% The challenge we address in this work is that hyperparameter tuning does not take into consideration resource trade-offs when selecting the best model for deployment in smart environments.
+% The most accurate model might be prohibitively expensive to computationally evaluate on a resource constrained node at the edge of the network.
+% We propose a multi-objective optimization solution to find acceptable trade-offs between model accuracy and resource consumption to enable the deployment of ML models in resource constrained smart environments.
+% We demonstrate the feasibility of our approach by means of an anomaly detection use case.
+% Additionally, we evaluate the extent that transfer learning techniques can be applied to reduce the amount of training required by reusing previous models, parameters and trade-off points from similar settings.
 
-\begin{myleftbar}
-\fullcite{preuveneers2020resource}
-\end{myleftbar}
+% \begin{myleftbar}
+% \fullcite{preuveneers2020resource}
+% \end{myleftbar}
 
 \section{Dissertation Outline}
 
-The remainder of this dissertation is structured as follows.
+The remainder of this dissertation is structured as follows:
 We begin by introducing the necessary background knowledge on \gls{AML} and \gls{RL}, where for \gls{RL} we further introduce common algorithms, multi-agent environments, and its relevance for cybersecurity use-cases in Chapter \ref{ch:background}.
-In Chapter \ref{ch:recaptcha} we present our first work, the successful attack on Google reCAPTCHA v3.
-In Chapter \ref{ch:autorobust} we introduce AutoRobust, our methodology of hardening ML-models against evasion through the problem space.
-In Chapter \ref{ch:markovgames} we investigate the confluence of adaptive attacks and defenses, and introduce our Adversarial Markov Games (AMG) framework as their composition.
+In Chapter \ref{ch:recaptcha} we present our first work, the RL-based attack that manages to succdessfuly bypass detection by Google reCAPTCHA v3.
+In Chapter \ref{ch:autorobust} we introduce AutoRobust, our methodology of hardening malware detection models against evasion through the problem space.
+In Chapter \ref{ch:markovgames} we investigate the confluence of adaptive attacks and defenses, and as their composition, we introduce our Adversarial Markov Games (AMG) framework.
 Finally, in Chapter \ref{ch:conclusion} we conclude the dissertation by summarizing our key contributions and insights on the domain, and discuss possible and unexplored paths for future research.
 % Some dummy code to get at least 1 entry in the nomenclature.
 % \nomenclature{$\Theta$}{A nice symbol}

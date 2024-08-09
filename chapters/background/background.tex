@@ -1,7 +1,14 @@
 \chapter{Background}\label{ch:background}
 
-This dissertation, as well as all the works that it encompasses, are built on top of two fundamental pillars: \gls{AML} and \gls{RL}.
-The purpose of this chapter is to introduce to the reader fundamental notions from these two scientific domains, with a focus on those that are relevant to this dissertation and the ease of its understanding.
+This dissertation explores attacks and defenses against AI-based systems; in this way, it lies on the intersection of cybersecurity and AI.
+Cybersecurity, as is conventionally understood, refers to the practice of protecting systems, networks, and data from digital attacks, damage, or unauthorized access.
+As our dependence on technology grows, so does the sophistication and frequency of cyber threats, and effective cybersecurity involves implementing strategies and defense mechanisms for combating a wide range of potential attacks.
+These attacks are elicited through threat modeling, a systematic approach used to identify, assess, and prioritize potential threats to a system through the attack surface that it exposes.
+A typical threat model includes information about the adversaries, more precisely their knowledge, goals, and capabilities, and the assets and defenses of the system under threat.
+
+In this work we focus on well-defined subsets of adversarial goals and capabilities: the goal is to evade detection or cause a misclassification, while the capabilities are specifically against the logic implemented by the AI module.
+By this we mean that adversaries can manipulate the information that is used as input to the system, and \textit{only} that; we consider attacks on the technical implementation of the system out of our scope.
+In this chapter we introduce to the reader key concepts from \gls{AML} and \gls{RL}, scientific domains fundamental in our works, in order to facilitate a comprehensive understanding of this dissertation.
 
 \section{Adversarial Machine Learning}
 \gls{AML} is a field of study within machine learning \gls{ML} that focuses on the vulnerabilities of \gls{ML} models to adversarial attacks.
@@ -53,7 +60,7 @@ subject to
 \|\delta\|_p \leq \epsilon,
 \]
 where $\mathcal{L}$ is the loss function, $f$ is the model, $x$ is the original input, $y$ is the true label, $\|\cdot\|_p$ is the $p$-norm, and $\epsilon$ is the small constant that bounds the perturbation.
-Common methods for white-box attacks include Fast Gradient Sign Method (FGSM) and Projected Gradient Descent (PGD).
+Common methods for white-box attacks include Fast Gradient Sign Method (\gls{FGSM}) and Projected Gradient Descent (\gls{PGD}).
 
 In contrast, in black-box adversarial attacks, the adversary does not have access to the internals of the model, a much more representative formalism for cybersecurity enviroments.
 Instead, the one capability that is typically preserved for the adversary in black-box contexts, is the ability to query the model and observe the output.
@@ -301,7 +308,7 @@ where:
     \item $\beta$ is a coefficient that controls the importance of the KL divergence term.
 \end{itemize}
 
-Both PPO-clip and PPO-penalty alternate between sampling data through interaction with the environment and optimizing the surrogate objective using stochastic gradient descent.
+Both PPO-clip and PPO-penalty alternate between sampling data through interaction with the environment and optimizing the surrogate objective using Stochastic Gradient Descent (\gls{SGD}).
 The steps are shown in Algorithm \ref{alg:PPOgen}.
 
 \begin{algorithm}

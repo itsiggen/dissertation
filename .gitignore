@@ -1,3 +1,6 @@
+/thesis.acn
+/thesis.acr
+/thesis.alg
 /thesis.aux
 /thesis.bbl
 /thesis.bcf
@@ -5,6 +8,8 @@
 /thesis.fdb_latexmk
 /thesis.fls
 /thesis.glo
+/thesis.glg
+/thesis.gls
 /thesis.ist
 /thesis.lof
 /thesis.log

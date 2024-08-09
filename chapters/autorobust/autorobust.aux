@@ -1,59 +1,59 @@
 \relax 
 \providecommand\zref@newlabel[2]{}
 \providecommand\hyper@newdestlabel[2]{}
-\@writefile{toc}{\contentsline {chapter}{\numberline {4}AutoRobust}{64}{chapter.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {chapter}{\numberline {4}AutoRobust: Hardening Malware Detection Against Evasion}{67}{chapter.4}\protected@file@percent }
 \@writefile{lof}{\addvspace {10\p@ }}
 \@writefile{lot}{\addvspace {10\p@ }}
 \@writefile{loa}{\addvspace {10\p@ }}
-\newlabel{ch:autorobust}{{4}{64}{AutoRobust}{chapter.4}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {4.1}Introduction}{64}{section.4.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {4.2}Background \& Related Work}{66}{section.4.2}\protected@file@percent }
-\newlabel{sec:backgroundauto}{{4.2}{66}{Background \& Related Work}{section.4.2}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.2.1}Malware detection}{67}{subsection.4.2.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.2.2}Problem-Space Attacks}{68}{subsection.4.2.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.2.3}Defenses \& Mitigations}{68}{subsection.4.2.3}\protected@file@percent }
-\newlabel{eqn:adv_trainauto}{{4.1}{69}{Defenses \& Mitigations}{equation.4.2.1}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.2.4}Research Gap}{70}{subsection.4.2.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {4.3}Threat Model}{71}{section.4.3}\protected@file@percent }
-\newlabel{sec:threatauto}{{4.3}{71}{Threat Model}{section.4.3}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {4.4}AutoRobust}{72}{section.4.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.4.1}Approach}{72}{subsection.4.4.1}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {4.1}{\ignorespaces \textbf  {Comparison between traditional gradient-based attacks and AutoRobust.} The dotted path shows a typical gradient-based attack: first perturbing to $\mathbf  {x} + \boldsymbol  {\delta }$ then projecting to $\mathbf  {x} + \boldsymbol  {\delta }^\prime $ in the \emph  {feasible} problem-space $\Lambda $. Our approach (dense path) that employs transformations $\alpha _t$ in succession, moves by definition \textit  {only} within the feasible problem space $\Lambda $. The background displays a gradient field over the value of the discriminant function $h(\mathbf  {x})$, with negative values (green) for the target class. The thick solid area $\Phi $ represents the feasible feature-space, while the areas denoted by $\Lambda $ represent the feasible problem-space mapped to $\Phi $.}}{73}{figure.caption.24}\protected@file@percent }
-\newlabel{fig:grad}{{4.1}{73}{\textbf {Comparison between traditional gradient-based attacks and AutoRobust.} The dotted path shows a typical gradient-based attack: first perturbing to $\mathbf {x} + \boldsymbol {\delta }$ then projecting to $\mathbf {x} + \boldsymbol {\delta }^\prime $ in the \emph {feasible} problem-space $\Lambda $. Our approach (dense path) that employs transformations $\alpha _t$ in succession, moves by definition \textit {only} within the feasible problem space $\Lambda $. The background displays a gradient field over the value of the discriminant function $h(\mathbf {x})$, with negative values (green) for the target class. The thick solid area $\Phi $ represents the feasible feature-space, while the areas denoted by $\Lambda $ represent the feasible problem-space mapped to $\Phi $}{figure.caption.24}{}}
-\newlabel{th:pspr}{{4.4.1}{74}{Problem-Space p-Robustness}{theorem.4.4.1}{}}
-\newlabel{eqn:expect}{{4.2}{74}{Approach}{equation.4.4.2}{}}
-\newlabel{eqn:expect2}{{4.3}{74}{Approach}{equation.4.4.3}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4.2}{\ignorespaces Schematic depiction of the AutoRobust pipeline. In the inner loop, the RL agent attacks the model and generates adversarial reports. In the outer loop, the model is retrained with standard minibatch gradient descent on clean \textit  {and} adversarial reports.}}{75}{figure.caption.25}\protected@file@percent }
-\newlabel{fig:autorobust}{{4.2}{75}{Schematic depiction of the AutoRobust pipeline. In the inner loop, the RL agent attacks the model and generates adversarial reports. In the outer loop, the model is retrained with standard minibatch gradient descent on clean \textit {and} adversarial reports}{figure.caption.25}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.4.2}Explanation-guided Hardening}{76}{subsection.4.4.2}\protected@file@percent }
-\newlabel{sec:explainer}{{4.4.2}{76}{Explanation-guided Hardening}{subsection.4.4.2}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {4.5}Methodology}{77}{section.4.5}\protected@file@percent }
-\newlabel{dataset}{{4.5}{77}{Methodology}{section.4.5}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.5.1}Dataset}{77}{subsection.4.5.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.5.2}Representation}{78}{subsection.4.5.2}\protected@file@percent }
-\newlabel{sec:representation}{{4.5.2}{78}{Representation}{subsection.4.5.2}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.5.3}Transformations}{79}{subsection.4.5.3}\protected@file@percent }
-\newlabel{sec:trans}{{4.5.3}{79}{Transformations}{subsection.4.5.3}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {4.1}{\ignorespaces Feasible transformations by feature category}}{81}{table.caption.26}\protected@file@percent }
-\newlabel{table:capabilities}{{4.1}{81}{Feasible transformations by feature category}{table.caption.26}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {4.6}Adversarial Binaries}{81}{section.4.6}\protected@file@percent }
-\newlabel{sebsec:binaries}{{4.6}{81}{Adversarial Binaries}{section.4.6}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {4.7}Evaluation}{82}{section.4.7}\protected@file@percent }
-\newlabel{sec:eval}{{4.7}{82}{Evaluation}{section.4.7}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.7.1}Evaluation Setup}{83}{subsection.4.7.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.7.2}Metrics}{84}{subsection.4.7.2}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.7.3}Results}{84}{subsection.4.7.3}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {4.2}{\ignorespaces Performance of AutoRobust (AR), gradient-based (GB) adversarial training, and the original vanilla HMIL model considering the two perturbation budgets, 1K and 2K. The metrics displayed are: Score (of the origin class), Attack Success Rate (ASR), Clean Accuracy (C.Acc), and Robust Accuracy (R.Acc), all reported on the same hold-out test set.}}{85}{table.caption.27}\protected@file@percent }
-\newlabel{tbl:results}{{4.2}{85}{Performance of AutoRobust (AR), gradient-based (GB) adversarial training, and the original vanilla HMIL model considering the two perturbation budgets, 1K and 2K. The metrics displayed are: Score (of the origin class), Attack Success Rate (ASR), Clean Accuracy (C.Acc), and Robust Accuracy (R.Acc), all reported on the same hold-out test set}{table.caption.27}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {4.3}{\ignorespaces Progression of Attack Success Rate (blue), Clean Accuracy (yellow), and Robust Accuracy (green) over the 15 iterations of adversarial training. For each metric, the mean with one standard deviation are displayed, as we do multiple runs where hyperparameters and random seeds for selecting samples vary.}}{86}{figure.caption.28}\protected@file@percent }
-\newlabel{fig:training}{{4.3}{86}{Progression of Attack Success Rate (blue), Clean Accuracy (yellow), and Robust Accuracy (green) over the 15 iterations of adversarial training. For each metric, the mean with one standard deviation are displayed, as we do multiple runs where hyperparameters and random seeds for selecting samples vary}{figure.caption.28}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {4.7.4}Explanations}{87}{subsection.4.7.4}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {4.4}{\ignorespaces The most frequent explanations as returned by the HMIL model explainer, over the 15 iterations. As for each iteration the number of episodes varies, we normalize explanations to a percentage over the whole iteration; mean values with one standard deviation are plotted.}}{88}{figure.caption.29}\protected@file@percent }
-\newlabel{fig:explanations}{{4.4}{88}{The most frequent explanations as returned by the HMIL model explainer, over the 15 iterations. As for each iteration the number of episodes varies, we normalize explanations to a percentage over the whole iteration; mean values with one standard deviation are plotted}{figure.caption.29}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {4.8}Discussion}{89}{section.4.8}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {4.9}Conclusion}{91}{section.4.9}\protected@file@percent }
+\newlabel{ch:autorobust}{{4}{67}{AutoRobust: Hardening Malware Detection Against Evasion}{chapter.4}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.1}Introduction}{69}{section.4.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {4.2}Background \& Related Work}{71}{section.4.2}\protected@file@percent }
+\newlabel{sec:backgroundauto}{{4.2}{71}{Background \& Related Work}{section.4.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2.1}Malware detection}{71}{subsection.4.2.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2.2}Problem-Space Attacks}{72}{subsection.4.2.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2.3}Defenses \& Mitigations}{73}{subsection.4.2.3}\protected@file@percent }
+\newlabel{eqn:adv_trainauto}{{4.1}{73}{Defenses \& Mitigations}{equation.4.2.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2.4}Research Gap}{74}{subsection.4.2.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {4.3}Threat Model}{75}{section.4.3}\protected@file@percent }
+\newlabel{sec:threatauto}{{4.3}{75}{Threat Model}{section.4.3}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.4}AutoRobust}{76}{section.4.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.4.1}Approach}{76}{subsection.4.4.1}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {4.1}{\ignorespaces \textbf  {Comparison between traditional gradient-based attacks and AutoRobust.} The dotted path shows a typical gradient-based attack: first perturbing to $\mathbf  {x} + \boldsymbol  {\delta }$ then projecting to $\mathbf  {x} + \boldsymbol  {\delta }^\prime $ in the \emph  {feasible} problem-space $\Lambda $. Our approach (dense path) that employs transformations $\alpha _t$ in succession, moves by definition \textit  {only} within the feasible problem space $\Lambda $. The background displays a gradient field over the value of the discriminant function $h(\mathbf  {x})$, with negative values (green) for the target class. The thick solid area $\Phi $ represents the feasible feature-space, while the areas denoted by $\Lambda $ represent the feasible problem-space mapped to $\Phi $.}}{77}{figure.caption.30}\protected@file@percent }
+\newlabel{fig:grad}{{4.1}{77}{\textbf {Comparison between traditional gradient-based attacks and AutoRobust.} The dotted path shows a typical gradient-based attack: first perturbing to $\mathbf {x} + \boldsymbol {\delta }$ then projecting to $\mathbf {x} + \boldsymbol {\delta }^\prime $ in the \emph {feasible} problem-space $\Lambda $. Our approach (dense path) that employs transformations $\alpha _t$ in succession, moves by definition \textit {only} within the feasible problem space $\Lambda $. The background displays a gradient field over the value of the discriminant function $h(\mathbf {x})$, with negative values (green) for the target class. The thick solid area $\Phi $ represents the feasible feature-space, while the areas denoted by $\Lambda $ represent the feasible problem-space mapped to $\Phi $}{figure.caption.30}{}}
+\newlabel{th:pspr}{{4.4.1}{78}{Problem-Space p-Robustness}{theorem.4.4.1}{}}
+\newlabel{eqn:expect}{{4.2}{78}{Approach}{equation.4.4.2}{}}
+\newlabel{eqn:expect2}{{4.3}{78}{Approach}{equation.4.4.3}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4.2}{\ignorespaces Schematic depiction of the AutoRobust pipeline. In the inner loop, the RL agent attacks the model and generates adversarial reports. In the outer loop, the model is retrained with standard minibatch gradient descent on clean \textit  {and} adversarial reports.}}{79}{figure.caption.31}\protected@file@percent }
+\newlabel{fig:autorobust}{{4.2}{79}{Schematic depiction of the AutoRobust pipeline. In the inner loop, the RL agent attacks the model and generates adversarial reports. In the outer loop, the model is retrained with standard minibatch gradient descent on clean \textit {and} adversarial reports}{figure.caption.31}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.4.2}Explanation-guided Hardening}{80}{subsection.4.4.2}\protected@file@percent }
+\newlabel{sec:explainer}{{4.4.2}{80}{Explanation-guided Hardening}{subsection.4.4.2}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.5}Methodology}{81}{section.4.5}\protected@file@percent }
+\newlabel{dataset}{{4.5}{81}{Methodology}{section.4.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.5.1}Dataset}{81}{subsection.4.5.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.5.2}Representation}{82}{subsection.4.5.2}\protected@file@percent }
+\newlabel{sec:representation}{{4.5.2}{82}{Representation}{subsection.4.5.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.5.3}Transformations}{83}{subsection.4.5.3}\protected@file@percent }
+\newlabel{sec:trans}{{4.5.3}{83}{Transformations}{subsection.4.5.3}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {4.1}{\ignorespaces Feasible transformations by feature category}}{85}{table.caption.32}\protected@file@percent }
+\newlabel{table:capabilities}{{4.1}{85}{Feasible transformations by feature category}{table.caption.32}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.6}Adversarial Binaries}{85}{section.4.6}\protected@file@percent }
+\newlabel{sebsec:binaries}{{4.6}{85}{Adversarial Binaries}{section.4.6}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.7}Evaluation}{87}{section.4.7}\protected@file@percent }
+\newlabel{sec:eval}{{4.7}{87}{Evaluation}{section.4.7}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.7.1}Evaluation Setup}{87}{subsection.4.7.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.7.2}Metrics}{88}{subsection.4.7.2}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {4.2}{\ignorespaces Performance of AutoRobust (AR), gradient-based (GB) adversarial training, and the original vanilla HMIL model considering the two perturbation budgets, 1K and 2K. The metrics displayed are: Score (of the origin class), Attack Success Rate (ASR), Clean Accuracy (C.Acc), and Robust Accuracy (R.Acc), all reported on the same hold-out test set.}}{89}{table.caption.33}\protected@file@percent }
+\newlabel{tbl:results}{{4.2}{89}{Performance of AutoRobust (AR), gradient-based (GB) adversarial training, and the original vanilla HMIL model considering the two perturbation budgets, 1K and 2K. The metrics displayed are: Score (of the origin class), Attack Success Rate (ASR), Clean Accuracy (C.Acc), and Robust Accuracy (R.Acc), all reported on the same hold-out test set}{table.caption.33}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.7.3}Results}{89}{subsection.4.7.3}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {4.3}{\ignorespaces Progression of Attack Success Rate (blue), Clean Accuracy (yellow), and Robust Accuracy (green) over the 15 iterations of adversarial training. For each metric, the mean with one standard deviation are displayed, as we do multiple runs where hyperparameters and random seeds for selecting samples vary.}}{90}{figure.caption.34}\protected@file@percent }
+\newlabel{fig:training}{{4.3}{90}{Progression of Attack Success Rate (blue), Clean Accuracy (yellow), and Robust Accuracy (green) over the 15 iterations of adversarial training. For each metric, the mean with one standard deviation are displayed, as we do multiple runs where hyperparameters and random seeds for selecting samples vary}{figure.caption.34}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.7.4}Explanations}{91}{subsection.4.7.4}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {4.4}{\ignorespaces The most frequent explanations as returned by the HMIL model explainer, over the 15 iterations. As for each iteration the number of episodes varies, we normalize explanations to a percentage over the whole iteration; mean values with one standard deviation are plotted.}}{92}{figure.caption.35}\protected@file@percent }
+\newlabel{fig:explanations}{{4.4}{92}{The most frequent explanations as returned by the HMIL model explainer, over the 15 iterations. As for each iteration the number of episodes varies, we normalize explanations to a percentage over the whole iteration; mean values with one standard deviation are plotted}{figure.caption.35}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4.8}Discussion}{93}{section.4.8}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {4.9}Conclusion}{95}{section.4.9}\protected@file@percent }
 \@setckpt{chapters/autorobust/autorobust}{
-\setcounter{page}{92}
+\setcounter{page}{96}
 \setcounter{equation}{3}
 \setcounter{enumi}{3}
 \setcounter{enumii}{0}
@@ -79,7 +79,7 @@
 \setcounter{lstnumber}{1}
 \setcounter{section@level}{1}
 \setcounter{Item}{8}
-\setcounter{Hfootnote}{7}
+\setcounter{Hfootnote}{11}
 \setcounter{bookmark@seq@number}{71}
 \setcounter{lofdepth}{1}
 \setcounter{lotdepth}{1}
@@ -95,7 +95,7 @@
 \setcounter{citetotal}{0}
 \setcounter{multicitecount}{0}
 \setcounter{multicitetotal}{0}
-\setcounter{instcount}{190}
+\setcounter{instcount}{196}
 \setcounter{maxnames}{10}
 \setcounter{minnames}{1}
 \setcounter{maxitems}{3}
@@ -216,7 +216,7 @@
 \setcounter{mdfcountframes}{0}
 \setcounter{mdf@env@i}{0}
 \setcounter{mdf@env@ii}{0}
-\setcounter{mdf@zref@counter}{6}
+\setcounter{mdf@zref@counter}{4}
 \setcounter{lstlisting}{0}
 \setcounter{theorem}{0}
 \setcounter{proposition}{0}

@@ -16,7 +16,7 @@
 % !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 %%% COVER: Settings %%%
-\title{Adaptive Attacks and Defenses on Artificial Intelligence Systems}
+\title{Robust and Secure Artificial Intelligence Systems through Adaptive Attacks and Defenses}
 
 \author{Ilias}{Tsingenopoulos}
 
@@ -61,23 +61,24 @@
 %%% COVER: End settings %%%
 
 % for the nomenclature (comment out if you do not use the nomencl package
-\usepackage{nomencl}   % For nomenclature
-\renewcommand{\nomname}{List of Symbols}
-\newcommand{\myprintnomenclature}{%
-  \cleardoublepage%
-  \printnomenclature%
-  \chaptermark{\nomname}
-  \addcontentsline{toc}{chapter}{\nomname} %% comment to exclude from TOC
-}
-\makenomenclature%
+% \usepackage{nomencl}   % For nomenclature
+% \renewcommand{\nomname}{List of Symbols}
+% \newcommand{\myprintnomenclature}{%
+%   \cleardoublepage%
+%   \printnomenclature%
+%   \chaptermark{\nomname}
+%   \addcontentsline{toc}{chapter}{\nomname} %% comment to exclude from TOC
+% }
+% \makenomenclature%
 
 % for the list of abbreviations (comment out if you do not use the glossaries package
-\usepackage{glossaries} % For list of abbreviations
+\usepackage[acronym]{glossaries} % For list of abbreviations
+\usepackage[automake]{glossaries-extra}
 \newcommand{\glossname}{List of Acronyms}
 \newcommand{\myprintglossary}{%
   \renewcommand{\glossaryname}{\glossname}
   \cleardoublepage%
-  \printglossary[title=\glossname, nonumberlist]
+  \printglossary[title=\glossname, type=\acronymtype, nonumberlist]
   \chaptermark{\glossname}
   \addcontentsline{toc}{chapter}{\glossname} %% comment to exclude from TOC
 }
@@ -92,30 +93,36 @@
   }%
 }
 
-% Set the new glossary style
+% % Set the new glossary style
 \setglossarystyle{nopostdot}
 
-\newglossaryentry{AI}{name={AI},description={Artificial Intelligence}}
-\newglossaryentry{AGI}{name={AGI},description={Artificial General Intelligence}}
-\newglossaryentry{ML}{name={ML},description={Machine Learning}}
-\newglossaryentry{DL}{name={DL},description={Deep Learning}}
-\newglossaryentry{RL}{name={RL},description={Reinforcement Learning}}
-\newglossaryentry{IRL}{name={IRL},description={Inverse Reinforcement Learning}}
-\newglossaryentry{MARL}{name={MARL},description={Multi-Agent Reinforcement Learning}}
-\newglossaryentry{AML}{name={AML},description={Adversarial Machine Learning}}
-\newglossaryentry{MDP}{name={MDP},description={Markov Decision Process}}
-\newglossaryentry{DNN}{name={DNN},description={Deep Neural Network}}
-\newglossaryentry{RNN}{name={RNN},description={Recurrent Neural Network}}
-\newglossaryentry{SVM}{name={SVM},description={Support Vector Machine}}
-\newglossaryentry{NLP}{name={NLP},description={Natural Language Processing}}
-\newglossaryentry{GAN}{name={GAN},description={Generative Adversarial Network}}
-\newglossaryentry{IID}{name={IID},description={independent and identically distributed}}
-\newglossaryentry{OOD}{name={OOD},description={out-of-distribution}}
-\newglossaryentry{PPO}{name={PPO},description={Proximal Policy Optimization}}
-\newglossaryentry{HMIL}{name={HMIL},description={Hierarchical Multiple Instance Learning}}
-\newglossaryentry{ASR}{name={ASR},description={Attack Success Rate}}
-\newglossaryentry{FPS}{name={FPS},description={frames per second}}
-
+\newacronym{AI}{AI}{Artificial Intelligence}
+\newacronym{XAI}{XAI}{eXplainable Artificial Intelligence}
+\newacronym{AGI}{AGI}{Artificial General Intelligence}
+\newacronym{SGD}{SGD}{Stochastic Gradient Descent}
+\newacronym{ML}{ML}{Machine Learning}
+\newacronym{DL}{DL}{Deep Learning}
+\newacronym{RL}{RL}{Reinforcement Learning}
+\newacronym{IRL}{IRL}{Inverse Reinforcement Learning}
+\newacronym{MARL}{MARL}{Multi-Agent Reinforcement Learning}
+\newacronym{AML}{AML}{Adversarial Machine Learning}
+\newacronym{MDP}{MDP}{Markov Decision Process}
+\newacronym{DNN}{DNN}{Deep Neural Network}
+\newacronym{RNN}{RNN}{Recurrent Neural Network}
+\newacronym{CNN}{CNN}{Convolutional Neural Network}
+\newacronym{SVM}{SVM}{Support Vector Machine}
+\newacronym{NLP}{NLP}{Natural Language Processing}
+\newacronym{GAN}{GAN}{Generative Adversarial Network}
+\newacronym{IID}{IID}{Independent and Identically Distributed}
+\newacronym{OOD}{OOD}{Out of Distribution}
+\newacronym{PPO}{PPO}{Proximal Policy Optimization}
+\newacronym{HMIL}{HMIL}{Hierarchical Multiple Instance Learning}
+\newacronym{ASR}{ASR}{Attack Success Rate}
+\newacronym{FPS}{FPS}{Frames Per Second}
+\newacronym{OSI}{OSI}{Open Systems Interconnection}
+\newacronym{PGD}{PGD}{Projected Gradient Descent}
+\newacronym{FGSM}{FGSM}{Fast Gradient Sign Method}
+\newacronym{OCR}{OCR}{Optical Character Recognition}
 
 % BibLaTeX
 \usepackage[utf8]{inputenc}
@@ -131,6 +138,7 @@
 % Fonts
 \usepackage{textcomp} % nice greek alphabet
 \usepackage{pifont}   % Dingbats
+% \usepackage{fontspec}
 \usepackage{booktabs}
 \usepackage{amssymb, amsfonts, amsthm}
 \usepackage{amsmath}
@@ -153,6 +161,7 @@
 \newcommand{\cmark}{\ding{52}}
 \newcommand{\xmark}{\ding{56}}
 \usepackage{array}
+\usepackage{caption}
 \usepackage{subcaption}
 \usepackage{epigraph}
 \usepackage{quoting}
@@ -340,6 +349,10 @@
 \includeabstract{abstract}
 \includeabstractnl{abstractnl}
 
+\tableofcontents
+\listoffigures
+\listoftables
+
 % To create a list of abbreviations, there are 2 options
 % 1. manual creation of list of abbreviations and inclusion as a chapter
 % \includeabbreviations{abbreviations}
@@ -347,16 +360,18 @@
 %    \glossary{name=MD,description=molecular dynamics}
 \myprintglossary
 
-% To create a list of symbols, there are 2 options
-% 1. include a manually created nomenclature as a chapter
-%    \includenomenclature{nomenclaturechapter}
-% 2. automatic generation via the nomencl package
-%    \nomenclature[cB]{$c_B(\vec{x})$}{Characteristic function of $B$}
-% \myprintnomenclature
+\clearpage
 
-\tableofcontents
-\listoffigures
-\listoftables
+\captionsetup{list=false} 
+\begin{figure}
+  \centering
+  \includegraphics[width=0.65\textwidth]{coverlogo/panda-bear.png}
+  \caption{Ceci n'est pas un panda.}
+  \label{fig:panda}
+\end{figure}
+\captionsetup{list=true}
+
+\clearpage
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

@@ -1,7 +1,37 @@
-\chapter{AutoRobust}\label{ch:autorobust}
-ML-based malware detection on dynamic analysis reports is vulnerable to both evasion and spurious correlations. In this work, we investigate a specific ML architecture employed in the pipeline of a widely-known commercial antivirus, with the goal to harden it against adversarial malware.
-Adversarial training, the most reliable defensive technique that can confer empirical robustness, is not applicable out of the box in this domain, for the principal reason that gradient-based perturbations rarely map back to feasible problem-space programs. 
-We introduce a novel Reinforcement Learning approach for constructing adversarial examples, a constituent part of adversarially training a model against evasion. Our approach comes with multiple advantages. It performs modifications that are feasible in the problem-space, and only those; thus it circumvents the inverse mapping problem. It also makes it possible to provide theoretical guarantees on the robustness of the model against a well-defined set of adversarial capabilities. Our empirical exploration validates our theoretical insights, where we can consistently reach 0\% Attack Success Rate after a few adversarial retraining iterations.
+\chapter{AutoRobust: Hardening Malware Detection Against Evasion}\label{ch:autorobust}
+
+\section*{Preamble}
+
+Malware, short for malicious software, encompasses a variety of harmful software designed to disrupt, damage, or gain unauthorized access to computer systems.
+The proliferation of malware poses significant threats to individuals, businesses, and government entities worldwide, something that is mainly countered by malware detection, the process of identifying and mitigating these malicious programs before they can inflict damage.
+Effective malware detection is crucial as it protects the digital infrastructure and ensures the CIA triad: confidentiality, integrity, and availability of information systems.
+
+In an era where cyber threats are becoming increasingly sophisticated, traditional methods of malware detection, such as signature-based detection, are inadequate against evasive and polymorphic malware.
+Furthermore, the prevalence of obfuscation techniques today makes static analysis, that is without executing the program, insufficient for detection.
+In an effort to address these challenges, dynamic analysis (that is with executing the malware) and \gls{DL} have been essential tools in detecting and identifying novel and polymorphic malware strains.
+These tools however are no silver bullets, adversarial malware are very capable of bypassing the dynamic analysis and any subsequent ML-based inference performed on the dynamic analysis results.
+Traditionally, malware employed techniques such as obfuscation and polymorphism to alter their code and make it difficult for signature-based detection methods to identify them.
+With the adoption of ML-based solutions in malware detection,
+another attack vector is introduced: adversarial examples.
+In the context of malicious software this implies \textit{any} code or binary modificaitons that preserve the original functionality.
+We note that is is a vastly different threat model for adversarial examples than one of imperceptible perturbations on images.
+
+To aggravate things further, ML-based malware detection is also vulnerable to spurious correlations and shortcut features, that is statistical relationships between the dependent and independent variables that are not causally produced.
+While distinct properties, adversarial vulnerabiltiy can be partially attributed to the existence of such shortcut features.
+In this chapter, we investigate a specific ML architecture employed in the pipeline of a widely-known commercial antivirus, and how to make its inference robust to adversarial malware.
+We carried this work out in collaboration with multiple university and industry partners, and it was lead by me and colleague Jacopo from King's College London.
+I focused more on robustifying the model against evasion, while Jacopo focused more on the dynamic analysis of the malware.
+The work has been published under the title: ``How to Train your Antivirus: RL-based Hardening through the Problem-Space''~\cite{tisngenopoulos2024train}.
+
+Adversarial training is the most reliable defensive technique that can confer empirical robustness, and most widely used irrespective of domain. 
+However, in our context it is not applicable out of the box, for the main reason that gradient-based perturbations rarely map back to feasible problem space programs. 
+We introduce a novel \gls{RL} approach for constructing adversarial examples, a constituent part of adversarially training a model against evasion.
+Our approach comes with two crucial advantages.
+First, it performs modifications that are feasible in the problem space, and only those.
+In this way, it completely bypasses the inverse mapping problem, namely the task of correcting the invalid feature modifications so that they conform with feasible programs.
+Secondly, we can provide probabilistic guarantees on the level of robustness of the model against well-defined adversarial capabilities, thus adding another layer of security on top of adversarial training that is empirical.
+We perform an extensive empirical evaluation which validates our theoretical insights and where we can consistently reach 0\% Attack Success Rate after a few adversarial retraining iterations.
+Notably, our approach widely outperforms gradient-based adversarial training we used as a baseline, empirically demonstrating that adversarial training through the problem space is the preferable approach in this domain.
 
 \section{Introduction}
 Adversarial examples have been extensively explored in numerous domains. While the fundamental challenge they pose to learning is fascinating on its own scientific accord, they also represent a significant threat to the widespread adoption of machine learning solutions in security-critical scenarios.
@@ -30,7 +60,7 @@ It is well established that adversarial training can reduce the performance on c
 As hardened models are not universally robust but instead biased towards specific kinds of distributional shifts, adversarial training has the potential to harm robustness in real-world settings.
 It then follows that in the domain of malware detection, adversarial training is important to be performed with the \textit{full range} of attacks that are \textit{possible} through the problem space---and that the threat analysis has rendered as such---and possibly \textit{only} against those.
 
-In this paper, we make the following contributions:
+In this chapter, we make the following contributions:
 \begin{itemize}
     \item We first obtain a wide range of Windows binaries spanning from 2012 to 2020, from various malware families to verified goodware; then we execute them in CAPEv2 to generate dynamic analysis reports. To foster research on dynamic analysis, we release our dataset in the following URL: https://paperswithcode.com/dataset/autorobust
     \item We justify theoretically how, under certain conditions, adversarial training through the problem-space is advantageous to gradient-based approaches like PGD~\cite{madry2017towards}, and define the concise set of transformations that are available for behavioral representations.

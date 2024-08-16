@@ -12,7 +12,7 @@ In this chapter we introduce to the reader key concepts from \gls{AML} and \gls{
 
 \section{Adversarial Machine Learning}
 \gls{AML} is a field of study within machine learning \gls{ML} that focuses on the vulnerabilities of \gls{ML} models to adversarial attacks.
-This field gained prominence in the early 2010s when researchers discovered that small, often imperceptible perturbations to input data could cause significant errors in ML model predictions \cite{biggio2013evasion, szegedy2013intriguing}.
+This field gained prominence in mid 2010s when researchers discovered that small, often imperceptible perturbations to input data could cause significant errors in ML model predictions \cite{biggio2013evasion, szegedy2013intriguing}.
 These findings highlighted critical security issues in ML systems, that subsequently sparked a burgeoning scientific field and extensive research into understanding, exploiting, and ultimately defending against these vulnerabilities.
 
 After their inception, adversarial attacks on ML models enjoyed a prolific growth in the scientific community, where researchers applied them anywhere and everywhere they could.
@@ -116,13 +116,13 @@ In supervised learning, an algorithm learns from a labeled dataset, and in unsup
 \gls{RL}, however, deals with learning from the consequences of actions, making it suitable for problems where an agent must make a sequence of decisions.
 
 Applications of \gls{RL} span across diverse fields including robotics, where robots learn to navigate and manipulate objects; games, where agents learn to play and excel at from chess to Go and video games; finance, where trading strategies are optimized; and as it most prominently featured in this dissertation, cybersecurity, where agents learn how to attack or defend AI-based systems.
-The versatility and generality of \gls{RL} have made it a focal area of research as we collecticely accelerate towards artificial general intelligence.
+The versatility and generality of \gls{RL} have made it a focal area of research as we collectively accelerate towards artificial general intelligence.
 
 Despite its promise, \gls{RL} poses several challenges that oft make it a bad choice to apply it uncritically and out-of-the-box.
 Such challenges are the exploration-exploitation trade-off, where an agent must balance exploring the environment to discover new strategies and exploiting known strategies to maximize rewards; sparse or delayed rewards, where an agent following a suboptimal initial policy might never reach them; and others like the design of reward functions, the scalability to high-dimensional state and action spaces, and ensuring stability and convergence of learning algorithms, which all are ongoing research areas.
 
-In this chapter, we will delve into the theoretical underpinnings of \gls{RL}, explore various \gls{RL} algorithms, and examine their applications and challenges.
-We will also discuss topics such as function approximation with neural networks, multi-agent reinforcement learning, and the implications of \gls{RL} for artificial general intelligence and AI safety.
+In this chapter, we delve into the theoretical underpinnings of \gls{RL}, explore various \gls{RL} algorithms, and examine their applications and challenges.
+We will also discuss topics such as function approximation with neural networks, multi-agent reinforcement learning (\gls{MARL}), and the implications of \gls{RL} for artificial general intelligence and AI safety.
 
 \section{Markov Decision Processes}
 
@@ -439,13 +439,14 @@ To formally solve a (cybersecurity) game, we require a complete model of the gam
 Unlike game theoretic formulations however, \gls{MARL} does not require such a model of the game and is therefore an indispensable tool for testing the security of real-world AI-enabled systems.
 
 \subsection{Controllability and Observability}
+\label{sec:control}
 
 When discussing adaptive adversarial attacks in cybersecurity, it is important to introduce the properties of controllability and observability from control theory.
 Black-box attacks typically involve influencing a system without detailed knowledge of its internal workings, relying instead on observable behavior to devise optimal strategies.
 
-Controllability in this context refers to the ability to manipulate the system inputs to achieve a desired effect, such as causing it to malfunction (evasion) or divulge sensitive information (membership inference).
+Controllability in this context refers to the ability to manipulate the system inputs to achieve a desired effect, such as causing it to malfunction (e.g. evasion) or divulge sensitive information (e.g. membership inference).
 Observability on the other hand refers to the ability to infer system states and vulnerabilities based on observed outputs, such as response times or error messages.
 
-Thus a correspondence exists between effective black-box attacks and control theory.
+There is therefore a correspondence between effective black-box attacks and adaptive control.
 An attacker must be able to both influence the system -- increase the controllability -- and accurately interpret the system responses to these influences -- increase the observability.
-While \gls{RL} has the potential to learn optimal behaviors from interactions, to develop sophisticated attacks (and therefore effective defenses) we need to impart higher observability -- expressed through the state representation -- and higher controllability -- expressed through the action representation -- to our agents.
+\gls{RL} has the potential to learn optimal policies from interactions, however to develop sophisticated attacks and subsequently effective defenses, we need to impart to our agents better observability and controllability; the former is achieved via the state representation, while the latter by expanding the available action set.

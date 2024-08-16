@@ -1,5 +1,5 @@
-\chapter{AutoRobust: Hardening Malware Detection Against Evasion}\label{ch:autorobust}
-
+\chapter{AutoRobust}\label{ch:autorobust}
+% : Hardening Malware Detection Against Evasion
 \section*{Preamble}
 
 Malware, short for malicious software, encompasses a variety of harmful software designed to disrupt, damage, or gain unauthorized access to computer systems.
@@ -13,14 +13,14 @@ These tools however are no silver bullets, adversarial malware are very capable 
 Traditionally, malware employed techniques such as obfuscation and polymorphism to alter their code and make it difficult for signature-based detection methods to identify them.
 With the adoption of ML-based solutions in malware detection,
 another attack vector is introduced: adversarial examples.
-In the context of malicious software this implies \textit{any} code or binary modificaitons that preserve the original functionality.
-We note that is is a vastly different threat model for adversarial examples than one of imperceptible perturbations on images.
+In the context of malicious software this implies \textit{any} code or binary modifications that preserve the original functionality.
+We note that is a vastly different threat model for adversarial examples than one of imperceptible perturbations on images.
 
 To aggravate things further, ML-based malware detection is also vulnerable to spurious correlations and shortcut features, that is statistical relationships between the dependent and independent variables that are not causally produced.
-While distinct properties, adversarial vulnerabiltiy can be partially attributed to the existence of such shortcut features.
+While distinct properties, adversarial vulnerability can be partially attributed to the existence of such shortcut features.
 In this chapter, we investigate a specific ML architecture employed in the pipeline of a widely-known commercial antivirus, and how to make its inference robust to adversarial malware.
-We carried this work out in collaboration with multiple university and industry partners, and it was lead by me and colleague Jacopo from King's College London.
-I focused more on robustifying the model against evasion, while Jacopo focused more on the dynamic analysis of the malware.
+We carried this work out in collaboration with multiple university and industry partners, and it was lead by me and co-author Jacopo from King's College London.
+I focused more on robustifying the model against evasion, while my co-author focused more on the dynamic analysis of the malware.
 The work has been published under the title: ``How to Train your Antivirus: RL-based Hardening through the Problem-Space''~\cite{tisngenopoulos2024train}.
 
 Adversarial training is the most reliable defensive technique that can confer empirical robustness, and most widely used irrespective of domain. 
@@ -36,7 +36,7 @@ Notably, our approach widely outperforms gradient-based adversarial training we 
 \section{Introduction}
 Adversarial examples have been extensively explored in numerous domains. While the fundamental challenge they pose to learning is fascinating on its own scientific accord, they also represent a significant threat to the widespread adoption of machine learning solutions in security-critical scenarios.
 At the same time, there is an eagerness by many cybersecurity vendors to adopt deep-learning approaches for malware detection and classification, for two main reasons.
-First, adversarial examples have existed in security domains long before they emerged in \gls{AI}, as straightforward ways for adversaries to adapt to signature- and rule-based decision making---for instance variants from the same malware family.
+First, adversarial examples have existed in security domains long before they emerged in \gls{AI}, as straightforward ways for adversaries to adapt to signature- and rule-based decision-making -- for instance variants from the same malware family.
 Secondly, while rule-based decisions can claim near zero false positives, they perform poorly in distributional shifts~\cite{upadhyay2021towards}, which are further intensified under adversarial agency.
 Hence, the promise that \gls{AI} brings is to learn general and ideally robust rules of inference in the presence of distributional shifts, both naturally and adversarially induced.
 

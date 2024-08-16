@@ -3,15 +3,15 @@
 \section*{Preamble}
 
 Despite considerable efforts on making them robust, real-world ML-based systems remain vulnerable to decision based attacks, as definitive proofs of their operational robustness have so far proven intractable for any but the simplest models.
-The canonical approach in robustness evaluation calls for adaptive attacks, which draw parallels to the Kerckhoffs' principle in cryptography, namely that the security of a model shouldn not rely on the secrecy about the model or its defenses. 
-Adaptive attacks are therefore attacks that have complete knowledge of any defense and access to all the avaiable tools to bypass them.
-In this chapter, we take the notion of being adaptive a step further, by introducing a more expansive notion of it, while showing how attacks but also defenses can benefit by being adaptive \emph{and} by learning from each other through interaction.
+The canonical approach in robustness evaluation calls for adaptive attacks, which draw parallels to the Kerckhoffs' principle in cryptography, namely that the security of a model should not rely on the secrecy about the model or its defenses. 
+Adaptive attacks are therefore attacks that have complete knowledge of any defense and access to all the available tools to bypass them.
+In this chapter, we take the notion of being adaptive a step further, by introducing a more expansive notion of it, while showing how attacks and also defenses can benefit by being adaptive \emph{and} by learning from each other through interaction.
 
 We introduce a novel framework for adaptively optimizing black-box attacks and defenses against each other through the competitive game they form.
 We initiate our investigation by focusing on adapting attacks: to reliably measure robustness it is paramount to evaluate against realistic and worst-case attacks.
-It is not simply that attacks themselves are typically underperforming out-of-the-box, there also exist transfomations on the inputs capable of evading similarity based defenses, transformations that also the model is invariant to; consider for instance translation or rotation for \gls{CNN}s.
+It is not simply that attacks themselves are typically underperforming out-of-the-box, there also exist transformations on the inputs capable of evading similarity based defenses, transformations that also the model is invariant to; consider for instance translation or rotation for \gls{CNN}s.
 Nevertheless, these evasive transformations interfere with the fundamental operation of the attack, are not straightforward when and how to apply, and as result these two are typically in trade-off.
-To achieve an optimal attack performance, we therefore augment both the attacks and their evasive arsenal \textit{togehter}, by adaptively controlling all their parameters.
+To achieve an optimal attack performance, we therefore augment both the attacks and their evasive arsenal \textit{together}, by adaptively controlling all their parameters.
 
 We discover that on image classification, the archetypal testbed for \gls{AML} research, while adversarial training does provide some robustness to adversarial attacks, this is often insufficient.
 As the imperceptible model of adversarial perturbations does not necessarily apply to other domains, we naturally wonder if one can improve on the level of robustness that is not based on an arbitrary threshold of perceptibility, by devising defenses that are also adaptive.
@@ -24,10 +24,7 @@ We demonstrate that active defenses are a necessary complement to model hardenin
 We validate our observations through a wide theoretical and empirical investigation to confirm that AI-enabled adversaries pose a considerable threat to black-box ML-based systems, rekindling the proverbial arms race where defenses \emph{have} to be AI-enabled too.
 Our approach outperforms the state-of-the-art adaptive attacks and defenses, while bringing them together to render effective insights over the robustness of real-world deployed ML-based systems.
 We address the challenges posed by adaptive adversaries and develop adaptive defenses, thereby laying out effective strategies in ensuring the robustness of ML-based systems deployed in the real-world.
-
-The work presented here constitutes a big part of the research efforts during my PhD, 
-It is currently submitted to ACSAC 2024 and is under review.
-Notably, 
+This chapter is based on work that represents a considerable part of my efforts during my PhD, and is currently under review in ACSAC 2024.
 
 \section{Introduction}
 
@@ -71,23 +68,6 @@ For reproducibility and follow-up work, we open-source our code\footnote{https:/
 
 Our work indicates that in the domain of black-box, decision-based \gls{AML}, robust evaluations \textit{should} go a step further than including adapted attacks: both attacks and defenses should have the capability to modify their operation through interaction and in direct response to other agency in the environment.
 
-%skip and provide forward references throughout the introduction
-%The remainder of the paper is structured as follows:
-%In Section \ref{sec:background} we provide the necessary background and terminology on the domain.
-%Section \ref{sec:approach} includes our theoretical treatment of adaptive attacks and defenses individually as well as our AMG framework.
-%In Section \ref{sec:evaluation} we elaborate on the empirical evaluation we performed and analyze our results.
-%We conclude with Section \ref{sec:discussion} where we critically reflect on our results and discuss further insights, limitations and challenges.
-
-% \textbf{DAVY'S ATTEMPT TO REWRITE THE CONTRIBUTIONS}
-% 1) We first expose the limitations of the current state-of-the-art approaches, by highlighting how active defenses can be circumvented by adaptive attackers due to a failure to adequately assess the attacker's optimization capabilities when devising attack strategies.
-
-% 2) To address this challenge, we propose a groundbreaking framework called "Adversarial Markov Games" that enables the evaluation of adversarial robustness by formalizing the ongoing competition between optimal attacks and optimal defenses using reinforcement learning. This framework allows us to reason about adaptive attacks and defenses, where the attacker optimizes their strategies by learning from the defender's behavior, while the defender at the same leverages their capabilities to the fullest extent by continuously learning the most effective defensive policies based on the optimal attacker's behavior.
-
-% 3) We provide a systematic theoretical analysis of robustness under adaptive control, and complement it with an extensive empirical evaluation conducted on image classification tasks across various adversarial scenarios. Our results demonstrate that both attacks and defenses can be optimized, with the degree of optimization heavily influenced by their adaptability.
-
-% Our research emphasizes that robust evaluations in adversarial machine learning (AML) cannot consider attacks and defenses in isolation. Instead, both parties must possess the ability to modify their approaches in response to the other's actions. By recognizing the interplay between adaptive adversaries and adaptive defenses, we lay the groundwork for more comprehensive assessments of model robustness in AML, leading to more effective and resilient systems.
-
-% \section{Related Work \& Problem Statement}
 \section{Preliminaries}
 \label{sec:background}
 In this work, we focus on the category of adversarial attacks known as \textbf{decision-based}, a subset of \text{query-based} attacks that operate solely on the \textbf{hard-label} outputs of the model and are regarded as a highly realistic and pervasive threat in AI-based cybersecurity environments.
@@ -111,7 +91,6 @@ Given dataset $D = {(x_i, y_i)}^{n}_{i=1}$ with classes $C$ where $x_i \in \math
 \noindent where $x_i + \delta_i$ is an adversarial example of $x_i$, $h_\phi : \mathbb{R^d} \rightarrow \mathbb{R^C}$ is a hypothesis function and $\mathcal{L}(h_\phi(x_i + \delta_i), y_i)$ is the loss function for the adversarial example $x_i + \delta_i$.
 The inner maximization loop finds an adversarial example of $x_i$ with label $y_i$ for a given $L_p$-norm (with $L_p \in \{0,1,2,\inf\}$), such that $\Vert \delta_i\Vert_{l} \leq \epsilon$ and $h_\phi(x_i + \delta_i) \neq y_i$.
 The outer loop is the standard minimization task typically solved with stochastic gradient descent.
-%Then the task of the outer minimization problem is to discover the model parameters $\phi$ that minimize the loss $\mathcal{L}$.
 While the convergence and robustness properties of adversarial training have been investigated through the computation of the inner maximization step and by interleaving normal and adversarial training \cite{wang2019convergence}, the min-max principle is conspicuous: minimize the possible loss for a worst case (max) scenario.
 
 \subsection{Stateful Defenses}
@@ -126,21 +105,10 @@ This limitation was recently addressed, together with the ensuing scalability is
 It remains a similarity-based defense however, thus vulnerable to circumvention if an adversary can find a query generation policy that preserves attack functionality while evading detection; the recent OARS work achieved this by adapting existing attacks through the rejection signal Blacklight returns~\cite{feng2023stateful}.
 Ultimately, any (stateful) defense has to balance the trade-off between robust and clean accuracy; as we demonstrate in this work, this trade-off can be representative only if the adversary has exhausted their adaptive offensive capabilities.
 
-%Specifically, their approach keeps track of incoming queries in order to decide if they are part of an attack or benign.
-%Each query $x \in \mathbb{R}^d$ attributed to a uniquely identifiable actor is mapped with an encoder $E(\cdot)$ to a lower dimensional latent space $e \in \mathbb{R}^l, l <  D$.
-%Then the distance to its $k$ nearest-neighbors is computed in this latent space, and if below a threshold it is flagged as malicious.
-%The encoder is trained so that it maps visually similar queries close to each other, taking into account transformations that adversaries might use to obfuscate their activity and that the model is invariant to, e.g., rotation or translation for CNNs.
-
-% From the mere interaction it is enabled from, stateful detection already points towards adversarial examples being something broader that includes the process of generating them, otherwise defined as adversarial behavior.
-% Furthermore, as \gls{AML} encompasses domains where visual similarity is of less significance \cite{sharif2018suitability}, the ensuing question is where does the boundary lie exactly between benign and adversarial examples?
-% In AI-based environments where adversarial activity is also present, we posit that adversarial behavior is a more general formulation, appropriate for describing and countering threats at the interface of interaction.
-% It is also more intuitive in domains where behavior -- as information unfolding over time -- is the canonical description, e.g in malware or bot detection, where AI can imitate benign programs or human behavior respectively.
-
 \subsection{On Being Adaptive}
 
 The correct way to evaluate any proposed defense is against \emph{adaptive} attack, that is with explicit knowledge of the inner mechanisms of a defense~\cite{tramer2020adaptive}.
 This is established in computer security as the stipulation that security through obscurity does not work: every defense has a potential workaround.
-%while every attack has a potential mitigation.
 If model hardening -- for instance by adversarial training -- is the defensive counterpart to white-box attacks, an active defense like stateful detection is the counterpart to decision-based attacks, and as we will demonstrate further in the chapter, also the \emph{necessary} complement to model hardening.
 
 At the same time, the level of threat that attacks pose is often unclear or not thoroughly evaluated.
@@ -148,14 +116,12 @@ As Croce et al.~\cite{croce2020reliable} have demonstrated, it is very common th
 This underestimation can be further aggravated in decision-based contexts, where the attacker is largely oblivious of any preprocessing or active defenses the black-box system might have.
 The practical effectiveness of attacks rests then on the ability to adapt the policies that govern their operation and their evasive capabilities \textit{in tandem}.
 
-%But what does the ability to adapt entail \textit{exactly}, for attacks as well as defenses, and what are the implications when these adapt at distinct manners and points in time?
 In \gls{AML}, ``adaptive'' by convention refers to attacks with full knowledge of how a defense works and the tools to bypass it; we denote such attacks as \textbf{adapted}.
 In our work, we expand the term to include \textit{adaptive control}, defined as the ability of a system to \textbf{self-adapt}: \emph{automatically} reconfigure itself in response to changes in the dynamics of the environment in order to achieve optimal behavior~\cite{aastrom2013adaptive}.
-%beyond the human-in-the-loop iterative arms-race of devising attacks for defenses and vice-versa.
 Typically, what is to be controlled is known in advance and well-defined.
 The moment however we consider adaptive evaluations, \textit{new} controls are immediately implied: in a similarity-based defense for instance, such controls would be input transformations the model is invariant to.
 To flesh out the twofold meaning of adaptive, one has to \textit{both} imagine new knobs~\cite{hofstadter2008metamagical}, \textit{and} discover their correct configuration that would lead to the optimal result.
-%The invention of knobs, a faculty strictly human so far, is a way to impart \emph{controllability} to the task, in this case evading a stateful defense.
+The invention of knobs, a faculty strictly human so far, is a way of imparting \emph{controllability} to the task of, in this case, evading a stateful defense.
 We conceptualize this expanded definition of adaptive, essential for having accurate evaluations in \gls{AML} research, in Figure~\ref{fig:adaptivity}.
 
 \begin{figure}

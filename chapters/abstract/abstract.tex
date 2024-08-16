@@ -2,35 +2,36 @@
 \chapter{Abstract}
 \label{ch:abstract}
 
-The automation and productivity gains heralded by the latest advances in \gls{AI} have supercharged its adoption in a wide range of domains, from news, information, and governance, to finance, advertising, health, and education.
-As we globally transition towards automated decision-making that is by definition more opaque and less accountable, long-term consequences are yet to materialize.
+The automation and productivity gains heralded by the latest advances in \gls{AI} have supercharged its adoption in a wide range of domains, from news, governance, and finance, to healthcare, advertising, employment, and education.
+As we slowly transition towards automated decision-making that is by definition more opaque and less accountable, there are considerable short-term risks, while long-term consequences have yet to materialize.
 Besides adversarial examples, the original failure mode of \gls{AI}, today we have to grapple with broader challenges, directly or indirectly induced by \gls{AI}.
-Concerns like privacy, intellectual and creative rights, surveillance, adversarial malware, phishing emails, personalized news feeds and advertising, misinformation campaigns, and all kinds of biased and unaccountable decision-making.
-It is not a novel observation that as we shape our tools, our tools also shape us, yet at this historic turn these tools enjoy an unprecedented access to data and computation.
+Such concerns are privacy, intellectual and creative rights, surveillance, adversarial malware, phishing emails, misinformation campaigns, and all kinds of biased or fabricated information.
+It is not a novel observation that as we shape our tools, our tools also shape us, yet at this historic turn these tools enjoy unprecedented access to data and computation.
 
-In this dissertation we investigate adaptive attacks against AI-based systems, and how to make them perform and infer robustly, as a prerequisite for their correct functioning under adversarial agency.
-First, we introduce a novel adversarial attack against a real-word cybersecurity system, namely Google reCAPTCHA v3, a noninteractive CAPTCHA that does not interrupt browsing and thus obfuscates the nature of the challenge, i.e. the reverse Turing test.
-We introduce several adaptive agents that can simulate human-like web browsing behavior, and train them to evade detection form reCAPTCHA v3 by using the returned score as an informative signal, in an online and interactive manner.
+Cybersecurity as a field is also reaping the benefits of \gls{AI}, in both offensive and defensive applications.
+The integration of AI-based solutions in modern systems however, increases the attack surface and changes the threat landscape considerably.
+In this dissertation we investigate adaptive attacks against AI-based systems, and how to make these systems perform and infer robustly, as a prerequisite for their correct functioning under adversarial agency.
+First, we introduce a novel adversarial attack against a real-word system, namely Google reCAPTCHA v3, a Captcha that does not interrupt browsing and thus obfuscates the nature of the challenge: the Turing test.
+We introduce several adaptive agents that can simulate human-like web browsing behavior, and train them to evade detection by using the returned score as an informative signal, in an online and interactive manner.
 We demonstrate how our agents, empowered with general web browsing capabilities, effectively transfer to other websites with a near perfect evasion rate.
-Notably, our study exposes an crucial vulnerability: while the score is influenced by a multitude of undisclosed factors, the mere fact of being easily accessible to adversaries enables them to learn and perfect evasive models.
+Through our study we expose a notable vulnerability: the mere access to the risk score enables adversaries to learn and perfect evasive web browsing agents.
 
-Secondly, it has been widely observed that \gls{AI} models are vulnerable to both evasion and spurious correlations, and malware detection is not an exception.
-In this work we collaborated with two other universities and an industrial partner to investigate the \gls{ML}-based detection module of a widely known antivirus, with the goal to harden it against adversarial malware.
-Adversarial training, the most dependable defense against evasion so far, is not applicable out of the box in this domain, as gradient-based perturbations rarely map back to feasible problem-space programs.
+Secondly, it has been widely observed that \gls{AI} models are vulnerable to both evasion attacks and spurious correlations, and malware detection is not an exception.
+In a collaboration of several universities and industrial partners, we investigate the \gls{ML}-based detection module of a widely known antivirus, with the goal to harden it against adversarial malware.
+Adversarial training, the most dependable defense against evasion so far, is not applicable out of the box in this domain, as there is no consistent way to map gradient-based perturbations to feasible problem-space programs.
 We introduce a novel \gls{RL} approach for constructing adversarial examples, one that comes with two principal advantages.
-First, it performs modifications that are feasible in the problem-space, and only those; thus, it circumvents the typical problem of mapping perturbations to feasible programs.
+First, it performs modifications that are feasible in the problem space, and only those; thus, it circumvents the mapping of perturbations back to feasible programs.
 Secondly, it makes possible to provide theoretical guarantees on the degree of robustness of the model against a particular, well-defined set of adversarial capabilities.
-Finally, in our empirical evaluation we can consistently nullify the attack success rate -- which originally was 100\% -- after a few adversarial retraining iterations.
+Finally, in our empirical evaluation we can consistently nullify the originally 100\% attack success rate, after a few adversarial retraining iterations.
 
 Finally, despite considerable efforts on making them robust, real-world AI-based systems remain vulnerable to decision-based attacks, as definitive proofs of their operational robustness have so far proven intractable.
-In our third work we propose and evaluate a framework for adaptively optimizing black-box attacks and defenses against each other through the competitive game they form: to reliably measure robustness, it is paramount to evaluate against realistic and worst-case attacks.
-We thus adaptively control attacks and their evasive arsenal at their disposal, and do the same for defenses, before we evaluate them first apart and then jointly under a multi-agent perspective.
+We introduce a framework for adaptively optimizing black-box attacks and defenses against each other through the competitive game they form: to reliably measure robustness, it is paramount to evaluate against realistic and worst-case attacks.
+Thus, we adaptively control attacks and their evasive arsenal at their disposal, and do the same for defenses, before we evaluate them first apart and then jointly under a multi-agent perspective.
 We demonstrate that active defenses, which control how the system responds, are a necessary complement to model hardening when facing decision-based attacks; then how these defenses can be circumvented by adaptive attacks, only to finally elicit active and adaptive defenses.
-We validate our observations through a wide theoretical and empirical investigation to confirm that AI-enabled adversaries pose a considerable threat to black-box ML-based systems, rekindling the proverbial arms race where defenses have to be AI-enabled too.
+Our observations are validated through a wide theoretical and empirical investigation to confirm that AI-enabled adversaries pose a considerable threat to black-box models, rekindling the proverbial arms race where defenses have to be AI-enabled too.
 
-In summary, in this dissertation we make several contributions on the domain of adaptive adversarial attacks and defenses, on a wide range of underlying systems and modalities.
-As our works build upon each other, we provide valuable insights and enable further investigations towards making \gls{AI}-based systems secure, safe, and trustworthy.
-
+In summary, we make several contributions to the security of modern AI-based systems by investigating adaptive adversarial attacks and defenses on a wide range of domains and modalities.
+Our works, which build progressively upon each others, when approached at their synthesis they provide important insights and a technical overview of the field black-box \gls{AML}, and enable further research towards making the functioning of real-world \gls{AI}-based systems secure, robust, and trustworthy.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Keep the following \cleardoublepage at the end of this file, 

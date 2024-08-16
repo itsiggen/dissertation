@@ -123,6 +123,9 @@
 \newacronym{PGD}{PGD}{Projected Gradient Descent}
 \newacronym{FGSM}{FGSM}{Fast Gradient Sign Method}
 \newacronym{OCR}{OCR}{Optical Character Recognition}
+\newacronym{VPN}{VPN}{Virtual Private Network}
+\newacronym{RF}{RF}{Random Forest}
+
 
 % BibLaTeX
 \usepackage[utf8]{inputenc}
@@ -154,7 +157,8 @@
 \usepackage{tikz}
 \usepackage{siunitx}
 \usepackage{enumerate}
-\usepackage{enumitem,kantlipsum}
+\usepackage{kantlipsum}
+\usepackage[inline]{enumitem}
 \usepackage{soul}
 \usepackage{colortbl}
 \usepackage{cancel}
@@ -409,7 +413,11 @@
 % BibLatex (comment lines above and comment out biblatex lines in preamble)
 % \printbibliography[title=\bibname]\
 % \instructionsbibliography
-\printbibliography
+
+\cleardoublepage
+\phantomsection
+\addcontentsline{toc}{chapter}{Bibliography}
+\printbibliography[title=\bibname]
 
 % \includecv{curriculum}
 

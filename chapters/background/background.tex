@@ -1,6 +1,6 @@
 \chapter{Background}\label{ch:background}
 
-This dissertation explores attacks and defenses against AI-based systems; in this way, it lies on the intersection of cybersecurity and AI.
+This dissertation explores attacks and defenses against AI-based systems; it therefore lies on the intersection of cybersecurity and AI.
 Cybersecurity, as is conventionally understood, refers to the practice of protecting systems, networks, and data from digital attacks, damage, or unauthorized access.
 As our dependence on technology grows, so does the sophistication and frequency of cyber threats, and effective cybersecurity involves implementing strategies and defense mechanisms for combating a wide range of potential attacks.
 These attacks are elicited through threat modeling, a systematic approach used to identify, assess, and prioritize potential threats to a system through the attack surface that it exposes.
@@ -8,15 +8,15 @@ A typical threat model includes information about the adversaries, more precisel
 
 In this work we focus on well-defined subsets of adversarial goals and capabilities: the goal is to evade detection or cause a misclassification, while the capabilities are specifically against the logic implemented by the AI module.
 By this we mean that adversaries can manipulate the information that is used as input to the system, and \textit{only} that; we consider attacks on the technical implementation of the system out of our scope.
-In this chapter we introduce to the reader key concepts from \gls{AML} and \gls{RL}, scientific domains fundamental in our works, in order to facilitate a comprehensive understanding of this dissertation.
+In this chapter we introduce to the reader key concepts from \gls{AML} and \gls{RL}, scientific fields fundamental to our work, in order to facilitate a comprehensive understanding of this dissertation.
 
 \section{Adversarial Machine Learning}
 \gls{AML} is a field of study within machine learning \gls{ML} that focuses on the vulnerabilities of \gls{ML} models to adversarial attacks.
 This field gained prominence in mid 2010s when researchers discovered that small, often imperceptible perturbations to input data could cause significant errors in ML model predictions \cite{biggio2013evasion, szegedy2013intriguing}.
 These findings highlighted critical security issues in ML systems, that subsequently sparked a burgeoning scientific field and extensive research into understanding, exploiting, and ultimately defending against these vulnerabilities.
 
-After their inception, adversarial attacks on ML models enjoyed a prolific growth in the scientific community, where researchers applied them anywhere and everywhere they could.
-To provide a general view to adversarial attacks, they can be categorized into several types according and along two axes: the level of access they have to the model, as well as the objective of the attack.
+After the initial inception, adversarial attacks on ML models enjoyed a prolific growth, where researchers conceived and performed attacks on every context or model available, with often little regard to how feasible or realistic these attacks might be.
+To provide an overview of adversarial attacks on gls{ML}, they can be categorized into several types: according to the level of access they have to the model, as well as the objective of the attack.
 
 \subsection{Adversarial Objective}
 
@@ -26,31 +26,30 @@ While not intended as an exhaustive list, adversarial attacks fall largely in fo
     \item \textbf{Evasion Attacks}. These are attacks that occur at test time. An adversary slightly modifies input data to ``evade'' detection or classification. For instance, adding noise to an image can mislead an image classifier into making an incorrect prediction.
     \item \textbf{Poisoning Attacks}. Contrary to evasion, poisoning attacks occur at training time. The attacker injects malicious data into the training set, aiming to corrupt the learning process. This aim can be the degradation of the model's performance or the insertion of backdoors (triggers) that enable a special kind of evasion at test time.
     \item \textbf{Model Extraction Attacks}. In model extraction attacks, the adversary aims to steal the parameters or hyperparameters of a model. By querying the model and analyzing the outputs, an attacker can approximate the original model.
-    \item \textbf{Membership Inference Attacks} These attacks involve determining whether a specific data point was part of the model's training set. This can lead to privacy breaches, revealing sensitive information about individuals in the dataset.
+    \item \textbf{Privacy Attacks}. Attacks like membership inference involve determining whether a specific data point was part of the model's training set. This can lead to privacy breaches, revealing sensitive information about individuals or their attributes in the dataset.
 \end{itemize}
 
 \textbf{Adversarial Examples.} The most common attack in \gls{AML} is evasion, and the samples that are part of such an attack or the results of it, are known as adversarial examples.
 Adversarial examples are inputs to \gls{ML} models that are intentionally designed to cause the model to make a mistake.
-These inputs are typically created by adding small, carefully crafted perturbations to legitimate examples from the dataset; these modifications are almost imperceptible to humans but cause significant errors in the model predictions.
-The study of adversarial examples has revealed vulnerabilities in various machine learning models, particularly in deep neural networks, raising concerns about their robustness and security in real-world applications.
-
+These inputs are typically created by adding small, carefully crafted perturbations to legitimate, clean examples; these modifications are almost imperceptible to humans but cause significant errors in the model predictions.
+The study of adversarial examples has revealed vulnerabilities in various \gls{ML} models, particularly in deep neural networks, raising concerns about their robustness and security in real-world applications.
 
 Formally, let \( f: \mathbb{R}^n \to \mathbb{R}^m \) be a machine learning model, where \( f(x) \) represents the model's output for an input \( x \in \mathbb{R}^n \). Consider a legitimate input \( x \) with true label \( y \). An adversarial example \( x' \) is a perturbed version of \( x \) such that:
 
 \begin{enumerate}
     \item \( x' = x + \delta \), where \( \delta \in \mathbb{R}^n \) is the perturbation. 
-    \item The perturbation \( \delta \) is constrained to be smaller than a threshold \(\epsilon\), often measured by a norm \( \|\delta\|_p \leq \epsilon\) for some norm \( p \); common norm choices are \( p = 2 \) (Euclidean) or \( p = \infty \) (maximum).
+    \item The perturbation \( \delta \) is constrained to be smaller than a threshold \(\epsilon\), often measured by a norm \( \|\delta\|_p \leq \epsilon\), for some norm \( p \); common norm choices are \( p = 2 \) (Euclidean) or \( p = \infty \) (maximum).
     \item The perturbed input \( x' \) leads to a misclassification by the model, i.e., \( f(x') \neq y \) or, more generally, \( f(x') \neq f(x) \).
 \end{enumerate}
 
-In practice, adversarial examples are often generated by optimizing the perturbation \( \delta \) to maximize the  prediction error of the model, subject to the  perturbation constraint.
-While adversarial examples were initially discovered and subsequently researched in the image classification domain, eventually they appeared in every domain that employs ML-based classification.
-Naturally, different domains will have different constraints; in adversarial malware for example, the similarity to the original sample is of less importance, while the preservation of semantics and functionality is of high importance. 
+In practice, adversarial examples are often generated by optimizing the perturbation \( \delta \) to maximize the prediction error of the model, subject to the perturbation constraint.
+While adversarial examples were initially discovered and subsequently researched in the image classification domain, eventually they appeared in every domain that employs supervised, unsupervised, and reinforcement learning.
+Naturally, different domains will have distinct constraints; in adversarial malware for example, the similarity to the original sample is of less importance, while the preservation of semantics and functionality is of high importance. 
 
 \subsubsection{White-Box vs. Black-Box}
 
 In white-box (evasion) attacks, the attacker has complete access to the model, including its architecture, parameters, and gradients.
-This allows for the precise calculation of perturbations that can mislead the model.
+This allows for the gradient-based, end-to-end optimization of perturbations that can mislead the model.
 Formally, white-box attacks often solve the following optimization problem:
 \[
 \max_{\delta} \mathcal{L}(f(x + \delta), y)
@@ -62,15 +61,15 @@ subject to
 where $\mathcal{L}$ is the loss function, $f$ is the model, $x$ is the original input, $y$ is the true label, $\|\cdot\|_p$ is the $p$-norm, and $\epsilon$ is the small constant that bounds the perturbation.
 Common methods for white-box attacks include Fast Gradient Sign Method (\gls{FGSM}) and Projected Gradient Descent (\gls{PGD}).
 
-In contrast, in black-box adversarial attacks, the adversary does not have access to the internals of the model, a much more representative formalism for cybersecurity enviroments.
+In contrast, in black-box adversarial attacks, the adversary does not have access to the internals of the model, a more apt and representative model of cybersecurity environments.
 Instead, the one capability that is typically preserved for the adversary in black-box contexts, is the ability to query the model and observe the output.
 
-The lack of access to the underlying model and lack of a closed-form description of it, makes it challenging to compute gradients directly.
+The lack of access to the underlying model and lack of a closed-form description of it, makes it challenging to compute gradients, at least directly.
 Alternative strategies need to be employed for optimizing the attack: such approaches include the approximation of the gradient with techniques like finite differences or surrogate models, or derivative free optimization like genetic algorithms.
 
 \subsection{Mitigations and Defenses}
 
-Several defense mechanisms or mitigations to adversarial examples have been proposed and tested over time:
+Over time, several defense mechanisms and mitigations to adversarial examples have been proposed and tested:
 
 \begin{itemize}
     \item \textbf{Adversarial Training}. This defense incorporates adversarial examples into the training process to enhance model robustness. A computationally intensive approach but with significant efficacy.
@@ -81,7 +80,7 @@ Several defense mechanisms or mitigations to adversarial examples have been prop
 \end{itemize}
 
 We should mention that all these defenses confer only empirical robustness to a model; so far there have been no definitive proofs of a model's operational robustness at deployment.
-Notably, the only defense that has withstood the test of time and is still widely used is adversarial training.
+Furthermore, out of all these defenses the only one that has withstood the test of time and is still widely used is adversarial training.
 Adversarial training can be mathematically formulated as a min-max optimization problem:
 
 \begin{equation}
@@ -89,44 +88,46 @@ Adversarial training can be mathematically formulated as a min-max optimization 
 \end{equation}
 
 where \( \theta \) represents the model parameters, \( \mathcal{D} \) is the data distribution, \( \Delta \) is the set of permissible perturbations, \( L \) is the loss function, and \( f_\theta \) is the model.
-The inner maximization seeks the worst-case perturbation \( \delta \), while the outer minimization adjusts the model parameters \( \theta \) to minimize the loss; as essentially a saddle-point optimization task.
-As both the loss landscape and the set of perturbations are typically non-convex, adversarial training can be a challenging and computationally intensive task; even leading to instability and convergence issues due to the alternating nature of the optimization.
+The inner maximization seeks the worst-case perturbation \( \delta \), while the outer minimization adjusts the model parameters \( \theta \) to minimize the loss; it is essentially a saddle-point optimization task.
+As both the loss landscape and the set of perturbations are non-convex, adversarial training is typically challenging and computationally intensive, that can lead to instability and convergence issues due to the alternating nature of the optimization.
 
 \subsection{Shortcut Learning}
 
-Shortcut learning refers to models leveraging simple but non-generalizable patterns in the training data to make predictions \cite{geirhos2020shortcut}.
-These shortcuts can  make models vulnerable to adversarial attacks and lead to poor performance on out-of-distribution samples; the later should be considered as given in adversarial environments like cybersecurity.
-Adversarial examples can exploit these shortcuts by introducing small perturbations that the model erroneously relies on for prediction.
+Shortcut learning refers to models leveraging non-generalizable patterns and spurious correlations in the training data to make predictions~\cite{geirhos2020shortcut}.
+These shortcuts can make models vulnerable to adversarial attacks and lead to poor performance on out-of-distribution samples.
+\gls{OOD} samples should be considered a given in environments like cybersecurity, due to the involved agency of adversaries trying to evade the model.
+Adversaries exploit these shortcuts by introducing small perturbations that the model erroneously relies on for prediction.
 
 When \gls{ML} models are trained without adversarial training or without considering robustness to attacks, then they are more likely to depend on any shortcuts or artifacts present in the data, and even be more vulnerable to attacks.
 As a result, these models will perform poorly when exposed to adversarial examples and other forms of distributional shifts, limiting their real-world applicability and reliability.
-It is thus paramount to identify any reliance on non-robust features beforehand and mitigate them.x
+It is thus paramount to identify any reliance on non-robust features beforehand and mitigate them.
 
 \section{Reinforcement Learning}
 
-\gls{RL} is a paradigm of \gls{ML} where an agent learns to make decisions by interacting with an environment.
-The agent takes actions in an environment, receives feedback in the form of rewards, and adjusts its actions to maximize cumulative rewards over time.
-This trial-and-error approach allows the agent to discover optimal behaviors through experience rather than by being explicitly programmed.
+\gls{RL} is a discipline of \gls{AI} that formalizes agents learning how to make optimal decisions by interacting with an environment.
+The agent takes actions in an environment, receives feedback in the form of rewards, and adjusts its actions to maximize the cumulative rewards over time.
+This reinforced trial-and-error approach allows the agent to discover optimal behaviors through experience rather than by being explicitly programmed.
 
-The foundational concept in \gls{RL} is the \gls{MDP}, which provides a mathematical framework for modeling the decision-making environment.
-An MDP consists of states, actions, rewards, and state transition probabilities, and it assumes the Markov property where the future state depends only on the current state and action.
+The foundational concept in \gls{RL} is the \gls{MDP}, which provides a mathematical formalism for modeling the decision-making process in an environment.
+An \gls{MDP} consists of states, actions, rewards, and state transition probabilities, and it assumes the Markov property where the future state depends only on the current state and action.
 
-\gls{RL} differs significantly from other \gls{ML} paradigms such as supervised learning and unsupervised learning.
+\gls{RL} differs significantly from disciplines like supervised learning and unsupervised learning.
 In supervised learning, an algorithm learns from a labeled dataset, and in unsupervised learning, it discovers patterns in data without explicit labels.
 \gls{RL}, however, deals with learning from the consequences of actions, making it suitable for problems where an agent must make a sequence of decisions.
 
 Applications of \gls{RL} span across diverse fields including robotics, where robots learn to navigate and manipulate objects; games, where agents learn to play and excel at from chess to Go and video games; finance, where trading strategies are optimized; and as it most prominently featured in this dissertation, cybersecurity, where agents learn how to attack or defend AI-based systems.
-The versatility and generality of \gls{RL} have made it a focal area of research as we collectively accelerate towards artificial general intelligence.
+The versatility and generality of \gls{RL} have made it a prominent area of research, even a model for how humans learn, as we collectively accelerate towards \gls{AGI}.
 
 Despite its promise, \gls{RL} poses several challenges that oft make it a bad choice to apply it uncritically and out-of-the-box.
-Such challenges are the exploration-exploitation trade-off, where an agent must balance exploring the environment to discover new strategies and exploiting known strategies to maximize rewards; sparse or delayed rewards, where an agent following a suboptimal initial policy might never reach them; and others like the design of reward functions, the scalability to high-dimensional state and action spaces, and ensuring stability and convergence of learning algorithms, which all are ongoing research areas.
+Such challenges are the exploration-exploitation trade-off, where an agent must balance exploring the environment to discover new strategies and exploiting known strategies to maximize rewards; sparse or delayed rewards, where an agent following a suboptimal initial policy might never reach them; and others like the design of reward functions, the scalability to high-dimensional state and action spaces, and ensuring stability and convergence of learning algorithms, which all are crucial ongoing research subjects.
 
-In this chapter, we delve into the theoretical underpinnings of \gls{RL}, explore various \gls{RL} algorithms, and examine their applications and challenges.
-We will also discuss topics such as function approximation with neural networks, multi-agent reinforcement learning (\gls{MARL}), and the implications of \gls{RL} for artificial general intelligence and AI safety.
+In this chapter, we delve into the theoretical underpinnings of \gls{RL}, introduce the prominent \gls{RL} algorithms, and examine their applications and challenges.
+We will also discuss topics such as function approximation with neural networks, multi-agent reinforcement learning (\gls{MARL}), and important concepts that lie at tbe intersection of \gls{RL} and cybersecurity.
 
 \section{Markov Decision Processes}
 
-Markov Decision Processes (MDPs) provide a mathematical framework for modeling decision-making problems where outcomes are partly random and partly under the control of a decision-maker. MDPs are widely used in reinforcement learning to formalize the environment in which an agent operates.
+Markov Decision Processes (MDPs) provide a mathematical framework for modeling decision-making problems where outcomes are partly random and partly under the control of a decision-maker.
+MDPs are widely used in reinforcement learning to formalize the environment in which an agent operates.
 
 An MDP is defined by the tuple $(S, A, P, R, \gamma)$, where:
 \begin{itemize}
@@ -137,7 +138,8 @@ An MDP is defined by the tuple $(S, A, P, R, \gamma)$, where:
     \item $\gamma \in [0,1]$ is the discount factor, which determines the importance of future rewards.
 \end{itemize}
 
-The objective in an MDP is to find a policy $\pi: S \rightarrow A$ that maximizes the expected cumulative reward, also known as the return. The return $G_t$ at time $t$ is defined as:
+The objective in an MDP is to ``solve'' it, that is to find a policy $\pi: S \rightarrow A$ that maximizes the expected cumulative reward, also known as the return.
+The return $G_t$ at time $t$ is defined as:
 \[
 G_t = \sum_{k=0}^{\infty} \gamma^k R(s_{t+k}, a_{t+k})
 \]
@@ -145,7 +147,8 @@ where $s_{t+k}$ and $a_{t+k}$ are the states and actions at time $t+k$, respecti
 
 \subsection{Value Functions}
 
-Value functions are used to estimate the expected return from a given state or state-action pair under a specific policy. The state-value function $V^{\pi}(s)$ for policy $\pi$ is defined as the expected return when starting in state $s$ and following policy $\pi$ thereafter:
+Value functions are used to estimate the expected return from a given state or state-action pair under a specific policy.
+The state-value function $V^{\pi}(s)$ for policy $\pi$ is defined as the expected return when starting in state $s$ and following policy $\pi$ thereafter:
 \[
 V^{\pi}(s) = \mathbb{E}_{\pi} \left[ G_t \mid s_t = s \right]
 \]
@@ -155,13 +158,13 @@ The action-value function $Q^{\pi}(s, a)$ for policy $\pi$ is defined as the exp
 Q^{\pi}(s, a) = \mathbb{E}_{\pi} \left[ G_t \mid s_t = s, a_t = a \right]
 \]
 
-The goal of reinforcement learning is often to find the optimal policy $\pi^*$ that maximizes the value function:
+Typically, the goal in \gls{RL} problems is to find the optimal policy $\pi^*$ that maximizes the value function:
 \[
 \pi^* = \arg\max_{\pi} V^{\pi}(s) \quad \forall s \in S
 \]
 
-\textbf{Advantage Functions.} The advantage function $\hat{A}_t$ is sometimes used in place of a value function, , as it is crucial for reducing the variance in policy gradient methods for example.
-It can be estimated in various ways, such as in Generalized Advantage Estimation (GAE), which provides a balance between bias and variance:
+\textbf{Advantage Functions.} In place of the value function, the advantage function $\hat{A}_t$ is sometimes used; this is crucial for reducing the variance in policy gradient methods for example.
+The advantage (in choosing between actions) can be estimated in various ways, such as in Generalized Advantage Estimation (GAE) that provides a balance between bias and variance:
 \[
 \hat{A}_t = \sum_{l=0}^{\infty} (\gamma \lambda)^l \delta_{t+l}
 \]
@@ -169,7 +172,8 @@ where $\delta_t = r_t + \gamma V(s_{t+1}) - V(s_t)$ is the temporal difference e
 
 \subsection{Bellman Equations}
 
-The Bellman equations provide recursive definitions for the value functions. For the state-value function, the Bellman equation is:
+The Bellman equations provide recursive definitions for the value functions.
+For the state-value function, the Bellman equation is defined as:
 \[
 V^{\pi}(s) = \sum_{a \in A} \pi(a|s) \sum_{s' \in S} P(s'|s,a) \left[ R(s,a) + \gamma V^{\pi}(s') \right]
 \]
@@ -188,21 +192,17 @@ V^*(s) = \max_{a \in A} \sum_{s' \in S} P(s'|s,a) \left[ R(s,a) + \gamma V^*(s')
 Q^*(s, a) = R(s,a) + \gamma \sum_{s' \in S} P(s'|s,a) \max_{a' \in A} Q^*(s', a')
 \]
 
-The two fundamental approaches for solving MDPs are called policy iteration and value iteration.
+Having defined the action-value and state-value functions, the two fundamental approaches for finding their optimal policy and thus solving the MDPs, are called policy iteration and value iteration.
 
-\subsubsection{Policy Iteration}
-
-Policy iteration alternates between policy evaluation and policy improvement:
+\textbf{Policy Iteration}. This approach is composed of two steps, policy evaluation and policy improvement:
 \begin{itemize}
     \item \textbf{Policy Evaluation}: Calculate the value function $V^{\pi}$ for the current policy $\pi$ by solving the Bellman equation.
     \item \textbf{Policy Improvement}: Update the policy $\pi$ by choosing actions that maximize the value function.
 \end{itemize}
 
-The algorithm converges to the optimal policy $\pi^*$.
+By alternating between these two, the algorithm converges to the optimal policy $\pi^*$.
 
-\subsubsection{Value Iteration}
-
-Value iteration simplifies policy iteration by combining policy evaluation and policy improvement into a single step.
+\textbf{Value Iteration}. This approach simplifies policy iteration by combining policy evaluation and policy improvement into a single step.
 It iteratively updates the value function using the Bellman optimality equation:
 \[
 V_{k+1}(s) = \max_{a \in A} \sum_{s' \in S} P(s'|s,a) \left[ R(s,a) + \gamma V_k(s') \right]
@@ -215,7 +215,8 @@ The algorithm converges to the optimal value function $V^*$, and the optimal pol
 
 As \gls{MDP}s can be solved in various ways, it is important to understand how different \gls{RL} algorithms achieve that.
 These algorithms can be broadly categorized based on two criteria.
-One such distinction is between model-free and model-based methods, while another is between on-policy and off-policy methods. Understanding these categories helps in selecting the appropriate algorithm for a given problem and environment.
+One such distinction is between model-free and model-based methods, while another is between on-policy and off-policy methods.
+Understanding these categories is important as it helps in selecting the appropriate algorithm for a given problem and environment.
 
 \subsubsection{Model-Free vs Model-Based}
 
@@ -223,9 +224,9 @@ Model-free are algorithms that do not attempt to learn a model of the environmen
 While model-free algorithms are generally simpler and require fewer assumptions, they might need more interactions with the environment to learn effective policies.
 The vast majority of applied RL uses model-free methods, further subdivided to value-based methods like Q-learning and SARSA, and policy-based methods which directly learn the policy, such as REINFORCE and actor-critic.
 
-Model-based algorithms, on the other hand, attempt to learn a model of the dynamics of the environment, which includes the state transition probabilities and the reward function.
+On the other hand, model-based algorithms attempt to learn a model of the dynamics of the environment, which includes the state transition probabilities and the reward function.
 These models are then used for planning and decision-making.
-Model-based algorithms can be more powerful and data-efficient but also more complicated as they require a model of the environment; model-free algorithms are typically simpler and more straightforward to implement.
+Model-based algorithms can be more powerful and data-efficient but also more complicated, as they require a model of the environment; model-free algorithms are less involving and more straightforward to implement.
 
 \subsubsection{On-Policy vs Off-Policy Algorithms}
 
@@ -234,13 +235,9 @@ The policy is evaluated and improved continually, based on the actions taken by 
 
 Off-policy algorithms, in contrast, learn the value of the optimal policy independently of the agent actions.
 This allows off-policy methods to reuse experience generated from older policies, at the cost of less accurate updates.
-In some off-policy algorithms, importance sampling is used to correct the bias introduced by using experiences from a different policy.
-% \[
-% \hat{Q}(s, a) = \frac{1}{N} \sum_{i=1}^{N} \rho_i \delta_i
-% \]
-% where $\rho_i$ is the importance sampling ratio and $\delta_i$ is the temporal-difference error.
+Off-policy algorithms can additionally employ importance sampling, a technique used to correct the bias introduced by using experiences from a different policy.
 
-A (non-exhaustive) list of commonly used algorithms in RL follows:
+Here, we provide a (non-exhaustive) list of the most commonly used algorithms in RL:
 
 \begin{itemize}
     \item \textbf{Q-learning}: A popular model-free and off-policy algorithm that learns the action-value function $Q(s, a)$.
@@ -282,11 +279,11 @@ A (non-exhaustive) list of commonly used algorithms in RL follows:
 \section{Proximal Policy Optimization}
 
 \gls{PPO} is a state-of-the-art \gls{RL} algorithm that combines the stability of trust region methods with the scalability of policy gradient methods.
-Trust regions methods, like Trust Region Policy Optimization (TRPO), ensure that the policy updates are not too large by imposing a Kullback-Leibler (KL) divergence constraint, 
-Policy gradient methods like REINFORCE, make policy updates are proportional to the gradient of the log probability of the actions taken, weighted by the rewards obtained.
-For stable and reliable policy updates, \gls{PPO} employs either a clipped surrogate objective (PPO-clip) or a KL-penalty objective (PPO-penalty).
+Trust regions methods, like Trust Region Policy Optimization (TRPO), ensure that the policy updates are not too large by imposing a Kullback-Leibler (KL) divergence constraint.
+Policy gradient methods like REINFORCE, make policy updates that are proportional to the gradient of the log probability of the actions taken, weighted by the rewards obtained.
+To achieve stable and reliable policy updates, \gls{PPO} employs either a clipped surrogate objective (PPO-clip) or a KL-penalty objective (PPO-penalty).
 
-PPO-clip uses a clipped surrogate objective to ensure stability, and is written as:
+\textbf{PPO-clip}. It uses a clipped surrogate objective to ensure stability, and is defined as follows:
 \[
 L^{\text{CLIP}}(\theta) = \mathbb{E}_t \left[ \min \left( r_t(\theta) \hat{A}_t, \text{clip}(r_t(\theta), 1 - \epsilon, 1 + \epsilon) \hat{A}_t \right) \right]
 \]
@@ -298,7 +295,8 @@ where:
 \end{itemize}
 
 The clipped objective ensures that the policy updates are constrained, thereby maintaining stability and preventing drastic changes that could degrade performance.
-Instead, PPO-penalty promotes smoother updates by penalizing large deviations from the old policy, and introduces a KL divergence penalty to the objective function, which is written as:
+
+\textbf{PPO-penalty} Unlike PPO-clip, PPO-penalty promotes smoother updates by penalizing large deviations from the old policy by introducing a KL divergence penalty term to the objective function, which is written as:
 \[
 L^{\text{KL}}(\theta) = \mathbb{E}_t \left[ r_t(\theta) \hat{A}_t - \beta \text{KL}[\pi_{\theta_{\text{old}}}(\cdot|s_t) \| \pi_{\theta}(\cdot|s_t)] \right]
 \]
@@ -335,7 +333,7 @@ The steps are shown in Algorithm \ref{alg:PPOgen}.
 
 In summary, \gls{PPO} is a method that combines the advantages of policy gradients with stability enhancements through its clipped or penalized objective function.
 The use of neural networks for function approximation enables it to handle complex, high-dimensional environments, making it a powerful \gls{RL} tool for modern cybersecurity environments.
-\gls{PPO} is prominently featured in all most of the works in this dissertation.
+Due to its advantages, \gls{PPO} is the most widely used RL algorithm, and is featured in all the individual works of this dissertation.
 
 \subsection{Function Approximation with Neural Networks}
 
@@ -347,46 +345,46 @@ Such architectures include:
 \begin{itemize}
     \item \textbf{Feedforward Neural Networks}: Very familiar and straightforward, used for approximating value functions and policies.
     \item \textbf{Convolutional Neural Networks (CNNs)}: Particularly effective for processing high-dimensional data with spatial structure, such as images. Widely used in tasks like playing video games from raw pixel inputs.
-    \item \textbf{Recurrent Neural Networks (RNNs)}: Suitable for environments where the state has temporal dependencies. Using RNNs is one of the ways one can turn e Markovian again, i.e. independent of past states.
+    \item \textbf{Recurrent Neural Networks (RNNs)}: Suitable for environments where the state has temporal dependencies. Using RNNs allows for capturing information from previous states, making them a good choice for tasks where the state is not Markovian.
 \end{itemize}
 
 \section{Multi-Agent Reinforcement Learning}
 
-When environments contain multiple agents that interact with each other, either cooperatively or competitively, \gls{MARL} is a discipline that extends the \gls{RL} principles to handle such cases.
+When environments contain multiple agents that interact with each other, either cooperatively or competitively, \gls{MARL} is a discipline that extends the \gls{RL} fundamentals to such cases.
 Each agent in \gls{MARL} aims to optimize its own policy, considering the presence and actions of other agents, either explicitly or as part of the environment.
 In domains where multiple decision-makers operate simultaneously and where one's decisions become the others' observations, \gls{MARL} is an indispensable tool for modeling these interactions.
-These domains include robotics, autonomous driving, economics, and as we demonstrate in this work, cybersecurity.
+Examples of such domains are robotics, autonomous driving, economics, and the primary focus of this work, cybersecurity.
 
 In single-agent \gls{RL}, an agent learns a policy to maximize its cumulative reward through interacting with the environment.
 This entails that the behavior of the agent alone is what determines the state transitions and rewards emitted by the environment.
-In contrast, when environments encompass multiple agents each with its own policy and aligned or divergent objectives, learning becomes decidedly different.
+In contrast, when environments encompass multiple agents, each with its own policy and objectives that are aligned or divergent, the learning process becomes decidedly different.
 The environment becomes dynamic as it now includes the actions of other learning agents, leading to several key differences from the single-agent case:
 
 \begin{itemize}
     \item \textbf{Non-Stationarity}: Agents learn in an ever-changing environment, where other agents also constantly update their behavior. As the dynamics of the environment are influenced by the actions of all agents, it becomes less predictable and past experiences less accurate.
-    \item \textbf{Partial Observability}: Agents have limited access to the states and rewards of other agents, if any at all. Depending on the nature of the task, this makes both cooperation and competition non trivial tasks.
+    \item \textbf{Partial Observability}: Agents have limited access to the states and rewards of other agents, if any at all. Depending on the nature of the task, this makes both cooperation and competition non-trivial tasks.
     \item \textbf{Scalability}: The state and action spaces increase exponentially with the number of agents, complicating the learning task significantly.
 \end{itemize}
 
 The primary challenge however is the non-stationary nature of learning in these environments.
-As an agent's interaction does influence the environment that other agents observe, it can lead to learning instability: the policies of any actively learning agents can oscillate due to the continually changing environment: traditional convergence guarantees of single-agent \gls{RL} algorithms do not hold.
+As an agent's interactions do influence the environment that other agents observe, it can lead to instability in training: the policies of any actively learning agents can oscillate due to the continually changing environment as traditional convergence guarantees of single-agent \gls{RL} algorithms do not hold.
 To address these issues, several techniques have been developed:
 
 \begin{itemize}
     \item \textbf{Joint Action Learning}: Agents learn a joint policy considering the actions of other agents, which can help in stabilizing learning.
-    \item \textbf{Centralized Training with Decentralized Execution (CTDE)}: During training, a centralized entity has access to all agents information, enabling coordinated learning. During execution, each agent operates based on local observations and learned policies.
+    \item \textbf{Centralized Training with Decentralized Execution (CTDE)}: During training, a centralized entity has access to all agent information, enabling coordinated learning. During execution, each agent operates based on local observations and learned policies.
     \item \textbf{Opponent Modeling}: Agents explicitly model the policies of other agents and adapt their strategies accordingly.
-    \item \textbf{Equilibrium Finding Algorithms}: Techniques such as fictitious play, where agents iteratively best respond to the average strategy of their opponents, can help convergence to equilibrium strategies.
+    \item \textbf{Equilibrium Finding Algorithms}: Techniques such as fictitious play, where agents iteratively best respond to the average strategy of their opponents, can help to converge to equilibrium strategies.
 \end{itemize}
 
-\section{\gls{RL} in Cybersecurity}
+\section{RL in Cybersecurity}
 
-What we usually mean by cybersecurity is the protection of computer systems, networks, and data from all types of attacks.
+What we usually signify by cybersecurity is the protection of computer systems, networks, and data, from all kinds of attacks.
 Towards that end, \gls{RL} provides indispensable tools for developing adaptive security strategies that can learn from interactions with attackers and dynamically respond to threats \cite{nguyen2021deep}.
-Note however that the same applies for the threats themselves: they can employ the same tools to turn adaptive and defeat any deployed defenses, AI-enabled or not.
-Even more so, the true efficacy of any adaptive defense is preconditioned on the adaptivity of any known adversaries.
+Note however that the same applies for the threats themselves: they can employ the same tools to turn adaptive and overwhelm any deployed defenses, AI-enabled or not.
+Expressed differently, the real efficacy of any adaptive defense is preconditioned on the adaptivity of the known adversaries.
 
-While the game theoretic underpinnings of cybersecurity have long been established, the intrinsic relevance of \gls{RL} to cybersecurity and their strong correspondence does not come as a surprise.
+It has been long established that cybersecurity has several game-theoretic underpinnings; therefore the intrinsic relevance of and strong correspondence with \gls{RL} does not come as a surprise.
 Game theoretic concepts, especially those involving strategic interactions between defenders and attackers, play a crucial role in understanding and designing cybersecurity mechanisms.
 
 \textbf{Nash Equilibrium.} A Nash Equilibrium is a situation in a game where no player can benefit by unilaterally changing their strategy, assuming the other players' strategies remain unchanged.
@@ -414,29 +412,30 @@ To that end, general-sum games is a more general formalism that allows non-zero 
 \[
 u_1(\sigma_1, \sigma_2) + u_2(\sigma_1, \sigma_2) \neq 0.
 \]
-These games could be useful in modeling more complex interactions in cybersecurity that contain both competition and cooperation.
+This kind of games is useful when modeling more complex scenarios and interactions containing both competition and cooperation, which arise both in real-life and cybersecurity.
 
 \textbf{Stackelberg Competition}. Stackelberg competition is a strategic game in which one player -- the leader -- makes a move before the other player -- the follower.
-The leader commits to a strategy first, and then the follower optimizes their response based on the leader choice.
+The leader commits to a strategy first, and then the follower optimizes and strategizes their response, based on what the leader committed to.
 This is a widely adopted model for testing defenses in cybersecurity, where the defender assumes the position of the leader, and the attacker the follower.
 A Stackelberg game can be formulated as follows:
 
 \begin{itemize}
     \item The defender commits to a strategy $\sigma_D$.
     \item The attacker observes $\sigma_D$ and chooses a best response strategy $\sigma_A$ to maximize their payoff given $\sigma_D$.
-    \item The defender's goal is to choose $\sigma_D$ that maximizes their own payoff, considering the attacker's best response.
+    \item The defender's goal is to choose $\sigma_D$ that maximizes their own payoff, consideringx the attacker's best response.
 \end{itemize}
 
-Mathematically, this can be expressed as:
+Mathematically, this is expressed as:
 \[
 \max_{\sigma_D \in \Sigma_D} \; U_D(\sigma_D, BR_A(\sigma_D))
 \]
 where $U_D$ is the defender's utility function and $BR_A(\sigma_D)$ is the best response of attacker given the strategy of the defender.
-It is only by investigating these interactions as games that it is possible to develop optimal defenses, predict potential attacks, and ultimately enhance overall security posture.
-Yet these game theoretic models have considerable limitations in direct application to cybersecurity use-cases, and are often unavoidably simplistic and unrepresentative of the interaction they attempt to model.
 
-To formally solve a (cybersecurity) game, we require a complete model of the game together with an explicit description for all the interacting players and their utility functions in closed-form; something intractable for the vast majority of cybersecurity use-cases.
-Unlike game theoretic formulations however, \gls{MARL} does not require such a model of the game and is therefore an indispensable tool for testing the security of real-world AI-enabled systems.
+It is by investigating these interactions as games that it becomes possible to develop optimal defenses, resist potential attacks, and ultimately enhance the overall security posture of a system.
+Yet there are considerable limitations in the formalization of such game theoretic models: when applied directly to cybersecurity use-cases, they typically contain simplifications unrepresentative of the interaction they are supposed to model.
+
+To formally solve a (cybersecurity) game, one requires a complete model of the game together with an explicit description for all the interacting players and their utility functions in closed-form; something intractable for the vast majority of cybersecurity use-cases.
+Unlike game theoretic formalization however, \gls{RL} and \gls{MARL} do not require the model of the game and are therefore indispensable tools for testing the security of real-world AI-enabled systems.
 
 \subsection{Controllability and Observability}
 \label{sec:control}
@@ -447,6 +446,6 @@ Black-box attacks typically involve influencing a system without detailed knowle
 Controllability in this context refers to the ability to manipulate the system inputs to achieve a desired effect, such as causing it to malfunction (e.g. evasion) or divulge sensitive information (e.g. membership inference).
 Observability on the other hand refers to the ability to infer system states and vulnerabilities based on observed outputs, such as response times or error messages.
 
-There is therefore a correspondence between effective black-box attacks and adaptive control.
+Therefore, there is a correspondence between effective black-box attacks and adaptive control.
 An attacker must be able to both influence the system -- increase the controllability -- and accurately interpret the system responses to these influences -- increase the observability.
 \gls{RL} has the potential to learn optimal policies from interactions, however to develop sophisticated attacks and subsequently effective defenses, we need to impart to our agents better observability and controllability; the former is achieved via the state representation, while the latter by expanding the available action set.

@@ -1,4 +1,4 @@
-\chapter{Adversarial Markov Games}\label{ch:markovgames}
+\chapter{Adversarial Markov Games: On Adaptive Offensive and Defensive Strategies}\label{ch:markovgames}
 
 \section*{Preamble}
 
@@ -380,67 +380,43 @@ In the study of opponent modeling, considering other agent policies as stationar
 the agent models how the opponent behaves based on the observed history, but \emph{not} how the opponent \emph{would} behave based on how the agent behaves~\cite{albrecht2018autonomous, wen2019probabilistic}.
 However, as AMGs can be solved by single-agent RL algorithms, we consider more involved recursive reasoning out of scope and perform the empirical evaluation without building explicit models of opponent behavior.
 
-%\subsection{Decisions Under Uncertainty}
-
-%A fundamental problem in decision making is learning to select actions based on an incomplete knowledge of the environment. It has been demonstrated that even humans engage in a form of Bayesian inference during perception. The natural Markov state $S_t$ for a POMDP is called the belief state, and it is the distribution over the latent states given the history~\cite{SuttonRichardS.andBarto2018}. Concretely, a belief state encapsulates the belief an agent has about its current state: that is the probability distributions for each variable within the state. 
-
-%What is described as the belief state is the posterior distribution over states that actions are selected on. For instance, after selecting action $a$ and recording the observation $o$, an agent needs to update its belief on the state the environment may be in. If we assume that the state upholds the Markov property, i.e. it contains all the necessary information from the sequence of events that preceded it, in order to update the belief over the states we require the previous belief state, the action taken, and the current observation, denoted as $b'=\tau (b,a,o)$. After reaching $s_{t+1}$, the agent observes $o \in \Omega$  with probability $O(o\mid s_{t+1},a)$. If $b(s)$ denotes the probability that the environment is in state $s$, after taking action $a$ and observing $o$:
-
-%\begin{algorithm}[h]
-%\SetAlgoLined
-% Initialize replay buffer $R$ to capacity $N$\;
-% Initialize action-value function $Q$ with random weights\;
-% \For{episode = 1, M}{
-%  Observe the initial query $q_1$ and preprocess $e_1=e(q_1)$\;
-%  Initialize sequence $s_1 = \{e_1\} $\;
-%  \For{t = 1, T}{
-%   With probability $\epsilon$ select a random action $a_t$\;
-%   otherwise select $a_t = max_a Q(e(q_1),a;\theta)$\;
-%   Execute action $a_t$ and observe query $q_{t+1}$ and reward $r_t$\;
-%  Embed query $e_{t+1}=e(q_{t+1})$ and set $s_{t+1}=s_t,a_t,e_{t+1}$\;
-%  Store transition $(s_t, a_t, r_t, s_{t+1})$ in buffer $R$\;
-%   Sample a random minibatch $m$ of transitions $(s_i, a_i, r_i, s_{i+1})$ from $R$\;
-%  If $s_{i+1}$ is terminal set $y_i = r_i$\;
-%  otherwise use Bellman equation to set: $y_i = r_i + \gamma max_{a'}Q(s_{i+1},a';\theta)$\;
-%   Perform a gradient descent step on $(y_i - Q(s_i,a_i;\theta))^2$
-% }
-% }
-% \caption{Deep Q-Learning for Adversarial Defense}
-% \label{alg:DQN}
-%\end{algorithm}
-
 \section{Environment Specification}
 \label{sec:threat}
 
-% The empirical study we conduct in Section~\ref{sec:evaluation} constitutes diverse instantiations of the general theoretical framework introduced in Section~\ref{sec:approach}.
-% Naturally, when working forward from the general to the particular concrete design choices have to be made when specifying the latter, and these choices can have considerable influence on the results.
-% In this section we thus outline the components of the environment: adversaries, defenders, possible interactions and various mechanisms that underscore them.
-%in order to make our proposed robustness evaluation methodology concrete.
+The empirical study we conduct in Section~\ref{sec:evaluation} is comprised diverse instantiations of the general theoretical framework introduced in Section~\ref{sec:approach}.
+Naturally, when working forward from the general to the particular concrete design choices have to be made when specifying the latter, and these choices can have considerable influence on the results.
+In order to make our proposed robustness evaluation methodology concrete, in this section we specify the environment and the threat model.
 
-Our AMG framework describes a two-player competitive game; while extensible to more players, in this work we assume that at any given moment only one attack takes place.
+\textbf{Threat Model.} Our AMG framework describes a two-player competitive game; while extensible to more players, in this work we assume that at any given moment only one attack takes place.
 From the defensive perspective, incoming queries can be either benign or part of an attack.
 A frequent assumption that influences the effectiveness of stateful detection is the ability to attribute queries to UIDs, e.g., an IP address or a user account.
 Adversaries can collude, create multiple accounts, use VPNs, or in fact accounts and IP addresses might not even be required to query the model.
 To address this, we treat queries irrespective to their source: a strictly more challenging setting for stateful defenses where we operate solely on the content of queries and not on any other metadata, similar to~\cite{li2022blacklight}.
-%we reframe the task of detecting and banning UIDs of adversaries with two notable differences.
 Unlike Blacklight however, instead of rejecting queries -- something that in itself can provide \textit{more} information to the adversary and thus facilitate evasion \cite{feng2023stateful} -- we misdirect by returning the second highest probability class.
-% Secondly, Gaussian noise is added to the benign queries to simulate a noisy channel and a shift in distribution so that is not actually trivial to tell them apart from adversarial noise.
-%- to making decisions under uncertainty where adversaries are countered through misdirection, while functionality on benign queries is preserved.
-%This constitutes a partially observable environment that encompasses moves by an adversary, a defender, and benign -- also known as nature moves.
+Furthermore, Gaussian noise is added to the benign queries to simulate a noisy channel and a shift in distribution, so that is not actually trivial to tell them apart from adversarial noise.
+In summary, the black-box threat model we consider is delineated as follows:
+
+\begin{itemize}
+    \item \textbf{Assets:} Trained and deployed model $\mathcal{M}$ with corresponding weights ${w}$.
+    \item \textbf{Agents:} Adversary; defender; benign user.
+    \item \textbf{Adversary Goal:} Generate minimal perturbation adversarial examples in as few queries as possible, while evading the defense.
+    \item \textbf{Defender Goal:} Stop the adversary from generating adversarial examples, while preserving the correct functionality of the model $\mathcal{M}$ on benign users.
+    \item \textbf{Adversary Knowledge:} The model $\mathcal{M}$ is known as the black-box function that transforms inputs $x \in [0,1]^d$ to outputs $c \in [m]$, $m$ being the number of classes. The weights ${w}$ or the closed-form expression of $\mathcal{M}$ are unknown, as unknown is if an active defense $\pi_\phi^{\mathcal{D}}$ exists or not.
+    \item \textbf{Defender Knowledge:} The defender observers the content of incoming queries only, without knowing if they come from a benign user or the adversary.
+    \item \textbf{Adversary Capabilities:} Adapt the candidate generation policy $\pi^{\mathcal{A}}_\theta$, which is defined by the attack parameters and the evasive transformations.
+    \item \textbf{Defender Capabilities} For each query $x$, decide between answering truthfully with the true prediction $C(x) = c_0$ or misdirecting with the second highest probability class $c_1$.
+\end{itemize}
 
 \textbf{Similarity.} Decision-based attacks typically follow a policy that generates successive queries: these exhibit degrees of similarity which can be quantified by an appropriate $l_p$ norm.
 If that norm is computed on the original inputs however, an adversary can \textit{invent control} (see Fig. \ref{fig:adaptivity}) by employing evasive transformations the model is invariant to and bypass the similarity detection.
 To account for this capability, we train a Siamese network with contrastive loss in order to learn a latent space $\mathcal{L}(\cdot)$ where similar inputs are mapped close together, unaffected by added noise or transformations on the inputs.
-%In the work of Chen et al. ~\cite{Chen} the choice of the detection threshold is done in such a manner that false positives are minimized. This threshold is set in advance to allow for a 0.1\% false positive rate. The comparative advantage an adaptive approach has is that there is no explicit and immediate need to set a threshold. The agent based on the current belief state and the level of uncertainty can opt for a less harsh action, like model swapping, or a more pronounced action, like returning the second highest confidence class when it is more confident that the query is part of an attack.
 For the stateful characterization of queries, we use two queues: one for the detected adversarial queries as determined by the defensive agent, and one for the benign or undetected ones.
-%We have to note at this point that the efficacy of the defense depends the continuous detection of adversarial queries so they are appointed to the correct queue and a representative state is constructed thereby.
+We note that the efficacy of the defense depends on the continuous detection of adversarial queries, so that they are appointed to the correct queue and a representative state is constructed thereof.
 
-\textbf{Active defense.} Recall that decision-based attacks evaluate a Boolean-valued function to determine if the query is adversarial or not; a straightforward counter to this behavior is to misdirect by returning a decision different from the actual through a system of confinement.
-%responding not with the actual class, i.e., the highest probability one, but the second highest.
+\textbf{Active defense.} Recall that decision-based attacks evaluate a Boolean-valued function to determine if the query is adversarial or not; a straightforward counter to this behavior is to use a system of confinement in order to misdirect by returning a decision different from the actual.
 When new query $x_t$ is received, a state is constructed based on $x_t$ and the queue $c_{-n}, c_{-n-1}, ..., c_{0}$ of known adversarial queries.
 Based on this state, the defensive agent takes a single continuous action $\alpha \in \mathbb{R} \:|\: 0\leq \alpha \leq1$ that is the radius $\alpha$ of a hypersphere around the last known adversarial query $c_0$ in the latent space $\mathcal{L}$.
 If $\|\mathcal{L}(x_t) - \mathcal{L}(c_0)\|_2 < a$ the query is considered adversarial and is appended to the adversarial queue as the latest $c_0$.
-%If the $l_2$ distance between the embeddings of $x_t$ and $c_0$, $d(\mathcal{L}(x_t), \mathcal{L}(c_0))$, is within this radius $a$, the query is considered adversarial and is appended to the adversarial queue as the latest $c_0$.
 The confinement system is depicted in Figure~\ref{fig:boundary}.
 
 \begin{figure}
@@ -451,8 +427,6 @@ The confinement system is depicted in Figure~\ref{fig:boundary}.
 \end{figure}
 
 \textbf{Adaptivity.} No evaluation in \gls{AML} is complete without considering adaptive adversaries; a notion we expand in this work, that is with the instruments to bypass the defense \textit{and} their optimal configuration.
-%that is without knowledge of the defense and its principle of operation, leaving out maybe the precisely \textit{how} to bypass it \cite{tramer2020adaptive}.
-%Adaptive adversaries imply the invention of control:
 As stateful defenses are so far similarity based, to bypass them intuition points towards input transformations the model is invariant to.
 For a given query $x_t$ we want to compute a transformation $x_t' = T(x_t)$ so that $||x_t' - x_t||_2 \gg ||x_t - x_{t-1}||_2$ while $F(T(x_t)) \approx F(x_t)$.
 Depending on magnitude and composition of transformations $T$, the identity $F(T(x_t)) = F(x_t)$ might not always hold.

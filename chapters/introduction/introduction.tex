@@ -17,7 +17,7 @@ Without being exhaustive, such AI-enabled systems include malware, bot, fraud, a
 No matter how statistically prevalent, all of these environments contain adversaries.
 Therefore, for systems that expose an interface to the public, a false sense of security can be disastrous, as multiple threats can induce erroneous decisions or prevent the \gls{AI} models from behaving according to their specification.
 
-Recently, \gls{AML} formed as a field to systematically study the failure modes of AI -- like adversarial examples -- and how to achieve robust and trustworthy functioning in the presence of malicious actors and adversaries.
+Recently, Adversarial Machine Learning (\gls{AML}) formed as a field to systematically study the failure modes of AI -- like adversarial examples -- and how to achieve robust and trustworthy functioning in the presence of malicious actors and adversaries.
 By the mere fact that modern online and real-world systems integrate some form of AI-based decision-making, due to these failure modes their attack surface is considerably increased.
 In cybersecurity specifically, both offensive and defensive methodologies employ AI; consider the thriving bot activity and bot detection on the web.
 While bots and automation online benefit immensely from the latest advancements in AI, the sole methodology for demarcating humans and machines, the Turing test, still originates from that 74 year-old paper.
@@ -160,13 +160,13 @@ In our work we demonstrate how our approach outperforms both attacks and defense
 % \section{Other Contributions}
 
 This section serves as a means to put the three major contributions in perspective, how they came to be research questions in the first place, how they connect with each other, and finally to present other related research results and activities.
-As researchers, we are often motivated by a powerful but often unstructured drive to understand how things work.
+As researchers, we are often motivated by a powerful drive to understand how things work.
 It was in 2017, and before I even considered pursuing a PhD, that out of curiosity and happenstance I had the fortune to read the first paper that subsequently sparked the whole field of \gls{AML}: ``Intriguing Properties of Neural Networks''~\cite{szegedy2013intriguing}.
 At the time, adversarial examples were a puzzling novelty, and I was instantly absorbed by the perplexing phenomenon their straightforward and elegant formulation represented.
 This knowledge compelled me to pursue a more rigorous and deeper understanding of why, where, and how these admittedly intriguing properties occur.
 
-When I started working on \gls{AML}, I discovered a prominent shortcoming in the majority of the related work: unrealistic assumptions on the level of access the adversary has to the model.
-The vast majority of the attacks, and therefore defenses too, where assuming white-box access; a threat model that is completely unrepresentative for real-world deployed systems.
+When I started working on \gls{AML} however, I discovered a prominent shortcoming in the majority of the related work: unrealistic assumptions on the level of access the adversary has to the model.
+The vast majority of the attacks, and therefore defenses too, where assuming white-box access; a threat model that is completely unrepresentative of real-world deployed systems.
 While white-box access is typically considered a given from the defensive perspective, this is not always the case for the offensive. Specifically, there are three prominent reasons why white-box, gradient-based attacks face serious challenges and limitations in realistic scenarios:
 
 \begin{itemize}
@@ -208,7 +208,7 @@ To this end, \gls{RL} represented an ideal formalism and candidate methodology f
 \begin{figure}
     \centering
     \includegraphics[width=0.99\textwidth]{pillars.pdf}
-    \caption{Schematic depiction of an environment that encompasses an AI-based system, black-box attacks, defenses, and all the agents involved. We indicate where our three works (I, II, III) are situated with respect to each aspect or agent.}
+    \caption{Schematic depiction of an environment that encompasses an AI-based system, black-box attacks, defenses, and all the agents involved. We indicate where our three works (I, II, III) are situated with respect to each entity.}
     \label{fig:pillars}
 \end{figure}
 

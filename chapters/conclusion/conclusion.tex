@@ -63,17 +63,17 @@ In reCAPTCHA v3 for instance, continuous behaviometric evaluation would require 
 With AutoRobust we demonstrate that we can increase the robustness of ML-based malware detection systems from near zero to complete, by identifying and mitigating exploitable features.
 Finally, our AMG framework provides a methodology for understanding and countering decision-based attacks, as well as what they entail: a landscape of ever-evolving adaptive adversaries.
 
-Finally, a lot of researchers have pointed to the fact that adversarial attacks, at least the way the are performed so far, largely remain an academic exercise and do not reflect realistic scenarios~\cite{apruzzese2023real}.
-Yet as we have consistently shown throughout or work, adaptive attackers pose a considerable threat against real-world AI-based systems, and the moment these systems are deployed serious vulnerabilities are inadvertently introduced.
+Many researchers have pointed to the fact that adversarial attacks, at least the way the are performed so far, largely remain an academic exercise and do not reflect realistic scenarios~\cite{apruzzese2023real}.
+Yet as we have consistently shown throughout our work, adaptive attackers pose a considerable threat against real-world AI-based systems, as the mere fact of deploying them inadvertently introduces new vulnerabilities.
 Our evidence is not limited to a handful of empirical results, as we additionally perform a rigorous theoretical analysis which confirms our findings are no aberrations.
-Consider that while antivirus solutions and their underlying models can be exceedingly vulnerable to adversaries, as we have demonstrated with AutoRobust, this can be effectively remediated.
+Consider that while antivirus solutions and their underlying models can be exceedingly vulnerable to adversaries, this can be effectively remediated as we have demonstrated with AutoRobust.
 This work highlights why collaborative efforts between academia and industry will be crucial in ensuring the deployment of robust \gls{AI} systems as adversarial threats will continue to proliferate.
 In this dissertation, besides the individual results we provide a foundation for understanding and addressing these vulnerabilities by assembling insights from diverse domains, and pave the way for developing more resilient and trustworthy learning and inference.
 
 \section{The Next Steps}
 
-Through our work we open multiple promising paths for future research.
-Beyond the three concrete domains we investigated, our research opens several other lines of inquiry: a) training more sophisticated agents with expanded and more general capabilities, b) enhancing and combining both stationary (hardening) and adaptive (misdirection) defense mechanisms, and c) expanding to other domains where, due to the problem-feature space gap, problem space adversarial attacks are relatively unexplored.
+Our work paves multiple promising paths for future research.
+Beyond the diverse domains we investigated, our research enables several other lines of inquiry: a) training more sophisticated agents with expanded and more general capabilities, b) enhancing and combining both stationary (hardening) and adaptive (misdirection) defense mechanisms, and c) expanding to other domains where, due to the problem-feature space gap, problem space adversarial attacks are relatively unexplored.
 
 Specifically, AutoRobust can incorporate any other functionality-preserving capabilities for generating adversarial malware in the problem space, that a growing range of related work is exploring~\cite{demetrio2021functionality, demetrio2021adversarial, labaca2021realizable, labaca2021aimed}.
 Furthermore, as we showed in both the AutoRobust and AMG chapters, any combination of adversarial goals, be it performance, stealthiness, or disruption, can be optimized in a gradient-based manner, even in the complete black-box case and independent of modality or domain.

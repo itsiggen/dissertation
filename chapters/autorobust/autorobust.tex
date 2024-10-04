@@ -5,11 +5,11 @@ Malware, short for malicious software, encompasses a variety of harmful software
 The proliferation of malware poses significant threats to individuals, businesses, and government entities worldwide, something that is mainly countered by malware detection, the process of identifying and mitigating these malicious programs before they can inflict damage.
 Effective malware detection is crucial as it protects the digital infrastructure and ensures the CIA triad: confidentiality, integrity, and availability of information systems.
 
-In an era where cyber threats are becoming increasingly sophisticated, traditional methods of malware detection, such as signature-based detection, are inadequate against evasive and polymorphic malware.
+In an era where cyber threats are becoming increasingly sophisticated, traditional methods for detection, such as signature-based, are inadequate against evasive and polymorphic malware.
 Furthermore, the prevalence of obfuscation techniques today makes static analysis, that is without executing the program, insufficient for detection.
-In an effort to address these challenges, dynamic analysis (that is with executing the malware) and \gls{DL} have been essential tools in detecting and identifying novel and polymorphic malware strains.
-These tools however are no silver bullets, adversarial malware are very capable of bypassing the dynamic analysis and any subsequent ML-based inference performed on the dynamic analysis results.
-Traditionally, malware employed techniques such as obfuscation and polymorphism to alter their code and make it difficult for signature-based detection methods to identify them.
+In an effort to address these challenges, dynamic analysis (where the malware \textit{is} executed) and \gls{DL} have been essential tools in detecting and identifying novel and polymorphic malware strains.
+These tools are no silver bullets however, as adversarial malware can bypass the dynamic analysis itself as well as any subsequent ML-based inference performed on the results of the dynamic analysis.
+Traditionally, malware employed techniques such as obfuscation and polymorphism to alter their code and make it difficult for signature-based methods to identify them.
 With the adoption of ML-based solutions in malware detection,
 another attack vector is introduced: adversarial examples.
 In the context of malicious software this implies \textit{any} code or binary modifications that preserve the original functionality.
@@ -20,7 +20,7 @@ While distinct properties, adversarial vulnerability can be partially attributed
 In this chapter, we investigate a specific ML architecture employed in the pipeline of a widely-known commercial antivirus, and how to make its inference robust to adversarial malware.
 We carried this work out in collaboration with multiple university and industry partners, and it was lead by me and co-author Jacopo from King's College London.
 I focused more on robustifying the model against evasion, while my co-author focused more on the dynamic analysis of the malware.
-The work has been published under the title: ``How to Train your Antivirus: RL-based Hardening through the Problem-Space''~\cite{tisngenopoulos2024train}.
+The work has been published under the title: ``How to Train your Antivirus: RL-based Hardening through the Problem-Space''~\cite{tsingenopoulos2024train}.
 
 Adversarial training is the most reliable defensive technique that can confer empirical robustness, and most widely used irrespective of domain. 
 However, in our context it is not applicable out of the box, for the main reason that gradient-based perturbations rarely map back to feasible problem space programs. 
@@ -63,8 +63,8 @@ In this chapter, we make the following contributions:
 \begin{itemize}
     \item We first obtain a wide range of Windows binaries spanning from 2012 to 2020, from various malware families to verified goodware; then we execute them in CAPEv2 to generate dynamic analysis reports. To foster research on dynamic analysis, we release our dataset in the following URL: https://paperswithcode.com/dataset/autorobust
     \item We justify theoretically how, under certain conditions, adversarial training through the problem-space is advantageous to gradient-based approaches like PGD~\cite{madry2017towards}, and define the concise set of transformations that are available for behavioral representations.
-    \item We introduce AutoRobust, a novel RL-driven methodology for performing adversarial training and observe that, within several attack iterations followed by retraining, the model consistently moves from entirely vulnerable ($\sim$100\% ASR) to fully robust ($\sim$0\% ASR). Notably, AutoRobust does not assume anything about the underlying model or the adversarial capabilities apart from them being functionality-preserving. Thus, it is applicable to \textit{any} problem-space transformations that related works investigate.
-    \item The key takeaways of our work are the ability of our approach to bypass an ML component of a commercial antivirus, as well as the importance of incorporating adversarial training through the problem-space. To enable reproducibility and follow-up work, we open-source our codebase: https://github.com/s2labres/AutoRobust
+    \item We introduce AutoRobust, a novel RL-driven methodology for performing adversarial training and observe that, within several attack iterations followed by retraining, the model consistently moves from entirely vulnerable ($\sim$100\% ASR) to fully robust ($\sim$0\% ASR) against well-defined adversaries. Notably, AutoRobust does not assume anything about the underlying model or the adversarial capabilities apart from them being functionality-preserving. Thus, it is applicable to \textit{any} problem-space transformations that related works investigate.
+    \item The key takeaways of our work are the ability of our approach to bypass an ML component of a commercial antivirus, as well as the importance of incorporating adversarial training through the problem-space. Our codebase is open-sourced in: https://github.com/s2labres/AutoRobust
 \end{itemize}
 
 \section{Background \& Related Work}

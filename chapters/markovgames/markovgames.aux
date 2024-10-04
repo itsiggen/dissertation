@@ -13,48 +13,50 @@
 \newlabel{eqn:adv_train}{{5.1}{100}{Attacks \& Mitigations}{equation.5.2.1}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {5.2.2}Stateful Defenses}{100}{subsection.5.2.2}\protected@file@percent }
 \@writefile{toc}{\contentsline {subsection}{\numberline {5.2.3}On Being Adaptive}{101}{subsection.5.2.3}\protected@file@percent }
-\@writefile{lof}{\contentsline {figure}{\numberline {5.1}{\ignorespaces In \gls {AML} adaptive means to invent new knobs that can bypass a defense (lower open set); in control theory it means the precise tuning of all known knobs. In this work, we reformulate adaptive to signify \textbf  {both}. In HSJA for example, radius, steps, and jumps are parameters of the attack, while rotate and translate are evasive transformations.}}{102}{figure.caption.35}\protected@file@percent }
-\newlabel{fig:adaptivity}{{5.1}{102}{In \gls {AML} adaptive means to invent new knobs that can bypass a defense (lower open set); in control theory it means the precise tuning of all known knobs. In this work, we reformulate adaptive to signify \textbf {both}. In HSJA for example, radius, steps, and jumps are parameters of the attack, while rotate and translate are evasive transformations}{figure.caption.35}{}}
+\newlabel{sub:adaptive}{{5.2.3}{101}{On Being Adaptive}{subsection.5.2.3}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.1}{\ignorespaces In \gls {AML}, adaptive attacks are those with the capabilities (knobs) to bypass a defense; adaptive control is rather the precise tuning of all the known knobs. Against black-box systems, we can reformulate adaptive so that it signifies \textbf  {both}. For instance in HSJA~\blx@tocontentsinit {0}\cite {chen2020hopskipjumpattack}, radius, steps, and jump are parameters of the attack, while rotate and translate are transformations that can evade a similarity-based defense.}}{102}{figure.caption.35}\protected@file@percent }
+\newlabel{fig:adaptivity}{{5.1}{102}{In \gls {AML}, adaptive attacks are those with the capabilities (knobs) to bypass a defense; adaptive control is rather the precise tuning of all the known knobs. Against black-box systems, we can reformulate adaptive so that it signifies \textbf {both}. For instance in HSJA~\cite {chen2020hopskipjumpattack}, radius, steps, and jump are parameters of the attack, while rotate and translate are transformations that can evade a similarity-based defense}{figure.caption.35}{}}
 \@writefile{toc}{\contentsline {subsection}{\numberline {5.2.4}Research Gap}{102}{subsection.5.2.4}\protected@file@percent }
-\@writefile{toc}{\contentsline {section}{\numberline {5.3}Theoretical Framework}{103}{section.5.3}\protected@file@percent }
-\newlabel{sec:approach}{{5.3}{103}{Theoretical Framework}{section.5.3}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.3.1}Attacks}{104}{subsection.5.3.1}\protected@file@percent }
-\newlabel{eqn:genpolicy}{{5.2}{104}{Attacks}{equation.5.3.2}{}}
-\newlabel{eqn:classifier}{{5.3}{105}{Attacks}{equation.5.3.3}{}}
-\newlabel{eqn:psi}{{5.4}{105}{Attacks}{equation.5.3.4}{}}
-\newlabel{eqn:opt}{{5.5}{105}{Attacks}{equation.5.3.5}{}}
-\newlabel{eqn:rew}{{5.6}{106}{Attacks}{equation.5.3.6}{}}
-\newlabel{prop:one}{{5.3.1}{106}{}{proposition.5.3.1}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.3.2}Defenses}{107}{subsection.5.3.2}\protected@file@percent }
-\newlabel{eqn:def}{{5.7}{107}{Defenses}{equation.5.3.7}{}}
-\newlabel{prop:two}{{5.3.2}{107}{}{proposition.5.3.2}{}}
-\newlabel{th:epg}{{5.3.1}{108}{Adversarial Policy Gradient}{theorem.5.3.1}{}}
-\newlabel{prop:3}{{5.3.3}{108}{}{proposition.5.3.3}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5.2}{\ignorespaces Schematic model of an AMG environment. Due to the inherent uncertainty of behavior at either side of the interface, it is a partially observable RL environment mirrored for each agent where one's decisions become the other's observations.}}{109}{figure.caption.36}\protected@file@percent }
-\newlabel{fig:model}{{5.2}{109}{Schematic model of an AMG environment. Due to the inherent uncertainty of behavior at either side of the interface, it is a partially observable RL environment mirrored for each agent where one's decisions become the other's observations}{figure.caption.36}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.3.3}Adversarial Markov Games}{109}{subsection.5.3.3}\protected@file@percent }
-\newlabel{sec:AMG}{{5.3.3}{109}{Adversarial Markov Games}{subsection.5.3.3}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {5.4}Environment Specification}{111}{section.5.4}\protected@file@percent }
-\newlabel{sec:threat}{{5.4}{111}{Environment Specification}{section.5.4}{}}
-\@writefile{lof}{\contentsline {figure}{\numberline {5.3}{\ignorespaces Misdirection in a two-dimensional decision boundary. The adaptive defense controls a single parameter, the hypersphere radius around $c_0$ (the last known adversarial); for queries $x_t$ that fall within this hypersphere the model responds with a non-adversarial decision. $x_g$ is the starting sample, $x_c$ the original, and $x_b$ the best possible adversarial.}}{113}{figure.caption.37}\protected@file@percent }
-\newlabel{fig:boundary}{{5.3}{113}{Misdirection in a two-dimensional decision boundary. The adaptive defense controls a single parameter, the hypersphere radius around $c_0$ (the last known adversarial); for queries $x_t$ that fall within this hypersphere the model responds with a non-adversarial decision. $x_g$ is the starting sample, $x_c$ the original, and $x_b$ the best possible adversarial}{figure.caption.37}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {5.5}Evaluation}{115}{section.5.5}\protected@file@percent }
-\newlabel{sec:evaluation}{{5.5}{115}{Evaluation}{section.5.5}{}}
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.5.1}Evaluation Setup}{115}{subsection.5.5.1}\protected@file@percent }
-\@writefile{toc}{\contentsline {subsection}{\numberline {5.5.2}Results}{117}{subsection.5.5.2}\protected@file@percent }
-\@writefile{lot}{\contentsline {table}{\numberline {5.1}{\ignorespaces \textbf  {CIFAR-10 / BAGS}: ASR and mean $l_2$ perturbation for 1K, 2K, and 5K queries, against normally and adversarially trained models. C.Acc reports the clean accuracy on benign queries of the base model plus any defenses present; in the first two scenarios (no active defense) the baseline clean accuracy is reported. Yellow scenarios denote the baseline attack performance, green denote active and/or adaptive defenses, and red denote adaptive attacks. Scenarios 9-13 compare our Adaptive Attack (AA) and Adaptive Defense (AD) to Blacklight (BD) and OARS (OA).}}{119}{table.caption.38}\protected@file@percent }
-\newlabel{tab:BAGS_result}{{5.1}{119}{\textbf {CIFAR-10 / BAGS}: ASR and mean $l_2$ perturbation for 1K, 2K, and 5K queries, against normally and adversarially trained models. C.Acc reports the clean accuracy on benign queries of the base model plus any defenses present; in the first two scenarios (no active defense) the baseline clean accuracy is reported. Yellow scenarios denote the baseline attack performance, green denote active and/or adaptive defenses, and red denote adaptive attacks. Scenarios 9-13 compare our Adaptive Attack (AA) and Adaptive Defense (AD) to Blacklight (BD) and OARS (OA)}{table.caption.38}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {5.2}{\ignorespaces \textbf  {CIFAR-10 / HSJA}: ASR and mean $l_2$ perturbation for 1K, 2K, and 5K queries, against normally and adversarially trained models.}}{120}{table.caption.39}\protected@file@percent }
-\newlabel{tab:HSJA_result}{{5.2}{120}{\textbf {CIFAR-10 / HSJA}: ASR and mean $l_2$ perturbation for 1K, 2K, and 5K queries, against normally and adversarially trained models}{table.caption.39}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {5.6}Discussion}{121}{section.5.6}\protected@file@percent }
-\newlabel{sec:discussion}{{5.6}{121}{Discussion}{section.5.6}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {5.3}{\ignorespaces \textbf  {MNIST / BAGS}: ASR and mean $l_2$ perturbation for 1K, 2K, and 5K queries, against normally and adversarially trained models.}}{122}{table.caption.40}\protected@file@percent }
-\newlabel{tab:BAGS_resultM}{{5.3}{122}{\textbf {MNIST / BAGS}: ASR and mean $l_2$ perturbation for 1K, 2K, and 5K queries, against normally and adversarially trained models}{table.caption.40}{}}
-\@writefile{lot}{\contentsline {table}{\numberline {5.4}{\ignorespaces \textbf  {MNIST / HSJA}: ASR and mean $l_2$ perturbation for 1K, 2K, and 5K queries, against normally and adversarially trained models.}}{123}{table.caption.41}\protected@file@percent }
-\newlabel{tab:HSJA_resultM}{{5.4}{123}{\textbf {MNIST / HSJA}: ASR and mean $l_2$ perturbation for 1K, 2K, and 5K queries, against normally and adversarially trained models}{table.caption.41}{}}
-\@writefile{toc}{\contentsline {section}{\numberline {5.7}Conclusion}{124}{section.5.7}\protected@file@percent }
+\newlabel{sec:approach}{{5.2.4}{103}{Research Gap}{table.caption.36}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {5.1}{\ignorespaces Prominent decision-based attacks and defenses and their individual aspects: op=optimized, ev=evasive, aa=attack adaptation, $\neg $rj=doess not require rejection, ac=Active, ad=defense adaptation, $\neg $md=does not use metadata, ms=misdirection. While all works are situated either on the offensive or the defensive side, ours brings these two together.}}{104}{table.caption.36}\protected@file@percent }
+\newlabel{tab:comparison}{{5.1}{104}{Prominent decision-based attacks and defenses and their individual aspects: op=optimized, ev=evasive, aa=attack adaptation, $\neg $rj=doess not require rejection, ac=Active, ad=defense adaptation, $\neg $md=does not use metadata, ms=misdirection. While all works are situated either on the offensive or the defensive side, ours brings these two together}{table.caption.36}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2.5}Attacks}{104}{subsection.5.2.5}\protected@file@percent }
+\newlabel{eqn:genpolicy}{{5.2}{105}{Attacks}{equation.5.2.2}{}}
+\newlabel{eqn:classifier}{{5.3}{105}{Attacks}{equation.5.2.3}{}}
+\newlabel{eqn:psi}{{5.4}{106}{Attacks}{equation.5.2.4}{}}
+\newlabel{eqn:opt}{{5.5}{106}{Attacks}{equation.5.2.5}{}}
+\newlabel{eqn:rew}{{5.6}{107}{Attacks}{equation.5.2.6}{}}
+\newlabel{prop:one}{{5.2.1}{107}{}{proposition.5.2.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2.6}Defenses}{107}{subsection.5.2.6}\protected@file@percent }
+\newlabel{eqn:def}{{5.7}{108}{Defenses}{equation.5.2.7}{}}
+\newlabel{prop:two}{{5.2.2}{108}{}{proposition.5.2.2}{}}
+\newlabel{th:epg}{{5.2.3}{109}{Adversarial Policy Gradient}{proposition.5.2.3}{}}
+\newlabel{prop:3}{{5.2.4}{109}{}{proposition.5.2.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2.7}Adversarial Markov Games}{109}{subsection.5.2.7}\protected@file@percent }
+\newlabel{sec:AMG}{{5.2.7}{109}{Adversarial Markov Games}{subsection.5.2.7}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.2}{\ignorespaces Schematic model of an AMG environment. Due to the inherent uncertainty of behavior at either side of the interface, it is a partially observable RL environment mirrored for each agent where one's decisions become the other's observations. (I) denotes an adaptive attacker (cf. Fig. \ref {fig:adaptivity}), (II) model hardening (passive defense), and (III) an active defense.}}{110}{figure.caption.37}\protected@file@percent }
+\newlabel{fig:model}{{5.2}{110}{Schematic model of an AMG environment. Due to the inherent uncertainty of behavior at either side of the interface, it is a partially observable RL environment mirrored for each agent where one's decisions become the other's observations. (I) denotes an adaptive attacker (cf. Fig. \ref {fig:adaptivity}), (II) model hardening (passive defense), and (III) an active defense}{figure.caption.37}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.3}Environment Specification}{112}{section.5.3}\protected@file@percent }
+\newlabel{sec:threat}{{5.3}{112}{Environment Specification}{section.5.3}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5.3}{\ignorespaces Misdirection in a two-dimensional decision boundary. The adaptive defense controls a single parameter, the hypersphere radius around $k_0$ (the last known adversarial); for queries $x_t$ that fall within this hypersphere the model responds with a non-adversarial decision. $x_g$ is the starting sample, $x_c$ the original, and $x_b$ the best possible adversarial.}}{114}{figure.caption.38}\protected@file@percent }
+\newlabel{fig:boundary}{{5.3}{114}{Misdirection in a two-dimensional decision boundary. The adaptive defense controls a single parameter, the hypersphere radius around $k_0$ (the last known adversarial); for queries $x_t$ that fall within this hypersphere the model responds with a non-adversarial decision. $x_g$ is the starting sample, $x_c$ the original, and $x_b$ the best possible adversarial}{figure.caption.38}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.4}Evaluation}{115}{section.5.4}\protected@file@percent }
+\newlabel{sec:evaluation}{{5.4}{115}{Evaluation}{section.5.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.4.1}Evaluation Setup}{116}{subsection.5.4.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.4.2}Results}{118}{subsection.5.4.2}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {5.2}{\ignorespaces \textbf  {CIFAR-10 / BAGS}: ASR and mean $l_2$ perturbation for 1K, 2K, and 5K queries, against normally and adversarially trained models. C.Acc reports the clean accuracy on benign queries of the base model plus any defenses present; in the first two scenarios (no active defense) the baseline clean accuracy is reported. Yellow scenarios denote the baseline attack performance, green denote active and/or adaptive defenses, and red denote adaptive attacks. Scenarios 9-13 compare our Adaptive Attack (AA) and Adaptive Defense (AD) to Blacklight (BD) and OARS (OA).}}{119}{table.caption.39}\protected@file@percent }
+\newlabel{tab:BAGS_result}{{5.2}{119}{\textbf {CIFAR-10 / BAGS}: ASR and mean $l_2$ perturbation for 1K, 2K, and 5K queries, against normally and adversarially trained models. C.Acc reports the clean accuracy on benign queries of the base model plus any defenses present; in the first two scenarios (no active defense) the baseline clean accuracy is reported. Yellow scenarios denote the baseline attack performance, green denote active and/or adaptive defenses, and red denote adaptive attacks. Scenarios 9-13 compare our Adaptive Attack (AA) and Adaptive Defense (AD) to Blacklight (BD) and OARS (OA)}{table.caption.39}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {5.3}{\ignorespaces \textbf  {CIFAR-10 / HSJA}: ASR and mean $l_2$ perturbation for 1K, 2K, and 5K queries, against normally and adversarially trained models.}}{120}{table.caption.40}\protected@file@percent }
+\newlabel{tab:HSJA_result}{{5.3}{120}{\textbf {CIFAR-10 / HSJA}: ASR and mean $l_2$ perturbation for 1K, 2K, and 5K queries, against normally and adversarially trained models}{table.caption.40}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {5.4}{\ignorespaces \textbf  {MNIST / BAGS}: ASR and mean $l_2$ perturbation for 1K, 2K, and 5K queries, against normally and adversarially trained models.}}{121}{table.caption.41}\protected@file@percent }
+\newlabel{tab:BAGS_resultM}{{5.4}{121}{\textbf {MNIST / BAGS}: ASR and mean $l_2$ perturbation for 1K, 2K, and 5K queries, against normally and adversarially trained models}{table.caption.41}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.5}Discussion}{122}{section.5.5}\protected@file@percent }
+\newlabel{sec:discussion}{{5.5}{122}{Discussion}{section.5.5}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {5.5}{\ignorespaces \textbf  {MNIST / HSJA}: ASR and mean $l_2$ perturbation for 1K, 2K, and 5K queries, against normally and adversarially trained models.}}{123}{table.caption.42}\protected@file@percent }
+\newlabel{tab:HSJA_resultM}{{5.5}{123}{\textbf {MNIST / HSJA}: ASR and mean $l_2$ perturbation for 1K, 2K, and 5K queries, against normally and adversarially trained models}{table.caption.42}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5.6}Conclusion}{125}{section.5.6}\protected@file@percent }
 \@setckpt{chapters/markovgames/markovgames}{
-\setcounter{page}{125}
+\setcounter{page}{126}
 \setcounter{equation}{7}
 \setcounter{enumi}{13}
 \setcounter{enumii}{0}
@@ -64,13 +66,13 @@
 \setcounter{mpfootnote}{0}
 \setcounter{part}{0}
 \setcounter{chapter}{5}
-\setcounter{section}{7}
+\setcounter{section}{6}
 \setcounter{subsection}{0}
 \setcounter{subsubsection}{0}
 \setcounter{paragraph}{0}
 \setcounter{subparagraph}{0}
 \setcounter{figure}{3}
-\setcounter{table}{4}
+\setcounter{table}{5}
 \setcounter{su@anzahl}{0}
 \setcounter{parentequation}{0}
 \setcounter{DTLrowi}{2}
@@ -96,7 +98,7 @@
 \setcounter{citetotal}{0}
 \setcounter{multicitecount}{0}
 \setcounter{multicitetotal}{0}
-\setcounter{instcount}{290}
+\setcounter{instcount}{304}
 \setcounter{maxnames}{10}
 \setcounter{minnames}{1}
 \setcounter{maxitems}{3}

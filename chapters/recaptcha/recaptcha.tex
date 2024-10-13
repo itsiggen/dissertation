@@ -1,4 +1,5 @@
 \chapter{Imitation Games: Bypassing Google reCAPTCHA v3}\label{ch:recaptcha}
+\label{ch:captcha}
 
 \section*{Preamble}
 
@@ -56,7 +57,7 @@ A recent version of Google reCAPTCHA is v3 and the first to offer completely fri
 The motivation behind v3 is twofold, to minimize the interruption in user experience and at the same time conceal the exact nature and presence of the challenge: it is the next move in the imitation game.
 In place of an explicit challenge that calls for a solution, reCAPTCHA v3 service returns a score to the back-end based on interactions within the website, and enables the host to take appropriate actions based on that score.
 In the absence of an explicit challenge, the whole web session of the user becomes the challenge.
-In fact, v3 constitutes a paradigm shift over all previous approaches in Captcha systems so far: it verifies users without interrupting or presenting to them a challenge.
+In fact, v3 constitutes a paradigm shift over all previous Captcha systems as it verifies users without interrupting or presenting to them a challenge.
 
 We set out to explore three key research questions:
 Can we disentangle the data that reCAPTCHA v3 is observing in order to determine how they influence the final score?
@@ -68,21 +69,21 @@ To that end, we build an automation framework that is able to navigate the web i
 As a first step, we host our own website protected by reCAPTCHA v3 as a testbed and in order to evaluate the extent that it can be exploited.
 Then we step into the wild; we scale up our experiments to two public websites that are not under our control with considerable daily traffic.
 To enable our subsequent automated experimentation, we first perform a manual analysis of how reCAPTCHA v3 functions as a black-box.
-Specifically, we observe how various aspects of the web browsing behavior affect it, from less fluctuating properties like cookies and privacy settings to more dynamic ones like mouse control and timings.
-Finally, we build a substitute model that shadows the reCAPTCHA v3 risk analysis system.
+Specifically, we observe how various aspects of the web browsing behavior affect it, from less volatile properties like cookies and privacy settings to more dynamic ones like mouse control and timings.
+Lastly, we build a substitute model that shadows the reCAPTCHA v3 risk analysis system.
 Then we perform an explainability analysis on it in order to evaluate how different browsing aspects contribute to the score and thus how adversaries can potentially exploit it.
 
 Over an extensive period of both manual and fully automated experiments, we show that it is possible to consistently avoid detection in widely varied web environments.
 Additionally, we show that it is possible for an adversary to exploit the implicit challenge itself in order to learn a web browsing behavior with up to a 99.6\% evasion rate against detection.
-To actualize that, we leverage a \gls{RL} methodology as the agentic component of our automation framework, which is trained by interacting in an online manner with the websites in question, requesting verification, and using the received risk score as the reward signal.
-The task and the environment are formulated in a manner that allows a general evasive model to be learned, something that can subsequently enable various automation attacks, from fraudulent transactions to credential stuffing and click fraud.
+To achieve that, we leverage a \gls{RL} methodology as the backbone of our automation framework, which is trained by interacting in an online manner with the websites in question, requesting verification, and using the received risk score as the reward signal.
+The task and the environment are defined in a manner that allows a general evasive model to be learned, something that can subsequently enable various automation attacks, from fraudulent transactions to credential stuffing and click fraud.
 
-As the gap between humans and AI agents diminishes, Turing tests are shifting towards continuous observation and verification, and any such test that can be consistently queried will in practice enable the further diminishing of this gap; bots are inadvertently created in our own image.
+As the gap between human and artificial agents diminishes, Turing tests are shifting towards continuous observation and verification, and any such test that can be consistently queried will in practice enable the further diminishing of this gap; bots are inadvertently created in our own image.
 With reliable and pervasive human verification on the web remaining essential, we propose potential mitigations, however without another paradigm shift these can be only a temporary deterrence.
 
 The contributions of our work can be summarized as follows:
 \begin{itemize}
-\item At the time of publication, this is the first comprehensive study of reCAPTCHA v3 along with its advanced risk analysis system.
+\item At the time of publication, this was the first comprehensive study of reCAPTCHA v3 along with its advanced risk analysis system.
 \item We propose a novel RL-based automation framework that consists of three different types of agents, each more capable than the previous in learning human web browsing behavior.
 \item We collect and study verification scores over a period of fifteen months in various web environments, and perform a state-of-the-art explainability approach to quantitatively evaluate how different factors influence the score.
 \item We perform an extensive evaluation of our proposed approach, on three different websites.
@@ -124,12 +125,12 @@ As the demand for reliable human verification online is high and will not subsid
 
 One such approach is Captcha based on game playing, also known as Dynamic Cognitive Games (DCG), that attempts to make Captcha solving a fun activity for the user~\cite{mohamed2014three}.
 Such solutions are still vulnerable to automated solving and additionally require a higher engagement from the user which can be frustrating while browsing.
-While hard AI problems are becoming easier to solve, a paradigm shift takes place in contemporary Captcha solutions. 
-When bot detection~\cite{d2014avatar} and biometric authentication~\cite{fridman2015multi} transition from one-shot to continuous, the competition between detection and evasion accelerates.
-As bot detection systems start relying on behaviometrics and constant checks to detect bots, the extension of the challenge over the temporal domain introduces a new vulnerability.
-When designing new Captcha, the paradigm is no longer an incremental contest between challenge design and ad-hoc, tailored solutions, but between two AI-enabled systems that engage in a constant, interactive competition, where one's decisions become the other's information.
+While hard AI problems are becoming easier to solve, modern Captcha solutions have to adapt.
+When bot detection~\cite{d2014avatar} and biometric authentication~\cite{fridman2015multi} shift from one-time to continuous processes, the competition between detection and evasion transforms.
+As bot detection systems increasingly depend on behaviometrics and constant checks, the temporal extension of the challenge introduces new vulnerabilities.
+In this evolving landscape, Captchas no longer represent an incremental contest between challenge design and ad-hoc, tailored solutions, but rather a continuous, dynamic competition between two AI-driven systems, where one's decisions become the other's information.
 
-\subsection{Evasion}
+\subsection{Attacks on Captcha}
 
 Currently, there are several approaches available for unsuccessfully advancing past Captchas challenges: employing some \gls{ML} methodology to solve the challenge or exploit bugs in the implementation to bypass the challenge completely.
 A third option is through websites like anti-captcha or 2captcha that employ cheap human labor~\cite{weng2019towards}; such availability has led to the emergence of Captcha solving markets~\cite{motoyama2010re}.
@@ -163,15 +164,15 @@ Behaviometrics offer several advantages over typical Captcha challenges as they 
 
 Another advantage of zero challenge Captcha is that, since it does not interrupt the user, it can be continuously evaluated and thus over time and during a web session it can lead to more accurate detection.
 This property draws a direct parallel between such Captcha and active authentication, which is the process of continuously verifying a user based on their ongoing interactions with a computer.
-In~\cite{fridman2015multi}, Fridman et al. present a methodology where they can continuously and successfully authenticate users based on multiple modalities: mouse and keystroke dynamics, as well as stylometry.
-The application might be different in that case, that is intruder detection, but the principle is directly applicable to the context of bot detection; telling a human apart from another is not that different from telling a human apart from a simulacrum.
-In the most recent work on behaviometric Captcha, Acien et al.~\cite{acien2020becaptcha} build a scheme that works solely on mouse trajectories, and they show that a mouse-based CAPTCHA can be a highly dependable bot detection system.
-According to its documentation, Google reCAPTCHA v3 hints on the use of behavioral data, however before attempting to bypass it we require an in-depth investigation of the data it collects and its underlying mechanisms.
+In~\cite{fridman2015multi}, Fridman et al. propose a method for continuous user authentication based on multiple modalities, including mouse and keystroke dynamics, as well as stylometry.
+While their focus is on intruder detection, the same principle applies to bot detection—distinguishing between humans is not far removed from distinguishing humans from simulations.
+In the most recent work on behaviometric Captcha, Acien et al.~\cite{acien2020becaptcha} build a scheme that works solely on mouse trajectories, demonstrating that a mouse-based Captcha can be a highly dependable bot detection system.
+According to documentation, Google reCAPTCHA v3 hints on the use of behavioral data, however a thorough investigation of the data it collects and its mechanisms is necessary before attempting to bypass it.
 
 \section{reCAPTCHA v3}
 \label{sec:recap}
 
-Version 3 is one of the latest additions in the range of Google's reCAPTCHA services, the first of the CAPTCHAs to achieve that without any user friction.
+Version 3 is one of the latest additions in the range of Google's reCAPTCHA services, the first of the Captchas to achieve that without any user friction.
 It employs an advanced risk analysis system to generate a score ranging from 0 that is very likely a bot to 1 that is very likely a human, based on information collected and overall interactions within a website.
 The back-end can request verification at any point or time a user takes a specific action within the website.
 At first glance, the transition from a conspicuous, distinct Captcha challenge to an obfuscation of where or what exactly is the challenge can be considered advantageous for both users and administrators, for a number of reasons: it does not interrupt user experience, it obfuscates the exact nature of the challenge, and in place of a binary decision it returns a more granular score that is delegated to the back end.
@@ -191,18 +192,19 @@ The JavaScript code that implements reCAPTCHA v3, and that always kicks-off at p
 We managed to hook the debugger and witness the various events being logged and processed, yet we were unable to reverse their encoding or meaningfully control the final response.
 Our attempts were hampered further by multiple levels of timeouts and sanity checks, and while it was possible to directly manipulate some relevant variables, we did not manage to affect the score, most likely due to the variables being manipulated either at the wrong time or in the wrong way. 
 
-More specifically, we utilized the well-known BurpSuite\footnote{https://portswigger.net/burp} to capture the request responsible for sending the reCAPTCHA v3 JavaScript code back to the browser and, each time, insert a breakpoint in the code.
+We employed the well-known BurpSuite\footnote{https://portswigger.net/burp} to capture the request responsible for sending the reCAPTCHA v3 JavaScript code back to the browser and, each time, insert a breakpoint in the code.
 The exact position of the breakpoint was determined via trial-and-error, as pausing in certain locations caused the multi-threaded code to become desynchronized.
 Subsequently we coarsely iterate through the code and see clear signs of session-related variables, such as the respective Navigator object, being manipulated.
-However, manually modifying the values of said variables did not have an observable effect on the score. 
-By inspecting the named variables in the source code we identify a multitude of strings that relate to user browsing behavior; ``mousedown'', ``mouseup'', ``mousemove'', ``mouseover'', ``mouseenter'', ``keydown'', ``keyup'' and others.
-This information can pertain to functionalities separate from how the score is generated, or even function as a red herring.
+However, manually altering the values of said variables did not have an observable effect on the score. 
+Upon further inspection of the source code, we identified numerous strings related to user browsing behavior: ``mousedown'', ``mouseup'', ``mousemove'', ``mouseover'', ``mouseenter'', ``keydown'', ``keyup''.
+These could pertain to separate functionalities or serve as deliberate distractions unrelated to score generation.
 
-While manipulating this information at a low-level by capturing requests and perturbing session variables proved ineffective, our low-level analysis yielded insights on how to affect the score through a higher level abstraction.
-The further specification of our automated solution was facilitated through contrasting what is implicitly or explicitly monitored by the source code on the one hand, and the wealth of information every user generates continuously and in principle unconsciously during a web session on the other.
-IP address, the presence of cookies, the user-agent string, all embody the invariable part of the session information collected.
-The variable part is user dynamic behavior -- timings, mouse and keyboard dynamics -- which has the potential to affect the score; the goal of our approach is to simulate a general web browsing behavior that also successfully evades detection.
-As security through obscurity is a fundamentally flawed approach, through our implementation that can control all the above information, we put our hypotheses to the test.
+Although manipulating session variables at a low level by capturing requests and altering session data proved ineffective, our analysis revealed how to influence the score through a higher-level approach.
+The specification of our automated solution was facilitated by contrasting what is implicitly or explicitly monitored by the source code on the one hand, and the wealth of information every user generates continuously and often unconsciously during a web session.
+Invariant session data, such as the IP address, presence of cookies, and the user-agent string, forms the static part of the information collected.
+The dynamic part is user behavior -- timings, mouse and keyboard dynamics -- which has the potential to affect the score.
+Our approach aims to perform a general web browsing behavior while evading detection.
+To accurately assess which of the above aspects and factors influence the reCAPTCHA score, we put our implementation to the test by controlling all these variables.
 
 \subsection{Website Integration \& Evasion}
 Unlike reCAPTCHA v2 where the user is required to click the ``I am not a robot'' checkbox, v3 offers two ways of generating the token that is subsequently verified by Google.
@@ -220,20 +222,20 @@ This verification flow is shown in Figure \ref{flow}.
 \label{flow}
 \end{figure}
 
-Currently, Google ReCAPTCHA solutions are deployed in 37.8\% of the top 10K and about 13.2M total websites\footnote{https://trends.builtwith.com/widgets/reCAPTCHA-v3}, while the have about 90\% of the Captcha market share\footnote{https://trends.builtwith.com/widgets/captcha}.
+Currently, Google reCAPTCHA solutions are deployed in 32.7\% of the top 10K and about 12.5M total websites\footnote{https://trends.builtwith.com/widgets/reCAPTCHA-v3}, while the have about 86\% of the Captcha market share\footnote{https://trends.builtwith.com/widgets/captcha}.
 Specifically for v3, it was launched in October 2018 and at until the time this research was carried out (2021), there had been a puzzling lack of research on it.
 % it was deployed on 8.5\% of the top 10K and about 1.1M in total, 
 One exception was by Akrout et al.~\cite{akrout2019hacking}, where they propose a methodology to bypass reCAPTCHA v3.
-However, there were several limitations that we addressed with this work.
-The authors did not mention how they handle the lack of the ``I am not a robot'' checkbox -- or of any other challenge for that matter -- in reCAPTCHA v3; after all the goal in v3 is to offer completely frictionless, uninterrupted web experience.
-In the absence of such a transparent challenge and response interface that can be consistently queried, a methodology that endeavors to learn on it requires first the definition and then the implementation of such an interface.
-Secondly, pixel by pixel mouse control and mouse trajectories as a composition of multiple smaller ones are insufficient to describe realistic, human-like mouse dynamics.
-Finally, mouse dynamics are just one aspect of human browsing behavior; we explore a more general approach that includes timings, scrolling, and keyboard strokes, as well as the effect these have on the score. 
+However, their approach has several limitations that we address in our work.
+First, the authors did not explain how they handle the absence of the ``I am not a robot'' checkbox -- or of any other challenge -- since reCAPTCHA v3 provides a completely frictionless, uninterrupted web experience.
+Without such a transparent challenge-response interface that can be consistently queried, any methodology attempting to learn from it must first define and implement such an interface.
+Additionally, controlling mouse movements pixel by pixel and treating mouse trajectories as a composition of smaller segments fails to capture realistic, human-like dynamics.
+Lastly, mouse dynamics are only one aspect of human browsing behavior; we adopt a more general approach that includes timings, scrolling, and keyboard strokes.
 
-The research question behind~\cite{akrout2019hacking} is compelling: given a black-box system that can differentiate between human and bot activity, an adversary can use it as an oracle -- observe its decisions w.r.t. to their activity -- in order to simulate a behavior that evades it.
-This capability has been widely investigated in the image classification domain, where black-box adversarial attacks against \gls{ML} models are progressively more evasive and efficient~\cite{brendel2017decision, ilyas2018prior}.
+The research question in~\cite{akrout2019hacking} is intriguing: given a black-box system that distinguishes between human and bot activity, an adversary can treat it as an oracle -- observing its decisions based on their actions -- to simulate a behavior that evades detection.
+This capability has been widely investigated in image classification, where black-box adversarial attacks against \gls{ML} models are progressively more evasive and efficient~\cite{brendel2017decision, ilyas2018prior}.
 In text-based Captcha, Bursztein et al.~\cite{bursztein2014end} also rely on \gls{RL} in order to segment the image into individual characters and classifying these characters simultaneously.
-One reason \gls{RL} enables optimal solutions to black-box problems is policy gradients: fundamental methods in \gls{RL} that allow for the gradient-based optimization of non-smooth, non-differentiable objective functions~\cite{sutton1999policy}.
+One reason \gls{RL} is effective in solving black-box problems is the use of policy gradients, core methods that enable gradient-based optimization of non-smooth and non-differentiable objective functions~\cite{sutton1999policy}.
 
 In light of the these, the objective of our approach is to understand how the information collected influences the risk analysis score, to evade detection, and to confirm if a general, evasive model of online browsing can be learned by exploiting reCAPTCHA v3 as an oracle.
 
@@ -243,43 +245,39 @@ In light of the these, the objective of our approach is to understand how the in
 Having explored the manner in which reCAPTCHA v3 operates, we elaborate on the building blocks of our approach that will make learning evasive browsing behavior possible.
 To that end we utilize three instruments:
 \begin{itemize}
-  \item Three websites that incorporate reCAPTCHA v3 for bot protection, one self-hosted and two publicly hosted with considerable traffic.
-  \item The python library PyAutoGUI\footnote{https://github.com/asweigart/pyautogui} to programmatically control the mouse and keyboard.
-  We opt for PyAutoGUI as it is lightweight, works at system and not only at browser level, and to the best of our knowledge is the only library that offers fine-tuned control of user input -- a prerequisite to construct human-like browsing.
-  We also experimented with Selenium and we did not observe any negative impact on the reCaptcha scores; in that way it has the potential to work in conjunction with PyAutoGUI or even in its place.
-  \item \gls{RL} as a methodology to learn evasive browsing behavior, at multiple levels of resolution: controlling mouse trajectories, controlling timings, and finally controlling sequences of actions while browsing, e.g. navigating, scrolling, and typing.
+  \item Three websites that incorporate reCAPTCHA v3 for bot protection, one self-hosted and two publicly hosted with significant traffic.
+  \item The python library PyAutoGUI\footnote{https://github.com/asweigart/pyautogui} to programmatically control mouse and keyboard input.
+  We opt for PyAutoGUI for its lightweight nature, ability to operate at the system level and not just within the browser, and its fine-tuned control of user input -- essential for simulating human-like browsing.
+  We also tested Selenium and found no negative impact on reCAPTCHA scores, suggesting it could complement or even replace PyAutoGUI.
+  \item \gls{RL} as a methodology to learn evasive browsing behavior across multiple levels: controlling mouse trajectories, timing, and sequences of actions such as navigation, scrolling, and typing.
 \end{itemize}
 
 \subsection{Preliminaries}
 
-While the websites woth reCAPTCHA v3 embedded constitute the environment, we require a formal description of the \gls{RL} agents behind our web automation; in this subsection we provide the necessary terminology and theoretical background.
-Web browsing is an environment where human or bot agents interact with a website, in sequential and episodic fashion.
-Then the loaded web page together with the implicit Turing test performed by reCAPTCHA v3 can be modeled as a Markov Decision Process (MDP): browse the website while avoiding detection.
-MDPs formalize decision-making in discrete, stochastic, sequential environments that change state randomly in response to action choices made by the agent.
-As reCAPTCHA v3 is a completely black-box system with unknown internal states and unclear on what information it is acting on precisely, it is more appropriate to consider this environment as a Partially Observable Markov Decision Process (POMDP)~\cite{kaelbling1998planning}.
+While the websites with reCAPTCHA v3 embedded serve as our environments, we now desribe the \gls{RL} agents driving our web automation.
+Web browsing, where human or bot agents interact with websites in a sequential, episodic manner, can be modeled as an \gls{MDP} when the goal is to evade detection by reCAPTCHA v3.
+MDPs formalize decision-making in discrete, stochastic environments, where the state changes in response to the agent's actions.
+As reCAPTCHA v3 is a completely black-box system with unknown internal states where the precise information it acts on is unspecified, it is more appropriate to consider this environment as a \gls{POMDP}~\cite{kaelbling1998planning}.
 
-\gls{RL} is a family of methods for learning-based control, suitable for solving MDPs and POMDPs.
-The objective is to learn optimal behavior -- represented by policies -- in a dynamic environment by maximizing a cumulative reward. 
-The reward function defines the goal of the agent, while the \gls{RL} algorithm determines the way to reach it.
+The objective here is to learn optimal browsing behavior -- represented by policies in dynamic web environments -- by maximizing cumulative rewards.
+The reward function defines the goal of the agent, while the \gls{RL} algorithm determines how to achieve it.
 The universal function approximation of deep neural networks has allowed \gls{RL} methods to obtain excellent results in a wide range of black-box domains, from Atari and general game playing~\cite{Mnih2013}, to various defensive approaches in cybersecurity such as cyber-physical systems~\cite{Ferdowsi2018a}, network attacks~\cite{Malialis2015}, smart grid security~\cite{Ni2019} and mobile edge caching~\cite{Xiao2018a}.
-In comparison to other approaches of \gls{ML}, \gls{RL} represent a fundamentally interactive learning paradigm that consists of an agent taking decisions and interacting with an environment for a definite number of turns.
-%As an approach, \gls{RL} is fit for solving problems ranging from game playing to the optimal control of dynamical and stateful systems.
+\gls{RL} is well-suited here because, unlike \gls{ML}, it represents an interactive learning paradigm, where agents make decisions in a dynamic environment and are trained interactively in an online manner.
+While Chapter \ref{ch:background} covers the necessary background on \gls{RL} and MDPs, we briefly revisit key definitions relevant to this context.
 
-\textbf{Markov decision processes.} In environments where outcomes are partially under the control of an agent and partially stochastic, MDPs are a discrete-time stochastic control framework for modeling decision-making.
-
-An MDP can be defined as a tuple
+\textbf{Markov decision processes.}
+An MDP is defined as a tuple
 $\mathcal{M} = (\mathcal{S}, \mathcal{A}, \mathcal{P}, \mathcal{R}, \gamma)$, where $\mathcal{S}$ is a set of states $\mathbf{s} \in \mathcal{S}$, which can be either discrete or continuous, $\mathcal{A}$ is a set of actions $\mathbf{a} \in  \mathcal{A}$, which similarly can be discrete or continuous, $ \mathcal{P}$ defines a conditional probability distribution $ \mathcal{P}(\mathbf{s}_{t+1}|\mathbf{s}_t, \mathbf{a}_t)$ that describes the dynamics of the system, $\mathcal{R} :  \mathcal{S} \times  \mathcal{A} \to  \mathbb{R}$ defines a reward function, and $\gamma \in (0, 1]$ is the discount factor.
-
-A POMDP is an MDP where the agent is unable to observe the current state, and are thus defined by the extended tuple 
+A \gls{POMDP} is an MDP where the agent is unable to observe the current state, and are thus defined by the extended tuple 
 $\mathcal{M} = (\mathcal{S}, \mathcal{A}, \mathcal{P}, \mathcal{R}, \Omega, \mathcal{O}, \gamma)$, where $\Omega$ is a set of observations that are used to update the internal belief state $b$ of the agent and $\mathcal{O}$ is a set of observation probabilities conditioned on actions and resulting states.
 
-\textbf{Objective}. The objective in a \gls{RL} problem is to learn a policy, that is a distribution over actions conditioned on states, $\pi(a_t|s_t)$.
+\textbf{Objective}. The objective of our \gls{RL} agents is to learn evasive web-browsing policies, that is distributions over actions conditioned on states, $\pi(a_t|s_t)$.
 A sequence of states and actions of length $N$ constitutes a trajectory and is given by $\tau = (s_0, a_0, . . . , s_N, a_N)$.
 At each time $t$, the environment is in some state $s_t \in S$.
 The agent takes an action $a \in A$, which causes the environment to transition to state $s_{t+1}$ with probability $\mathcal{P}(s_{t+1}|s,a)$.
-Depending on the environment and the learning task, this process can repeat in episodic fashion or continuously with intermittent rewards.
+While this process can repeat in episodic fashion or continuously with intermittent rewards, here we opt for episodic.
 
-The reward $\mathcal{R}(s,a)$ is the signal that enables the agent's learning, while the goal of the agent is to maximize the expected future reward.
+The reward $\mathcal{R}(s,a)$ is the signal that enables the agent's learning, and the goal is to maximize the expected future reward.
 This reward is a function $J$ of the parameters $\theta$ of the policy $\pi _{\theta}$ that generates the actions $a$ at each state $s$.
 
 \begin{equation}
@@ -307,53 +305,51 @@ Following Google's documentation, on this website we avoided influencing the ris
 
 Finally, \textbf{Website C} is a frequently visited website that gets 33K daily requests on average.
 This website had already integrated reCAPTCHA v3 for bot protection.
-After explicit consent from the website owners and a carefully planned experimentation protocol, we use it to evaluate our most capable model.
+After explicit consent from the website owners and a carefully planned experimentation protocol, we use it to evaluate our most capable agent.
 The intention with this website is to represent the full black-box case, where an attacker has no knowledge other than a binary signal: if they are allowed to continue browsing or if further verification is required.
 
 
 \subsection{Environment}
 
 %We now need to formalize our learning environment.
-In the documentation, Google has established that the reCAPTCHA v3 score is based on interactions with the website.
-In order not to enable adversaries and bot developers, they will not divulge what exactly is being monitored -- besides the named variables in the source code -- or how it affects the score.
-This in effect is an obfuscation of the explicit game played between the adversary and the detection system.
-Under this uncertainty, we need to formulate the structure and rules that formalize the imitation game.
+Google’s documentation states that reCAPTCHA v3 scores are based on user interactions with the website.
+To prevent enabling adversaries and bot developers, Google does not disclose the specific attributes being monitored -- beyond the named variables in the source code -- or how they impact the score.
+This in effect is an obfuscation of the exact challenge presented to the user by the detection system.
+Given this uncertainty, we need to formulate the structure and rules that formalize the imitation game.
 Previous work~\cite{sivakorn2016robot, li2021good} has identified a range of checks performed by reCAPTCHA v2 for detecting suspicious characteristics of the environment, as well as common automation tools that web bots use.
-Our intention is to avoid biasing the risk analysis system towards either bot or human indicators, i.e. avoid increasing its confidence state.
-The assumption is that in low-confidence states, dynamic behavior on the website will directly influence the score of a request. 
-In light of the above and in order to imitate human-like behavior as close as possible, we obviate any web automation other than programmatically controlling the input devices.
-
+Our intention is to avoid biasing the risk analysis system towards either bot or human indicators, thereby preventing an increase in its confidence.
+The assumption here is that in low-confidence states, dynamic behavior on the website will directly affect the request scores. 
+To closely imitate human-like behavior, we limit automation to programmatically controlling mouse and keayboard inputs, avoiding other forms of web automation.
 The environment is composed by the following information:
 \begin{itemize}
   \item The static information, like IP, user-agent, browser, cookies, etc.
   \item The dynamic information captured within the viewport of the website, like mouse or key events and timings.
-  \item The decision that is returned when the web page submits a request for verification.
+  \item The decision returned when the webpage submits a verification request.
  \end{itemize}
 
-While control problems typically take place in real time, in \gls{RL} the temporal dimension is necessary to be discretized in order to create well-defined states where actions can be taken from and thus make the problem tractable.
-To that end we fix the \gls{FPS} to 50, which allows for good granularity in time and smooth mouse trajectories without being too computationally intensive.
+While control problems typically occur in real time, \gls{RL} requires the temporal dimension to be discretized to define clear states from which actions can be taken, making the problem more tractable.
+To achieve this, we set the \gls{FPS} to 50, balancing fine granularity in time and smooth mouse trajectories without excessive computational load.
 
-The objective here is to learn human-like web browsing behavior that evades detection.
-In order learn from the risk analysis system such a behavior, there is a plethora of variables to control thus equally many degrees of freedom.
-We separate these variables into three categories: the ones that we keep constant, the ones that we stochastically vary, and the ones that are dynamically controlled by the agent.
-To achieve optimally evasive behavior, we defined three levels of control with expanding capabilities and generality:
+The objective is to learn human-like web browsing behavior that evades detection. 
+To do so, there is a plethora of variables to control thus equally many degrees of freedom.
+We categorize these variables into three groups: those kept constant, those varied stochastically, and those dynamically controlled by the agent. To optimize evasive behavior, we defined three levels of control with increasing complexity and generality:
 
 \begin{itemize}
-  \item At the least general level, the agent controls only the mouse trajectory, specifically the distance and angle of displacement at each frame. We name this the \emph{Piecewise} mode.
-  \item At the intermediate level, the agent controls the mouse trajectory and a range of timings -- mouse hover, mouse press, and inter-request delay. We name this the \emph{Bézier} mode.
-  \item At the most general level, the agent controls the mouse trajectory, the timings, as well as other capabilities like typing and scrolling. We call this the \emph{Abstract} mode.
+  \item At the most basic level, the agent controls only the mouse trajectory, adjusting the distance and angle of movement at each frame. We call this the \emph{Piecewise} mode.
+  \item At the intermediate level, the agent controls both the mouse trajectory and various timings, such as mouse hover, mouse press, and the delay between request. This is referred to as the \emph{Bézier} mode.
+  \item At the most advanced level, the agent controls the mouse trajectory, timings, and additional actions like typing and scrolling. This is called the \emph{Abstract} mode.
  \end{itemize}
 
 \subsection{State-Actions-Reward}
 
 \textbf{State}. State representation in \gls{RL} is a problem similar to that of feature representation and engineering in supervised and unsupervised learning.
-For an environment to be solvable by a \gls{RL} algorithm, it should exhibit the Markov property: the future is independent of the past, given the present.
-This means that the current state representation should encode the history of information encountered so far and which knowledge is necessary in order to act on it.
+For an environment to be solvable by a \gls{RL} algorithm, the environment must satisfy the Markov property: the future is independent of the past, given the present.
+This means the current state must capture all relevant information from past interactions to inform the next action.
 Formally, a state $S_t$ upholds the Markov property if and only if: $P(S_{t+1} | S_t) = P(S_{t+1} | S_1,..., S_t)$.
-Here, it is worth clarifying the difference between observation and state.
-In POMDPs a single raw observation might not offer enough information to constitute a suitable Markovian state, e.g. the speed that the mouse pointer is moving.
-To handle POMDPs there are two options: either utilize our domain knowledge in order to construct a better state from the available information, or use techniques that build missing parts of the state statistically, like a \gls{RNN}.
-In the three different modes the states are constructed as following:
+Here, it is important to distinguish between observation and state.
+In \gls{POMDP}s, like our environment here, a single observation might not contain enough information to form a proper Markovian state, such as the speed of the mouse pointer.
+To address this, two approaches are possible: by constructing a more informative state using domain knowledge or by employing recurrent architectures on the state space (e.g. by using a \gls{RNN}) to statistically infer missing state information; we opt for the first approach.
+The states for the three different modes are constructed as follows:
 
 \begin{itemize}
 \item \emph{Piecewise} state is a tuple consisting of 5 values: $[a,b,x,y,v]$, where $a,b$ are the initial relative coordinates, $x,y$ are the current relative coordinates, and $v$ is the current speed of the pointer in pixels per frame.
@@ -365,40 +361,46 @@ Session progression is calculated relative to the maximum number of requests per
 \textbf{Actions}. Each agent mode has different sets of the actions that are being controlled and others that are defined stochastically.
 As for the temporal resolution: in Piecewise mode, one mouse trajectory corresponds to multiple steps and one episode; in Bézier mode one mouse trajectory corresponds to a single step and vice versa; in Abstract mode one trajectory corresponds to a single step while one step can correspond to a trajectory, a scrolling action, or a typing action.
 
-\emph{Piecewise.} We define a mouse trajectory from points $A \rightarrow B$ to be composed of individual linear segments $A \rightarrow a_1 \rightarrow a_2 \rightarrow ... \rightarrow B$.
-In order to define a segment for transition, two parameters are required: a) distance in pixels and b) angle in degrees. The direction of \ang{0} is recalculated at each step as the line connecting the points between the current mouse position and the current goal coordinates.
+\emph{Piecewise.} A mouse trajectory from points $A \rightarrow B$ is defined as a series of linear segments: $A \rightarrow a_1 \rightarrow a_2 \rightarrow ... \rightarrow B$.
+Each segment is determined by two parameters: (a) distance in pixels and (b) angle in degrees.
+At each step, the direction of \ang{0} is recalculated as the line connecting the current mouse position to the target coordinates.
+This parameterization is both intuitive and effective, generating sufficiently complex, human-like trajectories.
+At 50 FPS, the mouse movement appears smooth and natural.
+This approach is also widely used in stylometry to register and analyze mouse trajectories~\cite{fridman2015multi}.
 
-We consider this parameterization of mouse trajectories fitting for several reasons: while intuitive and straightforward, it can generate sufficiently complex and human-like mouse trajectories, and at 50 FPS the movement is smooth and plausible.
-Such an approach is also commonplace in stylometry, as a way to register and analyze mouse trajectories~\cite{fridman2015multi}.
-
-At each environment step, or actual frame, the agent based on the current state selects two continuous actions, distance $d, d \in [0,1]$ and angle $a, a \in [-1,1]$.
-These actions are scaled with the respective absolute values to calculate the actual distance and angle.
+At each environment step (or frame), the agent selects two continuous actions based on the current state: distance $d, d \in [0,1]$ and angle $a, a \in [-1,1]$.
+These actions are scaled with the respective absolute values to determine the actual distance and angle.
 For distance, the unit is $1/20$ of the initial distance between the two points.
-For less meandering trajectories and higher sample efficiency, we narrow down the solution space by constraining the angle in the range of $[\ang{-25}, \ang{25}]$.
-Afterwards, the new position $[x,y]$ is calculated as well as the new distance to goal and the $0^{\circ}$ direction.
+To ensure smoother trajectories and improve sample efficiency, the angle is constrained to the range of $[\ang{-25}, \ang{25}]$.
+The new position $[x,y]$ is then calculated, along with the updated distance to the goal and the new $0^{\circ}$ direction.
 This process is illustrated in Figure \ref{mouse}.
 
 \begin{figure}
 \centerline{\includegraphics[width=0.95\columnwidth]{mouse.png}}
-\caption{Agent controlled mouse movement. In red and blue are Piecewise and Bézier trajectories respectively.}
+\caption[Agent controlled mouse movement.]{Agent controlled mouse movement. In red and blue are Piecewise and Bézier trajectories respectively.}
 \label{mouse}
 \end{figure}
 
-\emph{Bézier.} We define a mouse trajectory from points $A \rightarrow B$ to be along the Bézier curve connecting $A$ and $B$ that is generated by control points chosen at random in the range $[A_x,B_x], [A_y,B_y]$.
-We selected Bézier curves as they generate easy to parameterize smooth trajectories and are widely used in computer graphics and robotics \cite{tharwat2019intelligent, wang2020using}; a good fit for human-like mouse control, if not too good.
-The agent controls 4 continuous values that are rescaled to the appropriate range.
-Duration $d \in [0.5,1.5]$ that defines the trajectory speed, hover $h \in [0.2,1.1]$ that is the amount of time after the trajectory ends and before the mouse is clicked, press $p \in [0.05,0.55]$ that is the duration that the mouse button is pressed down, and delay $t \in [2,10]$ which is the amount of delay between each step/request -- listed timings are in seconds.
+\emph{Bézier.} We define a mouse trajectory from points $A \rightarrow B$ along the Bézier curve, generated by control points randomly selected within the ranges  $[A_x,B_x], [A_y,B_y]$.
+Bézier curves are ideal for generating smooth, easily parameterizable trajectories and are commonly used in computer graphics and robotics \cite{tharwat2019intelligent, wang2020using}; a good fit for human-like mouse control.
+The agent controls 4 continuous values, which are rescaled to the appropriate range -- listed timings are in seconds:
+\begin{itemize}
+  \item Duration $d \in [0.5,1.5]$ that defines the trajectory speed.
+  \item Hover $h \in [0.2,1.1]$ for the time between the end of the trajectory and the mouse click.
+  \item Press $p \in [0.05,0.55]$ for the duration of the mouse button press.
+  \item Delay $t \in [2,10]$ for the pause between each request.
+\end{itemize}
 A sample trajectory is shown in Figure \ref{mouse}.
 
-\emph{Abstract.} As in Bézier mode, in Abstract mode the agent controls 4 actions, with one key difference.
-In place of delay $t$, at each step the agent now selects between 3 actions to perform; that is scrolling, typing, or mouse control which is carried out exactly like in Bézier mode.
-All are parameterised by the duration, hover, and press values as before.
-The value ranges of these actions are determined by studies carried out in related literature~\cite{dhakal2018observations, katerina2018mouse}.
-For more information on these actions we refer the reader to Appendix \ref{appendix:b}.
+\emph{Abstract.} Similar to Bézier mode, the agent in Abstract mode controls four actions, with one key difference.
+Instead of controlling delay $t$, at each step the agent now selects between three actions; that is scrolling, typing, or mouse control which is carried out exactly like in Bézier mode.
+All actions are parameterized by the duration, hover, and press values, as before.
+The value ranges for these actions are determined by studies carried out in related literature~\cite{dhakal2018observations, katerina2018mouse}.
+For more details on these actions, refer to Appendix \ref{appendix:b}.
 
-\textbf{Reward}. The reward function embodies what we want the agent to learn or accomplish.
-In our case the score is affected by a multitude of factors, and it can be a noisy signal to learn on, thus a simple reward mechanism would be most practical.
-For Bézier and Abstract modes, the reward is the difference between the last received score and the average cumulative score the agent has received in this episode:
+\textbf{Reward}. The reward function represents the desired behavior or goal for the agent to achieve.
+Since the score in our case is influenced by various factors and can be a noisy signal, a simple reward mechanism is the most practical approach.
+In Bézier and Abstract modes, the reward is calculated as the difference between the latest received score and the average cumulative score the agent has received during the current episode:
 
 \begin{equation}
 \begin{aligned}
@@ -430,21 +432,18 @@ where $s_t$ is the score at episode $t$ and $N_t$ is the number of steps in epis
 
 \subsection{Algorithm}
 
-To select an appropriate \gls{RL} algorithm for the environment, we need to take the properties of the environment into consideration.
-As both state and action spaces are continuous, a value-based approach would be computationally intractable thus we opt for policy-based approaches \cite{sutton1999policy}.
-Policy gradient methods optimize the policy $\pi_\theta(a|s)$ directly, where $\theta$ is usually approximated with neural networks, and they have been fundamental in recent breakthroughs in dynamical system control, 3D locomotion, and game playing.
-Put simply, the neural network learns the optimal policy directly, i.e. which action $a$ to select in state $s$.
-From the range of policy-based approaches, we conducted our experiments with the \gls{PPO} algorithm, specifically the PPO-Clip variant.
-\gls{PPO} \cite{schulman2017proximal} is a state-of-the-art approach in \gls{RL} that solves many of the issues previous algorithms had, as it is simple to implement and tune, more general in the discovered policies, and has better sample complexity.
-\gls{PPO} trains in an on-policy manner by sampling actions according to the latest version of its stochastic policy.
-This policy is updated by maximizing the PPO-Clip objective function.
-The reader is referred to Appendix \ref{appendix:a} for further information on the architecture and hyperparameters of our PPO agent.
 
-The learning process for the Abstract agent is shown in Algorithm \ref{alg:abstract}, where: $n$ is the number of actions taken between each score request, $u$ is the number of steps between updates to the neural network parameterizing the policy, $M$ is the total number of episodes, $T$ is the maximum number of steps in an episode, and $a$ is the selected action.
+To select an appropriate \gls{RL} algorithm, we must consider the environment's properties.
+Since both the state and action spaces are continuous, traditional value-based methods like Q-learning are computationally impractical.
+We thus opt for policy-based approaches that optimize the policy $\pi_\theta(a|s)$ directly, where $\theta$ is usually approximated with neural networks.
+These methods have driven recent breakthroughs in dynamic system control, 3D locomotion, and game playing, where the neural network learns the optimal action $a$ for a given state $s$.
+From the available policy-based approaches, we conducted our experiments with the \gls{PPO} algorithm, specifically the PPO-Clip variant.
+The reader is referred to Chapter \ref{ch:background} for more details on the PPO agent and to Appendix \ref{appendix:a} for its architecture and hyperparameters.
+
+The learning process for the Abstract agent is outlined in Algorithm \ref{alg:abstract}, where: $n$ is the number of actions taken between each score request, $u$ denotes the number of steps between updates to the neural network that parameterizes the policy, $M$ is the total number of episodes, $T$ is the maximum number of steps in an episode, and $a$ is the selected action.
 The pseudocode for Piecewise and Bézier agents is included in Appendix \ref{appendix:a}.
-
-To navigate web pages and the system interface in general, all agents receive $x,y$ values corresponding to absolute screen coordinates.
-If the location within the screen is known in advance, coordinates are hard coded, otherwise they can be resolved through our browser extension that retrieves the location of HTML elements.
+To navigate web pages and the system interface, all agents are given $x,y$ values corresponding to absolute screen coordinates.
+If the screen location is known in advance, the coordinates are hardcoded; otherwise, they are determined using our browser extension, which retrieves the location of HTML elements.
 
 \begin{algorithm}
 \SetAlgoLined
@@ -472,93 +471,79 @@ If the location within the screen is known in advance, coordinates are hard code
 \section{Evaluation}
 \label{sec:evaluationrere}
 
-In this section we elaborate on the empirical evaluations we performed and report on the results.
-For the automated part of the experimentation, we use Firefox, Chrome, and Chromium as browsers, and a VPN service to shuffle our IP between browsing sessions.
-We attempt to control for the score bias introduced by privacy settings by defining two distinct settings between browsing sessions, that is with third-party cookies disabled and private/incognito browsing enabled -- and vice versa.
-The intent is to represent the differing levels of privacy-aware browsing behavior and serve as one form of introduced variance in order to observe the effect on the score.
-Within each session, these configurations are kept constant as they represent the static, invariant aspect of browsing; our aim is to analyze how the risk analysis system is affected by controlling the interactive counterpart.
-To avoid any validity threats in our methodology, browsers did not retain any state or information between sessions: if private/incognito mode was not enabled, cache and cookies were cleared after each.
+In this section, we detail our empirical evaluations and present the results.
+For the automated experiments, we use Firefox, Chrome, and Chromium as browsers, along with a VPN service to shuffle our IP between browsing sessions.
+To account for the score bias introduced by privacy settings, we define two distinct configurations for browsing sessions: one with third-party cookies disabled and private/incognito browsing enabled -- and one vice versa.
+These settings reflect the different levels of privacy-conscious browsing behavior and introduce variance in order to observe their effect on the score.
+Within each session, these configurations are kept constant as they represent the static, invariant aspect of browsing; our focus is to analyze how the risk analysis system responds to controlled, interactive behavior.
+To maintain methodological validity, browsers retained no state or information between sessions: when private/incognito mode was disabled, cache and cookies were cleared after each session.
 
-\subsection{Empirical Evaluation}
+\subsection{Manual Assessment}
 \label{sub:empirical}
 
-Throughout our experiments we spawn differently configured browsers on the same machine, so we investigated for potential tracking or cross-browser fingerprinting \cite{boda2011user}.
-According to Google and Google Analytics documentation, Google can track unique IDs through their NID and SID cookies, with the stated intentions to authenticate users, prevent fraudulent use, perform targeted advertising, and others.
-For the average web user, an effective, practical albeit counter-intuitive method against web tracking is by releasing more private information rather than less, as privacy-aware policies can make a user stand out in the crowd.
-Previous work~\cite{sivakorn2016robot} studied the browser checks reCAPTCHA v2 performs, among them canvas fingerprinting \cite{mowery2012pixel}.
-These checks are used to determine the existence of web automation frameworks or the browser version, and discrepancies can be highlighted by comparing the results to the reported user-agent.
-During our empirical and automated evaluation, we did not observe signs either of tracking or of a detrimental effect to the score when the reported user-agent string was manipulated.
+Throughout our experiments, we launch browsers with different configurations on the same machine to investigate potential tracking or cross-browser fingerprinting \cite{boda2011user}.
+According to Google and Google Analytics documentation, Google can track unique IDs via NID and SID cookies, for user authentication, fraud prevention, targeted advertising, and other purposes.
+For the average web user, a practical yet counterintuitive method to avoid tracking is to reveal more, rather than less, private information, as privacy-conscious settings can make users more conspicuous.
+Previous work~\cite{sivakorn2016robot} explored the browser checks reCAPTCHA v2 performs, among them canvas fingerprinting \cite{mowery2012pixel}.
+These checks are used to detect web automation frameworks or identify the browser version, with discrepancies flagged by comparing results to the reported user-agent string.
+In both our manual assessment and automated evaluation, we found no evidence of tracking or any negative impact on the reCAPTCHA score when the user-agent string was manipulated.
 
-Before performing the automated evaluation, the first step is to observe how the risk analysis system is affected by the various browser configurations, the presence of cookies, different IP addresses, and more importantly user behavior during browsing.
-We separate this information supplied to this system to its \emph{static} and \emph{dynamic} components.
-Keeping all but one of the features constant while varying others provides us with practical insights as to how each one of them affects the score that each request gets.
-More concretely we observe that:
+Before conducting the automated evaluation, the first step is to observe how the risk analysis system responds to different browser configurations, the presence of cookies, different IP addresses, and most importantly, user behavior during browsing. 
+We categorize the information provided to the system into \emph{static} and \emph{dynamic} components.
+By holding all but one feature constant and varying the others, we gain practical insights into how each factor influences the score assigned to each request. Specifically, we observe that:
 
 \begin{itemize}
-  \item Google cookies (GRECAPTCHA, NID \& SID) and enabled cookies in general have a decisive impact in the confidence of the system that the user is indeed human. This is to be expected, as cookies can track longer legitimate user activity.
-  The experimentation with static features indicate that they affect the overall confidence of the system: when the confidence is high, dynamic features have little observable effect; conversely, when the confidence is low they appear to influence the score.
-  The latter is also the setting we intend to induce and exploit in order to learn evasive human-like browsing behavior.
-  \item Starting from a low score, something that occurs far more frequently with disabled cookies, we can consistently increase the score by engaging in typical browsing activity within the webpage, i.e. clicking, scrolling, typing in input fields, visiting subpages, etc.
-  \item Starting from a high score, it is possible to diminish it either by overloading the webpage with requests or by performing bot-like actions with mouse and keyboard automation.
+  \item Google cookies (GRECAPTCHA, NID \& SID) and enabled cookies in general have a decisive role in increasing the system's confidence that the user is indeed human. This is to expected, as cookies track legitimate user activity over time.
+  Our experiments with static features show that they affect the overall confidence of the system: when confidence is high, dynamic features have little observable effect; conversely, when the confidence is low they appear to have a strong influence on the score.
+  This low-confidence setting is what we aim to induce and exploit to learn evasive human-like browsing behavior.
+  \item When starting from a low score, something much more common with cookies disabled, we can reliably increase the score by performing typical browsing activity, such as clicking, scrolling, typing in input fields, and navigating to subpages.
+  \item Starting from a high score, the score can be reduced by either overloading the webpage with requests or by performing in bot-like actions using mouse and keyboard automation.
 \end{itemize}
 
-The scores returned by reCAPTCHA v3 are coarse-grained and do not fall in a continuous range: there are 4 discrete scores that a request can get: $S \in \{0.1, 0.3, 0.7, 0.9\}$.
-A coarse-grained score offers two advantages in a Captcha system: (i) it simplifies for web administrators the process of drawing a threshold, and (ii) less information is divulged w.r.t. the model's decisions -- akin to gradient masking in adversarial \gls{ML}.
+The scores returned by reCAPTCHA v3 are coarse-grained, limited to four discrete values: $S \in \{0.1, 0.3, 0.7, 0.9\}$.
+A coarse-grained score provides two advantages in a Captcha system: (i) it simplifies the process for web administrators to set thresholds, and (ii) it reduces the amount of information revealed about the model’s decisions—similar to gradient masking in adversarial \gls{ML}.
+Although the internal confidence states of the risk analysis system are not directly observable, their effects can be inferred through score behavior: high volatility within a session suggests low confidence, whereas low volatility indicates high confidence.
+From our empirical observations, we identify two additional states that may overlap with the high confidence state:
 
-While high and low confidence refer to internal states of the risk analysis system that cannot be observed directly, a partial observation of them can be attained via the score behavior; high volatility in scores within a session indicates low confidence, while low volatility implies a high confidence state.
-Through our empirical observations, we further delineate two more states, that can to a degree overlap with the high confidence state:
 \begin{enumerate}
-\item \emph{Score saturation}. Saturation occurs whenever the risk analysis system has a high level of confidence that the user is human.
-This confidence may propagate to unrelated to the current session requests that come from different users.
-In saturation, the score is insensitive to user dynamic behavior.
+\item \emph{Score saturation}. Saturation occurs when the risk analysis system has a high level of confidence that the user is human.
+This confidence can extend to unrelated requests from other users, making the score unresponsive to dynamic user behavior within the session.
 \item \emph{Score depletion}.
-Depletion represents a high confidence that the user is a bot where all session requests receive the minimum score.
-It can be caused by excessive requests -- hence the reason why frequency of requests is part of the variables controlled -- and it may propagate to unrelated requests irrespective of their source.
+Depletion reflects a high confidence that the user is a bot, where all requests in the session receive the minimum score. This can result from excessive requests -- of the variables we control is their frequency -- and may extend to unrelated requests, regardless of their origin.
 \end{enumerate}
 
-This score behavior is extensively observed in both manual and automated experiments.
-Naturally, from an adversarial perspective that intends to learn automated solutions a low confidence state is desirable and conducive to learning as it renders the score sensitive to user behavior.
-It then follows that high confidence states can be also utilized as a deterrence against adversaries; for reCAPTCHA v2 this is explicitly disclosed by Google.
-There is a prominent call in the Vulnerability Reward Program\footnote{https://bughunters.google.com/learn/invalid-reports/google-products/4539275112349696} to not submit reports when reCAPTCHA accepts invalid responses to challenges.
-This explains that in order to combat automated solutions, if the system determines you are likely a human -- meaning it is in a state of high confidence/saturation -- it accepts even invalid answers.
-Conversely, if it has high confidence that you are a bot, it rejects even correct answers.
-The stated reasoning is that by always accepting correct and always rejecting incorrect answers, the challenge for adversaries is greatly simplified.
+This score behavior is consistently observed in both manual and automated experiments.
+From an adversarial perspective, a low-confidence state is desirable for learning automated solutions, as it makes the score more responsive to user behavior.
+It then follows, that high confidence states can serve as a deterrent against automated solutions; this is explicitly acknowledged by Google for reCAPTCHA v2.
+In Google's Vulnerability Reward Program\footnote{https://bughunters.google.com/learn/invalid-reports/google-products/4539275112349696}, they advise against submitting reports when reCAPTCHA accepts invalid responses to challenges.
+To combat automated solutions, if the system is highly confident a user is human (i.e., in a high-confidence or saturation state), it may accept even incorrect answers.
+Conversely, if it is confident a user is a bot, it rejects even correct answers.
+The rationale is that consistently accepting correct responses and rejecting incorrect ones simplifies the challenge for adversaries, making it easier to bypass.
 
 \subsection{Automated Evaluation}
 \label{sec:auto}
 
-\begin{figure*}[ht!]
-\centerline{\includegraphics[width=0.95\textwidth]{SPPS.png}}
-\caption{Score evolution in sessions initially flagged as bot, on Website A and Website B.}
-\label{spps}
-\end{figure*}
-
-In all our experiments the automation is performed in a fully graphically enabled manner -- no headless browsers are used -- and the simulation of user browsing behavior is performed by programmatically controlling the mouse and keyboard.
-The experiments spanned a period of 15 months, where more than 70K requests were submitted in total.
-During this period, we progressively refine our agents with more general capabilities in order to encapsulate abstract, human-like browsing behavior.
-To properly assess transferability and given the progressively more general agent capabilities, we conduct our evaluation in a cascading manner on three distinct web environments, as introduced in Section \ref{sec:approachre}:
+In all our experiments the automation is performed in a fully graphically enabled manner -- no headless browsers are used -- with user browsing behavior simulated by programmatically controlling the mouse and keyboard.
+Over a period of 15 months, we submitted more than 70,000 requests.
+During this time, we progressively refined our agents to incorporate more general capabilities, enabling them to better emulate abstract, human-like browsing behavior.
+To assess transferability effectively, and given the progressively more general agent capabilities, we conduct our evaluation in a cascading manner on three distinct web environments, as introduced in Section \ref{sec:approachre}:
 
 \begin{itemize}
-    \item Our self-hosted \textbf{Website A} which faces little actual traffic other than that from a few researchers, but where we had unconstrained request budget.
-    Here Piecewise was in training \textit{and} testing mode, while Bézier solely in training.
-    \item External \textbf{Website B} which sees considerable web traffic.
-    On this website, the Bézier agent trained on Website A is now tested to evaluate how well it transfers, while Abstract is in training mode.
-    \item External \textbf{Website C} which sees extensive web traffic.
-    This website already had reCAPTCHA v3 integrated for bot protection, and the intention here is to evaluate how evasive is the Abstract agent trained on Website B.
+    \item Our self-hosted \textbf{Website A}, which experiences minimal traffic aside from a few researchers, allowing us an unconstrained request budget. Here, the Piecewise agent was both trained and tested, while the Bézier agent was solely in training mode.
+    \item External \textbf{Website B}, a site with significant web traffic. On this website, the Bézier agent trained on Website A was tested to evaluate its transferability, while the Abstract agent was in training mode.
+    \item External \textbf{Website C}, a high-traffic site with reCAPTCHA v3 already integrated for bot protection. The goal here was to assess how effectively the Abstract agent, trained on Website B, could evade detection.
 \end{itemize}
 
-The practical difference between training and testing mode is if the parameters of the policy network are updated or not, i.e. if any actual learning takes place.
-Next to the RL-enabled agents, we implemented and evaluated on every website a \textit{Baseline} agent that differs in two key aspects: the mouse displacement is executed in a naive manner, i.e. either instantaneously or on a straight line connecting the origin and destination; additionally, no parameters are updated nor any learning of parameters happens.
+The practical difference between training and testing mode is whether the parameters of the policy network are updated, i.e. whether acutal learning occurs.
+Alongside the RL-enabled agents, we implemented and evaluated a \textit{Baseline} agent, which differs in two key ways: mouse movements are performed in a naive manner, either instantaneously or in a straight line between the origin and destination, and no parameter updates or learning take place.
 
-\textbf{Website A}. On this website, next to v3 we additionally deploy reCAPTCHA v2.
-The intention is to contrast their behavior throughout the evaluation.
-As the authors in \cite{sivakorn2016robot} have demonstrated, when v2 has high confidence that the request is submitted by a human, it resolves to the ``no Captcha reCAPTCHA'' challenge that lets the user proceed without presenting a challenge.
-reCAPTCHA v2 never resolved to ``no Captcha'' mode while v3 was in depletion, but surprisingly many times it did not resolve to ``no Captcha'' mode even when v3 was in saturation.
-This indicates that the risk analysis systems behind the two versions of reCAPTCHA are potentially dissimilar in the way they process the information they collect as well as the risk profiles they build.
+\textbf{Website A}. On this website, we deployed reCAPTCHA v2 alongside v3 to compare their behavior during evaluation.
+As shown by \cite{sivakorn2016robot}, when reCAPTCHA v2 is highly confident that a request is submitted by a human, it resolves to ``no Captcha reCAPTCHA'' that lets the user proceed without presenting a challenge.
+Interestingly, reCAPTCHA v2 never resolved to "no Captcha" mode when v3 was in a depletion state. Surprisingly, it also often failed to do so even when v3 was in saturation. This suggests that the risk analysis systems behind reCAPTCHA v2 and v3 may differ in how they process collected data and build risk profiles.
 
-The main objective in this website is to have an initial estimation on how plausible the automated evasion of reCAPTCHA v3 is, but also whether we can learn from the score that the risk analysis system generates.
-To investigate the hypothesis that the scoring system can be exploited, we utilize a \gls{VPN} service to intentionally search for and initiate sessions that start from a low score $s < 0.5$; more than two thirds of those sessions occur with disabled cookies and private/incognito mode.
-Statistically throughout our experiments, low-starting sessions exhibit higher score volatility (about twice as much) indicating low-confidence states more sensitive to interactions.
+The primary goal on this website is to assess the feasibility of automating reCAPTCHA v3 evasion, and determine whether we can learn from the score that the risk analysis system generates.
+To test the hypothesis that the scoring system can be exploited, we use a \gls{VPN} service to intentionally initiate sessions that begin from a low score $s < 0.5$; over two thirds of those sessions occur with cookies disabled and private/incognito mode.
+Statistically, low-starting sessions demonstrate significantly higher score volatility -- about twice as much, suggesting low-confidence states are more sensitive to user interactions.
 
 In Figure \ref{spps} we illustrate the score evolution averaged over all such sessions, for each methodology we employed.
 As sessions can have variable length, we normalize the time axis to a fixed $0-100\%$ range, and we calculate the average over this range.
@@ -570,16 +555,22 @@ Figure \ref{swos} plots the average cumulative score each methodology achieves o
 Once again there is a clear divide between the Baseline and the \gls{RL} enabled agents, with Bézier being the approach getting most consistently high scores.
 
 \begin{figure*}[ht!]
+  \centerline{\includegraphics[width=0.95\textwidth]{SPPS.png}}
+  \caption[reCaptcha score evolution in sessions initially flagged as bot]{Score evolution in sessions initially flagged as bot, on Website A and Website B.}
+  \label{spps}
+  \end{figure*}
+
+\begin{figure*}[ht!]
 \centerline{\includegraphics[width=0.95\textwidth]{SWOS.png}}
-\caption{Average cumulative score over the period of evaluation, for Website A and Website B.}
+\caption[Average cumulative score over the period of evaluation.]{Average cumulative score over the period of evaluation, for Website A and Website B.}
 \label{swos}
 \end{figure*}
 
-\textbf{Website B}. As website A is practically a synthetic one, albeit one that offers ease of access and unconstrained querying, it is probably not representative of the whole as the risk analysis system adapts by observing actual traffic.
-To properly evaluate the capabilities of our automation and put this to the test, we transition our experimentation to Website B as it faces actual live web traffic.
-As described in Section \ref{sec:approachre}, in coordination with the administrators we deploy reCAPTCHA v3 on the website and wait for 1 week until it models the traffic patterns to avoid skewing them.
-In this setting, we evaluate how well the most performing agent trained on Website A transfers to the new context; that is without using the scores and without further re-training or fine-tuning.
-Additionally, we ascertain if an even more general and evasive model can be learned.
+\textbf{Website B}. Since website A is practically an artificial web environment, offering ease of access and unlimited querying, it does not fully represent a real-world scenario where the risk analysis system adapts based on actual traffic patterns.
+To properly assess the capabilities of our automation, we transition to Website B, which experiences live web traffic.
+As detailed in Section \ref{sec:approachre}, in coordination with the administrators we deploy reCAPTCHA v3 on Website B and allowed it to observe traffic for one week to avoid skewing its patterns.
+In this setting, we evaluate how well the top-performing agent trained on Website A transfers to this new environment, without using the scores for further retraining or fine-tuning.
+Additionally, we ascertain whether an even more general and evasive model can be learned.
 
 In Figure \ref{spps} we illustrate the score evolution averaged over all sessions that start below the bot threshold -- 96 out of 180 -- for each methodology we employed.
 We observe a clear but less prominent gap between the Baseline and the \gls{RL} enabled agents.
@@ -587,34 +578,33 @@ In this environment saturation and depletion still occur but differently than on
 While it is still possible to deplete the score due to an overabundance of requests, when it happens it concerns only the IP address where the requests were submitted from and does not propagate to others.
 The sessions where the score reached depletion due to excessive requests were less than 3\% of the total.
 
-In Figure \ref{swos} we illustrate the average cumulative score each methodology achieves over the period of evaluation.
+Figure \ref{swos} illustrates the average cumulative score each methodology achieves over the period of evaluation.
 One thing we immediately observe is that Bézier performs the best out of the box, however Abstract diminishes the gap over time as the Bézier agent no longer updates its parameters.
-Another notable observation in this web environment is that the baseline is comparable to the \gls{RL} methodologies.
+Notably, in this web environment the baseline performance is comparable to the \gls{RL} agents.
 This indicates that even a rudimentary GUI-enabled automation can be sufficient to consistently evade reCAPTCHA v3 detection.
 
-\textbf{Website C}. After concluding our experiments on Website B, we want to assess the level of threat our \gls{RL} enabled automation poses on the web.
-The best candidate is the Abstract agent: it incorporates common browsing capabilities that so far were scripted when needed, and is thus the most general model we created.
-The next step is to evaluate its evasive performance and the degree this transfers to websites that get considerable traffic.
-Furthermore, our intention is to obviate any kind of learning and to transition to the fully black-box case.
-Website C is an ideal candidate as compared to B gets two orders of magnitude more daily requests.
-In contrast to Website B, scores are no longer accessible.
-There is only a visible indicator that shows whether the score was above an unspecified threshold or not: the intention is to reflect attack scenarios on other websites where we have no access to the scores, only the binary verdict if further verification is required.
-Unlike previous websites where we track the average score, on Website C we report the percentage of requests that go undetected instead, denoted as evasion rate.
+\textbf{Website C}. After concluding our experiments on Website B, we aim to assess the broader threat posed by our \gls{RL}-enabled automation on the web.
+The best candidate for this is the Abstract agent, which incorporates common browsing behaviors that were previously scripted when needed, making it the most general model we developed.
+The next step is to evaluate its evasive performance and determine how well it transfers to websites with susbtantial traffic.
+Furthermore, our intention is to obviate any form of learning and transition to a fully black-box scenario.
+Website C is an ideal candidate as it receives two orders of magnitude more daily traffic than Website B.
+Instead, there is only a binary indicator showing whether the score exceeded an unspecified threshold, reflecting real-world attack scenarios where access to scores is unavailable, only the binary verdict if further verification is required.
+Whereas on previous websites we tracked the average score, on Website C we report the percentage of requests that go undetected, referred to as the evasion rate.
 
-We evaluate the Baseline and Abstract agents in two principal contexts that aim to reflect and contrast the worst and best cases for the adversary: sessions that are initially flagged as bot (low starting) and not (high starting) respectively.
-Compared to A and B, it is exceedingly more difficult to find low starting sessions on Website C.
-The results are included in Table \ref{tab:requests}.
-We notice that for low starting sessions, the performance gap between Baseline and Abstract is quite prominent, while for high starting sessions less so.
-For high starting sessions, that adversaries have ample opportunity to initiate, the Abstract agent goes almost completely undetected with an evasion rate of 99.6\%, while even the Baseline agent reaches an evasion rate of 84.3\%.
-This demonstrates a stark decline on the level of bot mitigation that reCAPTCHA v3 offers, and a clear vulnerability that an attacker with sufficient resources can exploit.
+We evaluate the Baseline and Abstract agents in two key scenarios, representing the worst and best starting points for the adversary: sessions initially flagged as bot (low starting) and those not flagged (high starting).
+On Website C, compared to Websites A and B, it is significantly harder to find low-starting sessions.
+The results, summarized in Table \ref{tab:requests},
+show a marked performance difference between the Baseline and Abstract agents in low-starting sessions, while the gap is smaller in high-starting sessions.
+In high-starting sessions, which adversaries can more easily initiate, the Abstract agent achieves an evasion rate of 99.6\%, while even the Baseline agent reaches an evasion rate of 84.3\%.
+These results highlight a considerable weakness in reCAPTCHA v3's bot mitigation, and a clear vulnerability that an attacker with sufficient resources can exploit.
 
 \subsection{Explainability}
 
-Despite the overall success that our approach has in evading detection and in exposing a vulnerability at the core of how such a bot detection scheme functions, some open questions remain:
+Despite the overall success of our approach in evading detection and revealing a core vulnerability in the bot detection system, several open questions remain:
 \begin{itemize}
-    \item What is the risk analysis system behind reCAPTCHA v3 scoring exactly?
+    \item What does the risk analysis system behind reCAPTCHA v3 score exactly?
     \item Apart from demonstrating the vulnerability itself, can we obtain a deeper understanding of what is happening within the black box?
-    \item Which aspects of our online behavior influence the score, and to what degree each?
+    \item Which aspects of online behavior influence the score, and to what extent does each factor contribute?
 \end{itemize}
 
 During the evaluation on Website B, we registered about 13K requests in total.
@@ -633,14 +623,13 @@ From these requests, we generated a dataset where each instance contains the fol
     \item The score that the request got.
 \end{enumerate*}
 
-In order to get insights into how does reCAPTCHA v3 score requests, an intermediary step is to extract a functionally equivalent model that shadows the decisions of reCAPTCHA v3 \cite{jagielski2020high, bastani2017interpreting}.
-The abundant data we collected during our experiments provided such an opportunity.
-We train Random Forest (\gls{RF}) classifiers and regressors~\cite{liaw2002classification} with the aforementioned features as independent variables and the score as the target variable.
-On the classification task we reach $87.5\%$ mean accuracy and on the regression task we reach $0.82$ $R^2$.
-In practical terms, an $R^2$ of $0.82$ indicates that the model cannot explain $18\%$ of the variability in the outcome.
-This is anticipated as Google has access to a broader set of information that in our models cannot be accounted for.
-Examples are the reputation of IP addresses and ranges, deviation from heatmaps generated through Google Analytics for that particular website, and spatial, temporal or entropic aspects of user activity.
-The above are either missing or confounding variables, so we note to the reader here that a statistical analysis can indicate but does not entail causal properties~\cite{scholkopf2019causality}.
+In gain insights into how reCAPTCHA v3 scores requests, an intermediary step is to extract a functionally equivalent model that mimics the decision-making process of reCAPTCHA v3 \cite{jagielski2020high, bastani2017interpreting}.
+The extensive data we collected during our experiments provided such an opportunity.
+We train Random Forest (\gls{RF}) classifiers and regressors~\cite{liaw2002classification}, using the aforementioned features as independent variables and the score as the target.
+In the classification task, we achieved a mean accuracy of $87.5\%$, and in the regression task an $R^2$ of $0.82$. 
+An $R^2$ of $0.82$ means that the model cannot explain $18\%$ of the variability in the outcome.
+This is anticipated, as Google has access to a broader range of information that we cannot account for, such as IP reputation, deviations from heatmaps generated by Google Analytics, and spatial, temporal, or entropic aspects of user behavior.
+These are either missing or confounding variables, and we emphasize that statistical analysis can suggest correlations but does not imply causality~\cite{scholkopf2019causality}.
 
 \begin{figure}[b]
 \centerline{\includegraphics[width=0.95\columnwidth]{SHAP.png}}
@@ -648,25 +637,26 @@ The above are either missing or confounding variables, so we note to the reader 
 \label{shap}
 \end{figure}
 
-Our goal however is not to extract a high-fidelity model of the risk analysis system behind reCAPTCHA v3, but to get a glimpse in the black box and explain how various factors can influence the score; factors that come as a result of our initial assumptions.
-To that end we employ a powerful framework for explainable AI called SHapley Additive exPlanations (SHAP), a game theoretic approach to explain the output of any \gls{ML} model.
-SHAP connects optimal credit allocation with local explanations using the Shapley values, i.e. the average of the marginal contributions of the features, across all the feature permutations \cite{lundberg2017unified}.
-We note here that by following an experimental protocol, bias is inadvertently introduced in the collected data.
-For instance, the effect of the presence of cookies will be exaggerated; we searched for low starting sessions, something that occurs considerably more often with disabled cookies.
+Our goal is not to extract a high-fidelity replica of the reCAPTCHA v3 risk analysis system, but rather to gain insights into how various factors influence the score, based on our initial assumptions.
+To achieve this, we utilize SHapley Additive exPlanations (SHAP), a robust framework for  \gls{XAI}.
+SHAP is a game theoretic approach that explains the output of any \gls{ML} model.
+SHAP connects optimal credit allocation with local explanations using the Shapley values, i.e. the average of the marginal contributions of the features, across all the feature permutations~\cite{lundberg2017unified}.
+We note here that by following an experimental protocol, bias is inadvertently introduced into the collected data.
+For example, the impact of cookies is likely exaggerated, as we specifically searched for low-starting sessions, which occur more frequently when cookies are disabled.
 
 Figure \ref{shap} demonstrates how each variable influences the score, in descending order from most to least influential.
 The presence of cookies is the most influential, indicating that the risk analysis system has a clear bias between more and less privacy-aware web browsing behavior.
 What is interesting though is duration at the second spot and that it is positively correlated with the score.
 This indicates that short or instant actions are biasing the score to lower values.
 Time of day and weekday are also influential; their influence is most probably overestimated as we unintentionally introduce some bias by following typical (mostly) office activity.
-The number of requests is counter-intuitive at first; while a few high values are correlated with low scores, indicating depletion, the feature is mostly positively correlated with score, indicating that longer and human-like activity is a strong predictor of higher scores.
-The number of actions has a slight and positively correlated influence, corroborating our findings that put the Abstract mode a step above Bézier.
-What is unexpected here though is that mouse button press, mouse hover, and the delay between requests have little to no influence to the model.
-The value ranges of press and hover are, by our definition, commensurate to the average human ones; they might as well be completely decoupled from the score. 
+The number of requests can appear counter-intuitive at first; while a few high values are correlated with low scores, indicating depletion, the feature is mostly positively correlated with score, indicating that longer and human-like activity is a strong predictor of higher scores.
+The number of actions shows a slight and positively correlated influence, corroborating our findings that put the Abstract mode a step above Bézier.
+What is surprising however is that mouse button press, mouse hover, and the delay between requests have little to no impact to the model.
+The value ranges for press and hover were defined to match typical human ranges, thus the score might be completely unswayed by them, as far as the model is concerned.
 
-\textbf{Computational cost}. Throughout our experiments, the most demanding agent computationally was Piecewise, as it had to control actions at a rate of 50 FPS required for seamless trajectories.
+\textbf{Computational cost}. Throughout our experiments, the most computationally demanding agent was Piecewise, as it controls actions at a rate of 50 FPS required for seamless trajectories.
 The computational bottleneck here is the neural network behind the agent policy, and the average inference time on an Intel i7-7700 CPU was $5 \times 10^{-4}$ seconds which could theoretically support up to 2000 FPS control.
-Regarding the implementation and evaluation platforms, all scripts and \gls{RL} agents were written in Python while a browser extension written in JavaScript was used to retrieve scores -- all experiments were carried out on a dedicated desktop machine with Ubuntu 18.04.
+Regarding the implementation and evaluation platforms, all scripts and \gls{RL} agents were coded in Python while a browser extension written in JavaScript was used to retrieve scores -- all experiments were carried out on a dedicated desktop machine with Ubuntu 18.04.
 
 In Table \ref{tab:requests} we report the summary on the scores, numbers of requests, and overall traffic, across all experiments and for each of the websites.
 Over a period of 15 months, our \gls{RL} enabled methodology successfully used the risk analysis system behind reCAPTCHA v3 to learn evasive models of web browsing, while submitting high numbers of requests commensurate to the total traffic a website attracts.
@@ -695,19 +685,19 @@ Over a period of 15 months, our \gls{RL} enabled methodology successfully used t
     $T_D$ & -- & -- & -- & 398 & 390 & 421 & 33K & 26K\\
     \bottomrule
   \end{tabular}
-  \caption{Requests per website and agent. $S_L$, $S_T$, $S_H$ are the average score for low starting, total, and high starting sessions respectively. For Website C, $S_L$, $S_T$, $S_H$ denote the evasion rate instead. $R_T$ is the total amount of requests, $R_D$ are the average requests per day, $R_S$ are the average requests per session, $D_S$ is the average session duration in minutes, $T_T$ and $T_D$ are the total and daily amount of traffic during the experiments.}
+  \caption[reCaptcha requests and scores per website and agent.]{Requests per website and agent. $S_L$, $S_T$, $S_H$ are the average score for low starting, total, and high starting sessions respectively. For Website C, $S_L$, $S_T$, $S_H$ denote the evasion rate instead. $R_T$ is the total amount of requests, $R_D$ are the average requests per day, $R_S$ are the average requests per session, $D_S$ is the average session duration in minutes, $T_T$ and $T_D$ are the total and daily amount of traffic during the experiments.}
   \label{tab:requests}
 \end{table*}
 
 \section{Discussion}
 \label{sec:discussionre}
 
-In this section we critically reflect on the results and provide further insights into the topic.
+In this section, we critically reflect on the results and provide further insights into the topic.
 Captcha solutions are an essential tool to combat bot proliferation on the internet and the financial or other harm they may cause.
-From fraudulent transactions, to credential stuffing attacks and click fraud, an adversary would benefit immensely from general and human-like web browsing policies that evade Captcha detection.
-The ability to learn such a behavior by utilizing a popular, widely used Captcha service as an oracle, is a clear vulnerability that needs to be addressed as it can constitute the main component of a system that automates web attacks.
-Transitioning from one-shot Captcha challenges to overall behavior monitoring has another implication.
-If human behavior and its imitation are indistinguishable to such a detection scheme, then this scheme -- aside from being insufficient -- enables the perfection of this imitation.
+From fraudulent transactions to credential stuffing attacks and click fraud, adversaries stand to gain significantly from developing general, human-like browsing behaviors that can bypass Captcha detection.
+The ability to learn such evasive behavior by using a widely adopted Captcha service as an oracle highlights a significant vulnerability that needs to be addressed, as it could form a core component of systems designed to automate web attacks.
+Transitioning from one-shot Captcha challenges to continuous behavior monitoring has another implication.
+If human behavior and its imitation are indistinguishable to such a detection system, not only is the system inadequate, but it also facilitates the refinement of bot behavior to further perfect this imitation.
 
 In January 2020 Google launched reCAPTCHA Enterprise, where this vulnerability could potentially be more severe.
 According to the documentation, reCAPTCHA Enterprise appears to be based on reCAPTCHA v3, with some modifications that intend it towards enterprises.
@@ -723,9 +713,9 @@ Such reason codes are:
   \item \textit{unexpected\_usage\_patterns}, when interactions in the website diverge significantly from expected patterns.
   \item \textit{low\_confidence\_score}, when there is insufficient traffic observed to generate a representative risk score.
 \end{itemize}
-There are several surprising correspondences between these reason codes and our findings while investigating the risk analysis system of reCAPTCHA v3, for instance \textit{too\_much\_traffic}.
-An adversary with access to such explanations behind the black-box decision acquires a more fine-grained reason to what effect their actions have and a learning signal to optimize the parameters of an offensive methodology even more effectively.
-However, putting a premium on requests and putting customers through a vetting process can disincentivize that.
+There are several surprising correspondences between these reason codes and our findings from investigating the reCAPTCHA v3 risk analysis system, such as the code \textit{too\_much\_traffic}.
+An adversary with access to such explanations behind the black-box decision would gain a more detailed understanding of how their actions impact the system, providing another learning signal to further optimize policies on.
+However, implementing a premium on requests and subjecting customers to a vetting process could act as a deterrent.
 This indicates a promising path for future work.
 
 \textbf{Ethics}.
@@ -736,52 +726,52 @@ In contact with the website administrators, we set an initial conservative thres
 In case of depletion we agreed to slow our requests down to a halt in order to investigate the cause and analyze the impact; something that ultimately did not occur.
 
 \textbf{Responsible Disclosure}.
-Regarding the broader impact that our evasion attack on Google reCAPTCHA v3 can have, we followed the standard responsible disclosure policy: we notified Google of our findings and the vulnerabilities we discovered in reCAPTCHA v3.
+Regarding the broader impact that our evasion attack could have on Google reCAPTCHA v3, we followed the standard responsible disclosure policy: we notified Google of our findings and the vulnerabilities we discovered in reCAPTCHA v3.
 Google responded to our detailed report and acknowledged the vulnerability.
 After further investigation on their side, Google has closed the issue without providing a fix and the status code ``intended\_behavior''.
 We surmise that acquiring access to backend scores and that fully graphically enabled automation attacks are considered reasonable limitations on the adversary, however at the time of publication these issues were still present.
 
-\textbf{Defenses}. As our methodology does not tinker with the HTTP requests or cookies, defenses would fall primarily within the adversarial training paradigm~\cite{tramer2017ensemble}, that is to train the model with data that were specifically created to fool it.
-The explicit goal is to make the risk analysis system more robust towards adversarial activity.
-This however is a complicated matter as the domain of Captcha is considerably broader than image classification.
-No matter its abstraction or representation, the distribution of human behavior online is expected to be fairly diverse for adversarial examples -- adversarial behavior here -- to hide in the crowd.
-As adversarial examples are fundamentally \gls{OOD} data~\cite{geirhos2020shortcut}, proactively modeling them can be a challenging task.
-There is however precedence in utilizing adversarial examples as Captcha resilient to automated solutions~\cite{osadchy2017no}.
-Finally, as long as one can obtain oracle access to the risk analysis system, defenses are limited to obfuscation and rate limiting.
-Adversaries can iteratively refine their attacks by using the oracle as either a discriminator to a \gls{GAN} approach or a reward function to a policy gradient method.
+\textbf{Defenses}. Since our methodology does manipulate HTTP requests or cookies, defenses would fall primarily within the adversarial training paradigm~\cite{tramer2017ensemble}.
+This involves training the risk analysis system with data that were specifically created to fool it, with the goal to make it more robust towards adversarial activity.
+As the domain of Captchas is considerably different from image classification, adversarial training is not directly applicable.
+Irrespective to abstraction or representation, human behavior online is highly diverse making it easier for adversarial examples -- adversarial behavior here -- to blend into the crowd.
+As adversarial examples are fundamentally \gls{OOD} data~\cite{geirhos2020shortcut}, proactively modeling them in this context is particularly challenging.
+There is however precedent for using adversarial examples as Captchas, as they are resilient to automated solving~\cite{osadchy2017no}.
+Ultimately, as long as adversaries can obtain oracle access to the risk analysis system, defenses are limited to obfuscation and rate limiting.
+With this access, attackers can iteratively refine their methods, using the oracle as either a discriminator in a \gls{GAN} approach or a reward function to a \gls{RL} algorithm.
 
-\textbf{Limitations}. The most capable agent demonstrates that it is possible to fully evade detection on a website of which it had zero beforehand knowledge or interaction with.
-However, in order to fully exploit the information leakage in reCAPTCHA v3, and in case the initial evasive policy is insufficient, an adversary would have to have access to the oracle for longer periods of time; something made evident by the evolution of scores in Figure \ref{swos}.
-Furthermore, we posit that while the score returned by v3 is a signal that allows learning to take place, it is still one with noise, or as Google has indicated for v2, at times even intentionally misleading.
-If other heavily influencing factors are not controlled for, this innately limits the degree that learning can take place.
+\textbf{Limitations}. The most capable agent demonstrates that it is possible to evade detection on a website of which it had no prior knowledge or interaction with.
+However, to fully exploit the information leakage in reCAPTCHA v3, and in case the initial evasive policy is insufficient, an adversary would need extended access to the oracle, as evidenced by the score evolution shown in Figure \ref{swos}.
+Moreover, while the score returned by v3 serves as a signal that facilitates learning, it is still noisy, and, as Google indicated for v2, may even be intentionally misleading.
+If other significant influencing factors are not properly controlled, this noise inherently limits the extent to which effective learning can occur.
 
-In many configurations, e.g. with low privacy settings, the baseline approach was sufficient to evade detection, up until depletion.
-Beside the effectiveness and transferability of our approach, our results underline the importance of developing the scientific understanding of the strengths and limitations in the new paradigm of frictionless Captcha, specifically in the presence of adaptive attackers capable of learning from interaction with the deployed detection mechanism.
+In many configurations, such as with low privacy settings, the baseline approach was sufficient to evade detection, unless depletion occurred.
+Beyond demonstrating the effectiveness and transferability of our approach, these results highlight the need to deepen our scientific understanding of the strengths and limitations of frictionless Captcha, especially in the presence of adaptive attackers capable of learning from interaction with the detection system.
 
-\textbf{Controversies}. While widely useful and an important pillar in the fight against bots and malicious users, Captcha does not come without its controversial aspects.
-reCAPTCHA was rightfully criticized for being a source of unpaid work to assist in transcribing text and image labeling tasks.
-As a competing solution, hCaptcha\footnote{https://www.hcaptcha.com/} raison d'être is to change this by returning some of the revenue made from solving the Captcha to the website owner.
-What can be disconcerting though is that frictionless Captcha such as reCAPTCHA v3 and Enterprise, amass a great wealth of information by monitoring all the interactions occurring in a website.
-As automated solving becomes ever more efficient and effective, Captchas transitioning towards behaviometrics, where there is no longer revenue to be made by transcribing text or labeling images.
-In this case, the users' online behavior could become the revenue, this time not to commercialize insights but as Turing tests.
+\textbf{Controversies}. While Captchas are a crucial tool in combating bots and malicious users, they are not without controversy.
+Google reCAPTCHA, in particular, has been criticized for being a source of unpaid work to assist in transcribing text and image labeling tasks.
+As a competing solution, hCaptcha\footnote{https://www.hcaptcha.com/} was developed with a different approach, sharing the revenue generated from Captcha solving with the website owner.
+A more concerning issue arises with frictionless Captchas, such as reCAPTCHA v3 and Enterprise, which collect vast amounts of data by monitoring user interactions on websites.
+As automated solving becomes increasingly efficient, Captchas are shifting toward behaviometrics, moving away from tasks like transcribing text or labeling images.
+In this case, user behavior itself becomes the focus, no longer to commercialize insights but to be used in Turing tests.
 
-\textbf{Availability \& Future Work}.
+\textbf{Future Work}.
 We opt for \gls{RL} as a learning paradigm as it enables optimal behavior without access to gradients; the agent can learn in an immediate, online manner by interacting with the environment.
 Our approach and general framework are modular by design to accommodate the learning of any parameters that might affect the risk analysis scoring system, in the case it adapts to observing a broader or different set of information.
 As a result, there are two primary promising paths for future exploration:
-First, the possibility to train more capable agents by exploiting the reason codes of reCAPTCHA Enterprise.
-Secondly, to explore more effective defenses that go beyond rate limiting and security by obscurity, in the domains of adversarial \gls{ML} and competitive multiagent \gls{RL}.
+First, training more capable agents by exploiting the reason codes of reCAPTCHA Enterprise.
+Secondly, exploring defenses beyond rate limiting and security by obscurity, in the domains of adversarial \gls{ML} and competitive multiagent \gls{RL}.
 
 \section{Conclusion}
 \label{sec:conclusion}
-This work presents the first comprehensive investigation of Google reCAPTCHA v3 service.
-Over various websites, web configurations, attack methodologies and a period of fifteen months, we perform a black-box analysis and comprehensive evaluation of the risk scores reCAPTCHA v3 generates.
-We discover that it offers insufficient protection against web automation as we are able to consistently bypass it with an evasion rate up to 99.6\%.
-We evaluate how different aspects of the activity on a website protected by reCAPTCHA v3 influence the score.
-Static aspects like privacy settings and IP address have a constant positive or negative impact on the score and do not change during a session.
-On the other hand, the score is also influenced by volatile aspects directly linked to the dynamic browsing behavior of the user.
-As reCAPTCHA v3 constantly monitors user interactions to differentiate between humans and bots by generating a risk score, we exploit this information to learn a general model of automated web browsing that consistently evades detection.
+This work presents the first comprehensive investigation of Google reCAPTCHA v3.
+Over a 15-month period, spanning multiple websites, web configurations, and attack methodologies, we conduct a black-box analysis and thorough evaluation of the risk scores generated by reCAPTCHA v3.
+Our findings reveal that it provides insufficient protection against web automation as we consistently bypassed it with an evasion rate up to 99.6\%.
+We evaluate how different aspects of browsing a website protected by reCAPTCHA v3 affect the score.
+Static aspects like privacy settings and IP address have a consistent positive or negative impact on the score and remain unchanged during a session.
+In contrast, the score is influenced by dynamic, volatile factors tied to user behavior.
+Since reCAPTCHA v3 continuously monitors user interactions to differentiate between humans and bots, we exploit this process to develop a general model of automated web browsing that consistently evades detection.
 
-Our study indicates that while a transition towards Captcha services based on continuous behaviometric evaluation is unavoidable, as text and image Captchas have become more difficult for humans to solve than for AI, this inadvertently leads to vulnerabilities that dedicated adversaries can potentially exploit.
-The effectiveness of our approach demonstrates the need for improved bot and automation detection in zero friction, zero challenge Captcha.
-Nevertheless, as this type of Captcha are becoming more prominent, the competition in differentiating between human interaction and its imitation accelerates and calls for further research on proactive and reactive response to such adversarial activity.
+Our study suggests that while the shift towards Captcha services based on continuous behaviometric evaluation is inevitable -- as text and image Captchas are now easier for AI to solve than for humans -— it also introduces vulnerabilities that adversaries could exploit.
+The effectiveness of our approach demonstrates the need for more robust bot and automation detection in frictionless, challenge-free Captchas.
+As this type of Captcha becomes more widespread, the competition to distinguish between genuine human interaction and its imitation intensifies, underscoring the need for further research into both proactive and reactive strategies to counter such adversarial activity.

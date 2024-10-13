@@ -1,4 +1,5 @@
 \chapter{AutoRobust: Hardening Malware Detection Against Evasion}\label{ch:autorobust}
+\label{ch:autorobust}
 \section*{Preamble}
 
 Malware, short for malicious software, encompasses a variety of harmful software designed to disrupt, damage, or gain unauthorized access to computer systems.
@@ -30,7 +31,7 @@ First, it performs modifications that are feasible in the problem space, and onl
 In this way, it completely bypasses the inverse mapping problem, namely the task of correcting the invalid feature modifications so that they conform with feasible programs.
 Secondly, we can provide probabilistic guarantees on the level of robustness of the model against well-defined adversarial capabilities, thus adding another layer of security on top of adversarial training that is empirical.
 We perform an extensive empirical evaluation which validates our theoretical insights and where we can consistently reach 0\% Attack Success Rate after a few adversarial retraining iterations.
-Notably, our approach widely outperforms gradient-based adversarial training we used as a baseline, empirically demonstrating that adversarial training through the problem space is the preferable approach in this domain.
+Notably, our approach widely outperforms gradient-based adversarial training we used as a baseline, empirically demonstrating that adversarial training through the problem space is the superior approach in this context.
 
 \section{Introduction}
 Adversarial examples have been extensively explored in numerous domains. While the fundamental challenge they pose to learning is fascinating on its own scientific accord, they also represent a significant threat to the widespread adoption of machine learning solutions in security-critical scenarios.
@@ -192,7 +193,7 @@ Consequently, following gradient-based perturbations will inadvertently result t
 \begin{figure*}[ht]
 \centering
 \includegraphics[width=1\columnwidth]{grad.pdf}
-\caption{\textbf{Comparison between traditional gradient-based attacks and AutoRobust.} The dotted path shows a typical gradient-based attack: first perturbing to $\mathbf{x} + \boldsymbol{\delta}$ then projecting to $\mathbf{x} + \boldsymbol{\delta}^\prime$ in the \emph{feasible} problem-space $\Lambda$. Our approach (dense path) that employs transformations $\alpha_t$ in succession, moves by definition \textit{only} within the feasible problem space $\Lambda$. The background displays a gradient field over the value of the discriminant function $h(\mathbf{x})$, with negative values (green) for the target class. The thick solid area $\Phi$ represents the feasible feature-space, while the areas denoted by $\Lambda$ represent the feasible problem-space mapped to $\Phi$.}
+\caption[Comparison between traditional gradient-based attacks and AutoRobust.]{\textbf{Comparison between traditional gradient-based attacks and AutoRobust.} The dotted path shows a typical gradient-based attack: first perturbing to $\mathbf{x} + \boldsymbol{\delta}$ then projecting to $\mathbf{x} + \boldsymbol{\delta}^\prime$ in the \emph{feasible} problem-space $\Lambda$. Our approach (dense path) that employs transformations $\alpha_t$ in succession, moves by definition \textit{only} within the feasible problem space $\Lambda$. The background displays a gradient field over the value of the discriminant function $h(\mathbf{x})$, with negative values (green) for the target class. The thick solid area $\Phi$ represents the feasible feature-space, while the areas denoted by $\Lambda$ represent the feasible problem-space mapped to $\Phi$.}
 \label{fig:grad}
 \end{figure*}
 
@@ -249,7 +250,7 @@ Then given sufficient horizon to converge, the resulting optimal policy will ind
 \begin{figure*}[!t]
 \centering
 \includegraphics[width=1\columnwidth]{pipeline.pdf}
-\caption{Schematic depiction of the AutoRobust pipeline. In the inner loop, the RL agent attacks the model and generates adversarial reports. In the outer loop, the model is retrained with standard minibatch gradient descent on clean \textit{and} adversarial reports.}
+\caption[Schematic depiction of the AutoRobust pipeline.]{Schematic depiction of the AutoRobust pipeline. In the inner loop, the RL agent attacks the model and generates adversarial reports. In the outer loop, the model is retrained with standard minibatch gradient descent on clean \textit{and} adversarial reports.}
 \label{fig:autorobust}
 \end{figure*}
 
@@ -461,7 +462,7 @@ As a baseline to compare our approach to, we additionally perform and evaluate \
 \begin{table*}[!ht]
     \centering
     % \setlength{\tabcolsep}{0.2cm} % Adjust column spacing here
-    \caption{Performance of AutoRobust (AR), gradient-based (GB) adversarial training, and the original vanilla HMIL model considering the two perturbation budgets, 1K and 2K. The metrics displayed are: Score (of the origin class), Attack Success Rate (ASR), Clean Accuracy (C.Acc), and Robust Accuracy (R.Acc), all reported on the same hold-out test set.}
+    \caption[Performance of AutoRobust (AR), gradient-based (GB) adversarial training, and the vanilla HMIL model.]{Performance of AutoRobust (AR), gradient-based (GB) adversarial training, and the original vanilla HMIL model considering the two perturbation budgets, 1K and 2K. The metrics displayed are: Score (of the origin class), Attack Success Rate (ASR), Clean Accuracy (C.Acc), and Robust Accuracy (R.Acc), all reported on the same hold-out test set.}
     \begin{tabular}{c|c|r|r|r|r|r|r|c}
     \toprule
     \multirow{2}{*}{\textbf{Model}} & \textbf{\small Adv.} & \multicolumn{2}{c|}{\textbf{Score}} & \multicolumn{2}{c|}{\textbf{ASR (\%)}} & \multicolumn{2}{c|}{\textbf{R.Acc (\%)}} & \textbf{C.Acc} \\
@@ -486,24 +487,6 @@ Given that the average size of a report in our dataset is $\sim$1K entries, thes
 For the binary and multiclass settings, Table \ref{tbl:results} reports the performance of the original model as well as the two different kinds of adversarial training we evaluate: Gradient-Based (GB) and our approach AutoRobust (AR).
 From our empirical results we can make the following observations:
 
-\begin{figure*}
-\centering
-\begin{subfigure}{1\columnwidth}
-  \centering
-  \includegraphics[width=\columnwidth]{evaluation_binary.pdf}
-  \caption{Binary classification}
-
-\end{subfigure}
-\begin{subfigure}{1\columnwidth}
-  \centering
-  \includegraphics[width=\columnwidth]{evaluation_multi.pdf}
-  \caption{Multiclass classification}
-
-\end{subfigure}
-\caption{Progression of Attack Success Rate (blue), Clean Accuracy (yellow), and Robust Accuracy (green) over the 15 iterations of adversarial training. For each metric, the mean with one standard deviation are displayed, as we do multiple runs where hyperparameters and random seeds for selecting samples vary.}
-\label{fig:training}
-\end{figure*}
-
 \begin{itemize}
     \item[$\bullet$] While the initial non-adversarially trained model achieves excellent clean accuracy, it is excessively vulnerable to evasive attacks, often with as few as 10 modifications. This is a good indication that while the model initially picks up many useful discriminative features, these are brittle and decidedly not robust~\cite{ilyas2019adversarial}.
     \item[$\bullet$] Notably, gradient-based adversarial training shows little potential in defending against problem-space adversaries. This can be intuitively explained as perturbations based on the gradient of the model will frequently map to either invalid or uninformative areas of the feature-space that map to problem-space changes the adversary will be either unable or uninterested to do. In such domains it is therefore strictly preferable to generate adversarial examples using capabilities you want to defend against.
@@ -523,21 +506,39 @@ To get a deeper understanding of how the feature importance for a model shifts a
 Figure \ref{fig:explanations} plots this progression.
 We remind the reader that the explanations returned are not scored by importance, but instead consist of a discrete, variable size set with entries from the dynamic analysis report.
 
+\begin{figure}
+    \centering
+    \begin{subfigure}{0.49\columnwidth}
+      \centering
+      \includegraphics[width=\columnwidth]{evaluation_binary.pdf}
+      \caption{Binary classification}
+    
+    \end{subfigure}
+    \begin{subfigure}{0.49\columnwidth}
+      \centering
+      \includegraphics[width=\columnwidth]{evaluation_multi.pdf}
+      \caption{Multiclass classification}
+    
+    \end{subfigure}
+    \caption[Progression of ASR, Clean Accuracy, and Robust Accuracy over the 15 iterations of adversarial training.]{Progression of Attack Success Rate (blue), Clean Accuracy (yellow), and Robust Accuracy (green) over the 15 iterations of adversarial training. For each metric, the mean with one standard deviation are displayed, as we do multiple runs where hyperparameters and random seeds for selecting samples vary.}
+    \label{fig:training}
+\end{figure}
+
 \begin{figure*}
 \centering
-\begin{subfigure}{1\columnwidth}
+\begin{subfigure}{0.49\columnwidth}
   \centering
   \includegraphics[width=\columnwidth]{explanations_binary.pdf}
   \caption{Explanations in binary evaluations.}
 
 \end{subfigure}
-\begin{subfigure}{1\columnwidth}
+\begin{subfigure}{0.49\columnwidth}
   \centering
   \includegraphics[width=\columnwidth]{explanations_multiclass.pdf}
   \caption{Explanations in multiclass evaluations.}
 
 \end{subfigure}
-\caption{The most frequent explanations as returned by the HMIL model explainer, over the 15 iterations. As for each iteration the number of episodes varies, we normalize explanations to a percentage over the whole iteration; mean values with one standard deviation are plotted.}
+\caption[The most frequent explanations as returned by the HMIL model explainer.]{The most frequent explanations as returned by the HMIL model explainer, over the 15 iterations. As for each iteration the number of episodes varies, we normalize explanations to a percentage over the whole iteration; mean values with one standard deviation are plotted.}
 \label{fig:explanations}
 \end{figure*}
 

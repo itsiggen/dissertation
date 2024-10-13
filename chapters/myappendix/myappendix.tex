@@ -369,7 +369,7 @@ batch size HMIL& 128 & 128\\
 \section{Proofs}
 \label{apx:proofs}
 
-For a more intuitive understanding of the proofs, we first provide a high-level description of the attack fundamentals.
+For a more intuitive understanding of the proofs, we provide a high-level description of the attack fundamentals.
 \textbf{BAGS} \cite{brunner2019guessing} performs a random walk along the boundary between the adversarial and the non-adversarial regions, by first taking a random step orthogonal to the original image direction, then a source step towards it.
 The randomness in the directions searched is reduced by utilizing Perlin noise and masks computed on the difference between starting and original samples.
 \textbf{HSJA} \cite{chen2020hopskipjumpattack} operates in 3 stages: a binary search that places the current best adversarial on the decision boundary, an estimation step that computes the gradient at that point of the boundary, and projection step along the estimated gradient.
@@ -411,7 +411,6 @@ Given an initial sample $x_c$, in search of adversarial examples HSJA applies th
 \end{equation}
 
 where $\xi_t$ is a positive step size and $a_t$ is a line search parameter in $[0,1]$ s.t. $S(x_{t+1}) = 0$, i.e. the next query lies on the boundary.
-%Now let us assume that the function space of the classifier $C$ is reduced to $\operatorname*{arg\,max}$, i.e. $C: \mathbb{R}^m \mapsto \mathbb{N}^m, \:C(x)=\operatorname*{arg\,max} F_c(x)$, then from Eq. \ref{eqn:classifier} and Eq. \ref{eqn:S} we have:
 Now let us assume that the decision function $D$ is $\operatorname*{arg\,max}$, i.e. $D: \mathbb{R}^m \mapsto \mathbb{N}^m, \:C(x) = D(F_c(x)) = \operatorname*{arg\,max} F_c(x)$, then from Eq. \ref{eqn:classifier} and Eq. \ref{eqn:S} we have:
 \begin{equation}
 \begin{aligned}
@@ -453,10 +452,10 @@ For $b_t = 1- a_t$ and by plugging Eqs \ref{eqn:phi} \& \ref{eqn:approx} in Eq. 
     &= a_{t}x_c + b_t\Biggl\{x_t + \xi_t \frac{\frac{1}{B} \sum_{b=1}^{B} \mathcal{I}(C(x_t + \delta u_b), c_0)u_b}{\|\frac{1}{B} \sum_{b=1}^{B} \mathcal{I}(C(x_t + \delta u_b), c_0)u_b\|_2}\Biggl\} \notag
 \end{align}
 
-Recall that we assumed $C(x)=\operatorname*{arg\,max} F_c(x)$, then the updates in Eq. \eqref{eqn:all} are \textit{guaranteed} by Theorem 1 of HSJA \cite{chen2020hopskipjumpattack} to converge to a stationary point $x_b$ of Eq. \eqref{eqn:opt}.
-Given a standard threshold $\epsilon$ on imperceptibility and over $N$ adversarial episodes, this implies that $\mathbb{E}[\sum_{i=1}^{N}d(x^i_b,x^i_c)] < \epsilon$.
-As $C$ is the only term in the expression \eqref{eqn:all} that is affected by the model, we reach a contradiction and that an alternative classifier $C'$ is required, with $C(x)=D(F_c(x))$.
-As the discriminant function $F_c$ cannot change without retraining, it follows that $D'\neq \operatorname*{arg\,max}$, so that for the adversarial example $x_t$ misclassified as $c_0$, Eq. \ref{eqn:psi} can return -1:
+% Recall that we assumed $C(x)=\operatorname*{arg\,max} F_c(x)$,
+In Eq. \eqref{eqn:all}, the iterates $x_t$ are \textit{guaranteed} by Theorem 1 of HSJA \cite{chen2020hopskipjumpattack} to converge to a stationary point $x_b$ of Eq. \eqref{eqn:opt}, that is $\mathbb{E}[\sum_{i=1}^{N}d(x^i_b,x^i_c)] < \epsilon$, for $\epsilon$ a standard imperceptibility threshold and $N$ adversarial episodes.
+We thus reach a contradiction, and as in Eq. \eqref{eqn:all} the only model-dependent term is $C(\cdot)$, an alternative classifier $C'$ is required.
+With $C(x)=D(F_c(x))$, and the discriminant function $F_c$ unable to change without retraining, it follows that $D'\neq \operatorname*{arg\,max}$, so for adv. example $x_t$ misclassified as $c_0$, Eq. \ref{eqn:psi} can return -1:
 % an adversarial example $x_b, \; d(x_b,x_c) \leq \epsilon$
 
 
@@ -473,37 +472,9 @@ Decision-based attacks initiate from examples $x_t$ that belong to the target cl
 To deter the attack, a perfect defender would have to misclassify/reject this example; yet if an identical but benign example $x_n$ was submitted, classifier $C$ should preserve its capacity to classify it correctly.
 For the identical examples $x_n = x_t$ we want $C(x_n) \neq C(x_t)$, something possible only with context.
 This context $\tau$, based on the sequence of incoming queries  $x \in \{x_t, t = 0,1,2,...,N\} \cup x_n$, can be provided as an additional argument to the decision function $D(\tau, F_c(x))$ s.t. while $x_n = x_t \implies D(\tau, F_c(x_n)) \neq D(\tau, F_c(x_t)) $.
-%proof 2 insufficiency of adv training: look into what PGD does. -> compose with contradiction: without the capacity to mislead/reject, the optimi eq2 WILL converge to an adv example, BECAUSE adv training cannot exhaustively cover all the adversarial examples and proactively model them in F, and also because BB attacks cannot be incorporated at training time.
 \label{prf:one}
 \end{proof}
 
-\textbf{[Theorem \ref{th:epg}]}
-\begin{proof}
-%the sequence $B'$ constructed by policy $\mathcal{E}_\theta$ consists of subsequences that occur in the distribution of benign sequences, so that under sufficient applications $h(B')$ can result to $0$.
-
-Let $H$ be a distance-based detector that based on a stateful representation $\mathcal{S}(\tau, x_t)$ decides if a query $x_t$ is adversarial or not, and we assume the candidate generation policy $\pi_\theta^\mathcal{A}$ can influence this representation through intrinsic parameters like source step size, or applying transformations the underlying model is invariant to \eqref{tbl:transforms}.
-For a predefined threshold $\delta$, if $\mathcal{S}(\tau, x_t) < \delta$ then $H(x_t) = 1$ indicating that $x_t$ is part of an adversarial attack, otherwise $H(x_t) = 0$.
-Now for a number $N$ of attack episodes of fixed length $L$ and a reward function $r(\tau) = \sum_{t=1}^{L}(1 - H(x_t))$, the objective to be maximized is the expected reward of the adversarial policy:
-
-\begin{equation}
-    \mathcal{J}(\theta) = \mathbb{E}_{\pi_\theta^\mathcal{A}}[r(\tau)] = \frac{1}{N}\sum_{i=1}^{N}r(\tau) = \frac{1}{N}\sum_{i=1}^{N}\sum_{t=1}^{L}(1 - H(x_t))
-\label{eqn:expectmarkov}
-\end{equation}
-
-As it is not possible to compute the derivative of an expectation, by using the Policy Gradient Theorem \cite{sutton1999policy} we can transform it to the expectation of the product of the reward and the gradient of the logarithm of the policy:
-
-\begin{equation}
-\begin{aligned}
-    \nabla \mathbb{E}_{\pi_\theta^{\mathcal{A}}} [r(\tau)] &= \mathbb{E}_{\pi_\theta^{\mathcal{A}}}[r(\tau)\nabla \log \pi_\theta(\tau)]\\
-    &= \mathbb{E}_{\pi_\theta^{\mathcal{A}}}[\sum_{t=1}^{L}(1 - H(x_t)) \nabla \log \pi_\theta^{\mathcal{A}}(\tau)]\\
-    &= \frac{1}{N}\sum_{i=1}^{N}\sum_{t=1}^{L}(1 - H(x_t)) \nabla \log \pi_\theta^{\mathcal{A}}(\tau)\\
-\label{eqn:rew_app}
-\end{aligned}
-\end{equation}
-
-To maximize this expectation empirically we sample $e$ episodes from the environment, compute the gradient of the policy $\nabla\log\pi_{\theta}^{\mathcal{A}}(\tau)$ and then update the policy with a learning step $a$, $\theta' = \theta + \alpha\cdot\sum_{0}^{e}r(\tau)\nabla\log\pi_{\theta}^{\mathcal{A}}(\tau)$.
-After this process has converged through gradient ascent, and as the maximum in Eq. \ref{eqn:expectmarkov} is attained for $\sum_{i=1}^{N}\sum_{t=1}^{L}H(x_t) = 0$, the obtained policy $\pi_\theta^\mathcal{A}$ will correspond to the optimally evasive one $\mathcal{E}$.
-\end{proof}
 
 \textbf{[Proposition \ref{prop:two}]}
 We annotate terms with $\mathcal{D}$ when an active defense $\pi_\phi^{\mathcal{D}}$ is present, and with $\cancel{\mathcal{D}}$ otherwise.
@@ -543,6 +514,38 @@ The gradient estimation step is followed by the ``jump'' step that computes $x_{
 \end{equation}
 
 As the ratio of detections $\eta$ approaches 1, we observe that the adversarial iterates $x_{t+1}$ converge prematurely: then all else being equal and for given $t$, $d(x_c,x^\mathcal{D}_t) > d(x_c, x^{\cancel{\mathcal{D}}}_t)$.
+
+\end{proof}
+
+\textbf{[Proposition \ref{th:epg}]}
+
+\begin{proof}
+Let $\pi_\theta^\mathcal{A}$ be the adversarial policy generating queries $x_t$, in $N$ episodes $\tau_i$ of length $L$.
+The defense $\pi_\phi^{\mathcal{D}}$ \eqref{eqn:def}, upon receiving a query $x_t$ outputs a decision $\alpha_t = \pi_\phi^{\mathcal{D}}(x_t, s_t^\mathcal{D}) \in \{0,1\}$, with $1$ and $0$ indicating rejection and acceptance respectively.
+The goal of the adversary is to find the parameters $\theta^*$ that maximize the expected reward:
+
+\begin{equation}
+\mathcal{J}(\theta) = \mathbb{E}_{\pi_\theta^\mathcal{A}} [r(\tau_i)] = \frac{1}{N}\sum_{i=1}^{N}r(\tau_i) = \frac{1}{N} \sum_{i=1}^{N} \sum_{t=1}^{L} (1 - \alpha_t)
+\label{eqn:expect}
+\end{equation}
+
+The gradient of $\mathcal{J}(\theta)$ with respect to the policy parameters $\theta$ is the direction of steepest ascent for Eq. \eqref{eqn:expect}.
+Through the Policy Gradient Theorem \cite{sutton1999policy} we can express the gradient of the expected reward in terms of the gradient of the log-likelihood of the policy, weighted by the reward:
+
+\begin{equation}
+\begin{aligned}
+    \nabla_\theta \mathcal{J}(\theta) &= \nabla_\theta \mathbb{E}_{\pi_\theta^\mathcal{A}} [r(\tau_i)]\\
+    &= \mathbb{E}_{\pi_\theta^{\mathcal{A}}}\left [r(\tau_i)\nabla_\theta \log \pi_\theta(\tau)\right]\\
+    &= \mathbb{E}_{\pi_\theta^{\mathcal{A}}}\left[\sum_{t=1}^{L}(1 - a_t) \nabla_\theta \log \pi_\theta^{\mathcal{A}}(\tau)\right]\\
+    &\approx \frac{1}{N}\sum_{i=1}^{N}\sum_{t=1}^{L}(1 - a_t) \nabla_\theta \log \pi_\theta^{\mathcal{A}}(\tau)\\
+\label{eqn:rew_app}
+\end{aligned}
+\end{equation}
+
+The gradient is thus estimated by sampling $N$ episodes from the policy $\pi_\theta^\mathcal{A}$ to compute Eq. \eqref{eqn:rew_app}.
+To maximize the expectation, we iteratively update the policy parameters $\theta$ using gradient ascent: $\theta \leftarrow \theta + \eta \nabla_\theta \mathcal{J}(\theta)$.
+With $\eta > 0$ the learning rate, this process converges to $\theta^*$.
+Recall that Eq. \eqref{eqn:expect} attains its maximum for $\sum_{i=1}^{N}\sum_{t=1}^{L}a_t = 0$, therefore the converged policy $\pi^\mathcal{A}_{\theta^*}$ will correspond to the optimal evasive policy.
 
 \end{proof}
 
@@ -653,7 +656,7 @@ Note however that as the probability of adversarial queries is an intrinsic prop
 
 \begin{table}[h]
 \small
-\caption{Clean accuracy on CIFAR-10 for scenarios 4 \& 6, where $P(adv)$ denotes the probability that a query is part of an attack.}
+\caption[Clean accuracy on CIFAR-10 for $P(adv)$ = 0.]{Clean accuracy on CIFAR-10 for scenarios 4 \& 6, where $P(adv)$ denotes the probability that a query is part of an attack.}
 \centering
 \renewcommand*{\arraystretch}{1.05}
 \begin{tabular}{c|r|r|r|r|r|}

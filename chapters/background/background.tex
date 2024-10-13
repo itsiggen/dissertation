@@ -1,4 +1,5 @@
 \chapter{Background}\label{ch:background}
+\label{ch:background}
 
 This dissertation explores attacks and defenses against AI-based systems; it therefore lies on the intersection of cybersecurity and AI.
 Cybersecurity, as is conventionally understood, refers to the practice of protecting systems, networks, and data from digital attacks, damage, or unauthorized access.
@@ -16,7 +17,7 @@ This field gained prominence in mid 2010s when researchers discovered that small
 These findings highlighted critical security issues in ML systems, that subsequently sparked a burgeoning scientific field and extensive research into understanding, exploiting, and ultimately defending against these vulnerabilities.
 
 After the initial inception, adversarial attacks on ML models enjoyed a prolific growth, where researchers conceived and performed attacks on every context or model available, with often little regard to how feasible or realistic these attacks might be.
-To provide an overview of adversarial attacks on gls{ML}, they can be categorized into several types: according to the level of access they have to the model, as well as the objective of the attack.
+To provide an overview of adversarial attacks on \gls{ML}, we can categorize them into several types: according to the level of access they have to the model, as well as the objective of the attack.
 
 \subsection{Adversarial Objective}
 
@@ -26,10 +27,10 @@ While not intended as an exhaustive list, adversarial attacks fall largely in fo
     \item \textbf{Evasion Attacks}. These are attacks that occur at test time. An adversary slightly modifies input data to ``evade'' detection or classification. For instance, adding noise to an image can mislead an image classifier into making an incorrect prediction.
     \item \textbf{Poisoning Attacks}. Contrary to evasion, poisoning attacks occur at training time. The attacker injects malicious data into the training set, aiming to corrupt the learning process. This aim can be the degradation of the model's performance or the insertion of backdoors (triggers) that enable a special kind of evasion at test time.
     \item \textbf{Model Extraction Attacks}. In model extraction attacks, the adversary aims to steal the parameters or hyperparameters of a model. By querying the model and analyzing the outputs, an attacker can approximate the original model.
-    \item \textbf{Privacy Attacks}. Attacks like membership inference involve determining whether a specific data point was part of the model's training set. This can lead to privacy breaches, revealing sensitive information about individuals or their attributes in the dataset.
+    \item \textbf{Privacy Attacks}. Attacks like membership/attribute inference and data reconstruction can lead to privacy breaches, revealing sensitive information about individuals or their attributes in the dataset.
 \end{itemize}
 
-\textbf{Adversarial Examples.} The most common attack in \gls{AML} is evasion, and the samples that are part of such an attack or the results of it, are known as adversarial examples.
+\textbf{Adversarial Examples.} The most common attack in \gls{AML} works is evasion, and the samples that are part of such an attack or the results of it, are known as adversarial examples.
 Adversarial examples are inputs to \gls{ML} models that are intentionally designed to cause the model to make a mistake.
 These inputs are typically created by adding small, carefully crafted perturbations to legitimate, clean examples; these modifications are almost imperceptible to humans but cause significant errors in the model predictions.
 The study of adversarial examples has revealed vulnerabilities in various \gls{ML} models, particularly in deep neural networks, raising concerns about their robustness and security in real-world applications.
@@ -80,8 +81,8 @@ Over time, several defense mechanisms and mitigations to adversarial examples ha
     \item \textbf{Feature Squeezing / Denoising}. Reducing the complexity of the input space (e.g., by bit-depth reduction) or by using denoising methods, a defense has the potential to remove adversarial perturbations.
 \end{itemize}
 
-We should mention that all these defenses confer only empirical robustness to a model; so far there have been no definitive proofs of a model's operational robustness at deployment.
-Furthermore, out of all these defenses the only one that has withstood the test of time and is still widely used is adversarial training.
+We should note here that all these defenses confer only empirical robustness to a model; so far there have been no definitive proofs of a model's operational robustness at deployment.
+Furthermore, out of all these defenses the only one that has withstood the test of time and is still widely used is adversarial training~\cite{tramer2020adaptive}.
 Adversarial training can be mathematically formulated as a min-max optimization problem:
 
 \begin{equation}
@@ -97,11 +98,11 @@ As both the loss landscape and the set of perturbations are non-convex, adversar
 Shortcut learning refers to models leveraging non-generalizable patterns and spurious correlations in the training data to make predictions~\cite{geirhos2020shortcut}.
 These shortcuts can make models vulnerable to adversarial attacks and lead to poor performance on out-of-distribution samples.
 \gls{OOD} samples should be considered a given in environments like cybersecurity, due to the involved agency of adversaries trying to evade the model.
-Adversaries exploit these shortcuts by introducing small perturbations that the model erroneously relies on for prediction.
+Adversaries introduce small perturbations to exploit these shortcuts that the model erroneously relies on for prediction.
 
-When \gls{ML} models are trained without adversarial training or without considering robustness to attacks, then they are more likely to depend on any shortcuts or artifacts present in the data, and even be more vulnerable to attacks.
+When \gls{ML} models are trained without adversarial training or without considering robustness to attacks, then they are more likely to depend on any shortcuts or artifacts present in the data, and even be more vulnerable to attacks~\cite{ilyas2019adversarial}.
 As a result, these models will perform poorly when exposed to adversarial examples and other forms of distributional shifts, limiting their real-world applicability and reliability.
-It is thus paramount to identify any reliance on non-robust features beforehand and mitigate them.
+It is thus paramount to identify in advance any reliance on non-robust features (e.g. by adversarial training) and mitigate them.
 
 \section{Reinforcement Learning}
 
@@ -126,6 +127,7 @@ In this chapter, we delve into the theoretical underpinnings of \gls{RL}, introd
 We will also discuss topics such as function approximation with neural networks, multi-agent reinforcement learning (\gls{MARL}), and important concepts that lie at tbe intersection of \gls{RL} and cybersecurity.
 
 \section{Markov Decision Processes}
+\label{sec:mdp}
 
 Markov Decision Processes (MDPs) provide a mathematical framework for modeling decision-making problems where outcomes are partly random and partly under the control of a decision-maker.
 MDPs are widely used in reinforcement learning to formalize the environment in which an agent operates.
@@ -227,7 +229,7 @@ The vast majority of applied RL uses model-free methods, further subdivided to v
 
 On the other hand, model-based algorithms attempt to learn a model of the dynamics of the environment, which includes the state transition probabilities and the reward function.
 These models are then used for planning and decision-making.
-Model-based algorithms can be more powerful and data-efficient but also more complicated, as they require a model of the environment; model-free algorithms are less involving and more straightforward to implement.
+Model-based algorithms can be more powerful and data-efficient but also more complicated, as they require a model of the environment; model-free algorithms on the other hand are more straightforward to implement.
 
 \subsubsection{On-Policy vs Off-Policy Algorithms}
 
@@ -333,7 +335,7 @@ The steps are shown in Algorithm \ref{alg:PPOgen}.
 \end{algorithm}
 
 In summary, \gls{PPO} is a method that combines the advantages of policy gradients with stability enhancements through its clipped or penalized objective function.
-The use of neural networks for function approximation enables it to handle complex, high-dimensional environments, making it a powerful \gls{RL} tool for modern cybersecurity environments.
+The use of neural networks for function approximation enables it to handle continuous and high-dimensional state and action spaces, making it a powerful \gls{RL} tool for modern cybersecurity environments.
 Due to its advantages, \gls{PPO} is the most widely used RL algorithm, and is featured in all the individual works of this dissertation.
 
 \subsection{Function Approximation with Neural Networks}

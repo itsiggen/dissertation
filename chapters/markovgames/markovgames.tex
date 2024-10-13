@@ -1,4 +1,5 @@
 \chapter{Adversarial Markov Games: On Adaptive Offensive and Defensive Strategies}\label{ch:markovgames}
+\label{ch:markovgames}
 
 \section*{Preamble}
 
@@ -9,22 +10,22 @@ In this chapter, we take the notion of being adaptive a step further, by introdu
 
 We introduce a novel framework for adaptively optimizing black-box attacks and defenses against each other through the competitive game they form.
 We initiate our investigation by focusing on adapting attacks: to reliably measure robustness it is paramount to evaluate against realistic and worst-case attacks.
-It is not simply that attacks themselves are typically underperforming out-of-the-box; there also exist transformations on the inputs capable of evading similarity based defenses, transformations that the model should be invariant to, for instance translation or rotation for a \gls{CNN}.
-Nevertheless, these evasive transformations interfere with the fundamental operation of the attack, are not straightforward when and how to apply, and as result these two are typically in trade-off.
-To achieve an optimal attack performance, we therefore augment both the attacks and their evasive arsenal \textit{together}, by adaptively controlling all their parameters.
+It is not only that attack parameters are often suboptimal out-of-the-box; there are also input transformations capable of evading similarity based defenses and that the model is invariant to, for instance translation or rotation for a \gls{CNN}.
+However, these evasive transformations interfere with the fundamental operation of the attack, and as a result attack performance and evasion are typically in trade-off.
+To achieve an optimal combination, we therefore augment attacks by adaptively optimizing them \textit{together} with their evasive arsenal.
 
-We discover that on image classification, the archetypal testbed for \gls{AML} research, while adversarial training does provide some robustness to adversarial attacks, this is often insufficient.
-As the imperceptible model of adversarial perturbations does not necessarily apply to other domains, we naturally wonder if one can improve on the level of robustness that is not based on an arbitrary threshold of perceptibility, by devising defenses that are also adaptive.
-These are defenses which control what the system responds rather than what it has actually learned.
-While we eventually succeeded, this task proved to be of considerable difficulty.
-It is decidedly non-trivial to fully defend against adversarial attacks \textit{while} at the same time preserving the original performance, that is the accuracy on clean data.
+In this work we focus on image classification, the archetypal testbed for \gls{AML} research, where we discover that the robustness adversarial provides is insufficient.
+As the imperceptible model of adversarial perturbations is not universal for all domains, we wonder if one can improve on the level of robustness that is not based on an arbitrary threshold of perceptibility.
+To that end, we devise defenses that are also adaptive, and which control what the system responds rather than what it has actually learned, something that proved to be a considerable challenge.
+If one cannot consistently assign unique actors to incoming queries to the system, it is decidedly non-trivial to defend against decision-based attacks and at the same time preserve the performance on clean data.
 
-Then, we proceed to evaluate our adaptive attacks and defenses, first apart and then jointly under a multi-agent perspective.
-We demonstrate that active defenses are a necessary complement to model hardening when facing decision-based attacks; then how these defenses can be circumvented by adaptive attacks, only to finally elicit active \emph{and} adaptive defenses.
+We then proceed to evaluate our adaptive attacks and defenses, first apart and then jointly under a multi-agent perspective.
+We discover that active defenses are a necessary complement to model hardening when facing decision-based attacks.
+Then, that these defenses can be circumvented by adaptive attacks, only to finally elicit active \emph{and} adaptive defenses.
 We validate our observations through a wide theoretical and empirical investigation to confirm that AI-enabled adversaries pose a considerable threat to black-box ML-based systems, rekindling the proverbial arms race where defenses \emph{have} to be AI-enabled too.
-Our approach outperforms the state-of-the-art black-box attacks and stateful defenses, while bringing them together to render effective insights on the robustness of ML-based systems.
-By investigating the challenges that adaptive adversaries pose, we develop adaptive defenses as effective strategies in ensuring that these systems remain robust when deployed in the real-world.
-This chapter is based on work which is currently under review in SatML 2025, and represents a considerable part of my efforts during my PhD.
+Notably, our approach outperformed the state-of-the-art black-box attacks and stateful defenses, while bringing them these two aspects together to render effective insights on the robustness of ML-based systems.
+By investigating the challenges that adaptive adversaries pose, we developed adaptive defenses as a counter, which proved effective as strategies in ensuring real-world systems remain robust when deployed.
+% This chapter is based on work which is currently under review in SatML 2025and represents a considerable part of my efforts during my PhD.
 
 \section{Introduction}
 
@@ -112,7 +113,7 @@ The practical effectiveness of attacks therefore rests on the ability to adapt t
 
 %But what does the ability to adapt entail \textit{exactly}, for attacks as well as defenses, and what are the implications when these adapt at distinct manners and points in time?
 In \gls{AML}, ``adaptive'' by convention refers to attacks with full knowledge of how a defense works and the tools to bypass it; we denote such attacks as \textbf{adapted}.
-In our work, we expand the term to include \textit{adaptive control}, defined as the ability of a system to \textbf{self-adapt}: \emph{automatically} reconfigure itself in response to changes in the dynamics of the environment in order to achieve optimal behavior~\cite{aastrom1995adaptive}.
+In our work, we expand the term to include \textit{adaptive control}, defined as the ability of a system to \textbf{self-adapt}: \emph{automatically} reconfigure itself in response to changes in the dynamics of the environment in order to achieve optimal behavior~\cite{aastrom2013adaptive}.
 One can think of adaptive control in the sense ``attack optimization'' is used by Pintor et al.~\cite{pintor2022indicators}, but for black-box systems.
 Typically, what is to be controlled is well-defined and known in advance.
 The moment however we consider adaptive evaluations, \textit{new} controls are potentially implied: in a similarity-based defense for instance, such controls would be input transformations the model is invariant to.
@@ -123,7 +124,7 @@ We conceptualize this more general definition of adaptive, essential for having 
 \begin{figure}
   \centering
   \includegraphics[width=0.9\textwidth]{knobs.png}
-  \caption{In \gls{AML}, adaptive attacks are those with the capabilities (knobs) to bypass a defense; adaptive control is rather the precise tuning of all the known knobs. Against black-box systems, we can reformulate adaptive so that it signifies \textbf{both}. For instance in HSJA~\cite{chen2020hopskipjumpattack}, radius, steps, and jump are parameters of the attack, while rotate and translate are transformations that can evade a similarity-based defense.}
+  \caption[Adaptive attacks reformulation.]{In \gls{AML}, adaptive attacks are those with the capabilities (knobs) to bypass a defense; adaptive control is rather the precise tuning of all the known knobs. Against black-box systems, we can reformulate adaptive so that it signifies \textbf{both}. For instance in HSJA~\cite{chen2020hopskipjumpattack}, radius, steps, and jump are parameters of the attack, while rotate and translate are transformations that can evade a similarity-based defense.}
   \label{fig:adaptivity}
 \end{figure}
 
@@ -154,7 +155,7 @@ To facilitate comparison, in~\autoref{tab:comparison} we highlight the most impo
 Note the importance for an attack to function without assuming rejection, and respectively for a defense to function without access to query metadata like IP addresses or accounts.
 
 \begin{table}[h]
-\caption{Prominent decision-based attacks and defenses and their individual aspects: op=optimized, ev=evasive, aa=attack adaptation, $\neg$rj=doess not require rejection, ac=Active, ad=defense adaptation, $\neg$md=does not use metadata, ms=misdirection. While all works are situated either on the offensive or the defensive side, ours brings these two together.} 
+\caption[Prominent decision-based attacks and defenses.]{Prominent decision-based attacks and defenses and their individual aspects: op=optimized, ev=evasive, aa=attack adaptation, $\neg$rj=doess not require rejection, ac=Active, ad=defense adaptation, $\neg$md=does not use metadata, ms=misdirection. While all works are situated either on the offensive or the defensive side, ours brings these two together.} 
 \centering
 \begin{tabular}{r|cccc|cccc}
 \toprule
@@ -191,9 +192,9 @@ A large number of others followed -- each inventive in its own way -- that manag
 Prominent examples are HSJA~\cite{chen2020hopskipjumpattack}, Guessing Smart (BAGS)~\cite{brunner2019guessing}, Sign-Opt~\cite{cheng2019sign}, Policy-driven (PDA)~\cite{yan2020policy}, QEBA~\cite{li2020qeba}, and SurFree~\cite{maho2021surfree}.
 
 White-box attacks like C\&W~\cite{carlini2017towards} cannot function in black-box environments as there is no closed-form description of the inference pipeline.
-To facilitate optimization, decision-based attacks commonly initialize from a sample belonging to the target class, as it can be considered an adversarial example with an unacceptably large perturbation.
+To facilitate optimization, decision-based attacks commonly initialize from a sample $x_g$ that belongs to the target class, as it can be considered an adversarial example with an unacceptably large perturbation.
 This switch allows the task to be solved continuously, by minimizing the perturbation while always staying on the adversarial side of the boundary.
-Decision-based attacks share further common aspects in their functioning, ones that we can abstract through: given \textbf{starting} and \textbf{original} samples $\color{orange}x_g$ and $\color{orange}x_{c}$ respectively, the goal is to iteratively propose adversarial \textbf{candidates} $\color{orange}x_t$, until the \textbf{distance} $\color{orange}\delta = d(x_t, x_c)$ is minimized.
+Decision-based attacks share further common aspects in their functioning, ones that we can abstract through: given \textbf{starting} and \textbf{original} samples $x_g$ and $x_c$ respectively, the goal is to iteratively propose adversarial \textbf{candidates} $x_t$, until the \textbf{distance} $\delta = d(x_t, x_c)$ is minimized (cf. Fig. \ref{fig:boundary}).
 This process follows different algorithmic approaches that represent different geometrical intuitions; we can describe it more generally by means of a candidate generation policy:
 
 \begin{equation}
@@ -206,7 +207,7 @@ This process follows different algorithmic approaches that represent different g
 If we consider that attacks execute over discrete time steps, and assume the model always answers, then the attack procedure can be construed as a \gls{MDP} to be solved, by finding the parameters $\theta$ that minimize $\delta$ in the least amount of queries.
 
 %Scoping on image classification, we now introduce some necessary notation.
-Consider now a multinomial image classification model $\mathcal{M}$ under attack, with a discriminant function $\color{orange}F: \mathbb{R}^d \rightarrow \mathbb{R}^m$, that for each input $x \in [0,1]^d$ generates an output $y := \{y \in [0,1]^m |\sum_{c=1}^{m}y_c = 1\}$ -- a probability distribution over the $m$ classes.
+Consider now a multinomial image classification model $\mathcal{M}$ under attack, with a discriminant function $F: \mathbb{R}^d \rightarrow \mathbb{R}^m$, that for each input $x \in [0,1]^d$ generates an output $y := \{y \in [0,1]^m |\sum_{c=1}^{m}y_c = 1\}$ -- a probability distribution over the $m$ classes.
 By definition, black-box environments preclude access to these probabilities; instead one can only observe the decision of the classifier $C$ that returns the highest probability class:
 
 \begin{equation}
@@ -215,8 +216,8 @@ By definition, black-box environments preclude access to these probabilities; in
 \end{equation}
 
 \noindent with $D$ being the decision function, here $D = \operatorname*{arg\,max}$.
-The goal in targeted attacks is to change the \textbf{decision} $\color{orange}c_g \in [m]$ for a correctly classified example $x$, to a predefined \textbf{target} class $\color{orange}c_o \neq c_g$.
-This process can be facilitated through a function $\color{orange}\psi$ which given a perturbed example $x_t$ at step $t$, it returns a binary indicator of success:
+The goal in targeted attacks is to change the \textbf{decision} $c_g \in [m]$ for a correctly classified example $x$, to a predefined \textbf{target} class $c_o \neq c_g$.
+This process can be facilitated through a function $\psi$ which given a perturbed example $x_t$ at step $t$, it returns a binary indicator of success:
 
 \begin{equation}
     \psi(x_t) = \begin{cases}
@@ -234,9 +235,9 @@ The adversarial goal can then be described as the following constrained optimiza
 \label{eqn:opt}
 \end{equation}
 
-\noindent where the distance metric $\color{orange}d$ is an $\ell_p$-norm, with $p \in \{0,1,2,\inf\}$.
+\noindent where the distance metric $d$ is an $\ell_p$-norm, with $p \in \{0,1,2,\inf\}$.
 As the threshold between adversarial and non-adversarial relies on the subjectivity of human perception, this optimization task highlights the fuzzy nature of adversarial examples, something that is further aggravated in domains where visual proximity is of little importance.
-Successful or unsuccessful adversarial examples are therefore delimited by an \textbf{threshold} $\color{orange}\epsilon$ on perturbation, where $d(x,x_t) \leq \epsilon$.
+Successful or unsuccessful adversarial examples are therefore delimited by an \textbf{threshold} $\epsilon$ on perturbation, where $d(x,x_t) \leq \epsilon$.
 While this constraint might not intuitively translate to non-visual domains, we nonetheless contend that minimal perturbation still remains a desideratum of adversarial examples.
 
 The fact that real-world attacks are black-box and decision-based does not make them any less effective.
@@ -246,14 +247,14 @@ The limited effectiveness of adversarial training against decision-based attacks
 Additionally, decision-based attacks are challenging to incorporate during stochastic gradient descent (SGD) because these attacks rely on boundary navigation, and the farther the model is from convergence, the less effective the attack is.
 Scalability is another concern: while adversarial training typically involves a few steps (1-50) of white-box attacks like FGSM or PGD, decision-based attacks can take orders of magnitude more steps (queries) to produce an adversarial example.
 
-Decision-based attacks search for the \textbf{optimal parameters} $\color{orange}\theta^*$ of the generation policy \eqref{eqn:genpolicy}, those that given $x^{i}_{c}$, with $i$ denoting the i-th adversarial episode, minimize Eq.~\eqref{eqn:opt} in expectation:
+Decision-based attacks search for the \textbf{optimal parameters} $\theta^*$ of the generation policy \eqref{eqn:genpolicy}, those that given $x^{i}_{c}$, with $i$ denoting the i-th adversarial episode, minimize Eq.~\eqref{eqn:opt} in expectation:
 
 \begin{equation}
     \operatorname*{arg\,min}_{\theta} \mathbb{E}[\sum_{i=1}^{N}d(x^i_b,x^i_c)], \quad \text{s.t.} \quad \psi(x^i_b) = 1,
 \label{eqn:rew}
 \end{equation}
 
-\noindent where $\color{orange}x^i_b$ is the \textbf{best} adversarial example generated by policy $\pi_\theta^{\mathcal{A}}$ during episode $i$.
+\noindent where $x^i_b$ is the \textbf{best} adversarial example generated by policy $\pi_\theta^{\mathcal{A}}$ during episode $i$.
 Given the dimensionality, it can be intractable to learn a policy that modifies the inputs at the feature space directly~\cite{pierazzi2020intriguing}; CIFAR-10, for instance, has more than 3K features to perturb.
 %decision-based attacks have also a second objective to minimize: the number of queries submitted.
 
@@ -285,7 +286,7 @@ Let us now assume an agent carrying out an \textbf{active defense policy}:
 \label{eqn:def}
 \end{equation}
 
-\noindent with $x_t$ the query, $s^{\mathcal{D}}_t$ the \textbf{state} for the defense as created by past queries, and $\color{orange}\alpha$ the \textbf{binary decision}: when the query is deemed adversarial, it is rejected by returning $\alpha=1$.
+\noindent with $x_t$ the query, $s^{\mathcal{D}}_t$ the \textbf{state} for the defense as created by past queries, and $\alpha$ the \textbf{binary decision}: when the query is deemed adversarial, it is rejected by returning $\alpha=1$.
 If this policy is stationary, the environment dynamics in turn become stationary too, and thus together with the adversarial task itself, bypassing the defense can \emph{also} be formulated as an MDP to be solved.
 In two-player, zero-sum games, the moment an agent follows a stationary policy, it becomes \textit{exploitable} through the reward obtained by an adversary~\cite{timbers2022approximate}.
 Active defenses, a consequence of decision-based attacks, entail therefore \textit{adaptive} adversaries.
@@ -334,7 +335,7 @@ The active defense achieves its optimal $\pi_{\phi^*}^{\mathcal{D}}$~\eqref{eqn:
 \begin{figure}
     \centering
     \includegraphics[width=0.9\textwidth]{model.png}
-    \caption{Schematic model of an AMG environment. Due to the inherent uncertainty of behavior at either side of the interface, it is a partially observable RL environment mirrored for each agent where one's decisions become the other's observations. (I) denotes an adaptive attacker (cf. Fig. \ref{fig:adaptivity}), (II) model hardening (passive defense), and (III) an active defense.}
+    \caption[Schematic model of an AMG environment.]{Schematic model of an AMG environment. Due to the inherent uncertainty of behavior at either side of the interface, it is a partially observable RL environment mirrored for each agent where one's decisions become the other's observations. (I) denotes an adaptive attacker (cf. Fig. \ref{fig:adaptivity}), (II) model hardening (passive defense), and (III) an active defense.}
     \label{fig:model}
 \end{figure}
 
@@ -411,7 +412,7 @@ In summary, the black-box threat model we consider is delineated as follows:
 \begin{figure}
     \centering
     \includegraphics[width=0.9\textwidth]{boundary.png}
-    \caption{Misdirection in a two-dimensional decision boundary. The adaptive defense controls a single parameter, the hypersphere radius around $k_0$ (the last known adversarial); for queries $x_t$ that fall within this hypersphere the model responds with a non-adversarial decision. $x_g$ is the starting sample, $x_c$ the original, and $x_b$ the best possible adversarial.}
+    \caption[Misdirection in a two-dimensional decision boundary.]{Misdirection in a two-dimensional decision boundary. The adaptive defense controls a single parameter, the hypersphere radius around $k_0$ (the last known adversarial); for queries $x_t$ that fall within this hypersphere the model responds with a non-adversarial decision. $x_g$ is the starting sample, $x_c$ the original, and $x_b$ the best possible adversarial.}
     \label{fig:boundary}
 \end{figure}
 % \vspace{-20pt}
@@ -550,7 +551,7 @@ The empirical results, as yielded by months of CPU hours and an inordinate amoun
 \begin{table*}[!ht]
 \setlength{\tabcolsep}{0.3cm} % Adjust column spacing here
 \centering
-  \caption{\textbf{CIFAR-10 / BAGS}: ASR and mean $l_2$ perturbation for 1K, 2K, and 5K queries, against normally and adversarially trained models. C.Acc reports the clean accuracy on benign queries of the base model plus any defenses present; in the first two scenarios (no active defense) the baseline clean accuracy is reported. Yellow scenarios denote the baseline attack performance, green denote active and/or adaptive defenses, and red denote adaptive attacks. Scenarios 9-13 compare our Adaptive Attack (AA) and Adaptive Defense (AD) to Blacklight (BD) and OARS (OA).}
+  \caption[ASR and mean $l_2$ perturbation for BAGS in CIFAR-10.]{\textbf{CIFAR-10 / BAGS}: ASR and mean $l_2$ perturbation for 1K, 2K, and 5K queries, against normally and adversarially trained models. C.Acc reports the clean accuracy on benign queries of the base model plus any defenses present; in the first two scenarios (no active defense) the baseline clean accuracy is reported. Yellow scenarios denote the baseline attack performance, green denote active and/or adaptive defenses, and red denote adaptive attacks. Scenarios 9-13 compare our Adaptive Attack (AA) and Adaptive Defense (AD) to Blacklight (BD) and OARS (OA).}
   \begin{tabular}{c|c|rrrr|r}
     \toprule
       \multirow{2}{*}{\parbox{1cm}{\centering Adv.\\Trained}} & \multirow{2}{*}{Scenario} & \multicolumn{5}{c}{\textbf{CIFAR-10 Gap: 20.01}} \\
@@ -595,7 +596,7 @@ The empirical results, as yielded by months of CPU hours and an inordinate amoun
 \begin{table*}[!ht]
 \setlength{\tabcolsep}{0.3cm} % Adjust column spacing here
 \centering
-  \caption{\textbf{CIFAR-10 / HSJA}: ASR and mean $l_2$ perturbation for 1K, 2K, and 5K queries, against normally and adversarially trained models.}
+  \caption[ASR and mean $l_2$ perturbation for HSJA in CIFAR-10.]{\textbf{CIFAR-10 / HSJA}: ASR and mean $l_2$ perturbation for 1K, 2K, and 5K queries, against normally and adversarially trained models.}
   \begin{tabular}{c|c|rrrr|r}
     \toprule
       \multirow{2}{*}{\parbox{1cm}{\centering Adv.\\Trained}} & \multirow{2}{*}{Scenario} & \multicolumn{5}{c}{\textbf{CIFAR-10 Gap: 20.01}} \\
@@ -640,7 +641,7 @@ The empirical results, as yielded by months of CPU hours and an inordinate amoun
 \begin{table*}[!ht]
   \setlength{\tabcolsep}{0.3cm} % Adjust column spacing here
   \centering
-    \caption{\textbf{MNIST / BAGS}: ASR and mean $l_2$ perturbation for 1K, 2K, and 5K queries, against normally and adversarially trained models.}
+    \caption[ASR and mean $l_2$ perturbation for BAGS in MNIST.]{\textbf{MNIST / BAGS}: ASR and mean $l_2$ perturbation for 1K, 2K, and 5K queries, against normally and adversarially trained models.}
     \begin{tabular}{c|c|rrrr|r}
       \toprule
         \multirow{2}{*}{\parbox{1cm}{\centering Adv.\\Trained}} & \multirow{2}{*}{Scenario} &
@@ -703,7 +704,7 @@ The empirical results, as yielded by months of CPU hours and an inordinate amoun
 \begin{table*}[!ht]
 \setlength{\tabcolsep}{0.3cm} % Adjust column spacing here
 \centering
-  \caption{\textbf{MNIST / HSJA}: ASR and mean $l_2$ perturbation for 1K, 2K, and 5K queries, against normally and adversarially trained models.}
+  \caption[ASR and mean $l_2$ perturbation for HSJA in MNIST.]{\textbf{MNIST / HSJA}: ASR and mean $l_2$ perturbation for 1K, 2K, and 5K queries, against normally and adversarially trained models.}
   \begin{tabular}{c|c|rrrr|r}
     \toprule
       \multirow{2}{*}{\parbox{1cm}{\centering Adv.\\Trained}} & \multirow{2}{*}{Scenario} &

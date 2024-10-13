@@ -80,12 +80,14 @@
 \newcommand{\myprintglossary}{%
   \renewcommand{\glossaryname}{\glossname}
   \cleardoublepage%
-  \printglossary[title=\glossname, type=\acronymtype, nonumberlist]
+  \printglossary[title=\glossname, type=\acronymtype, style=index, nonumberlist]
   \chaptermark{\glossname}
   \addcontentsline{toc}{chapter}{\glossname} %% comment to exclude from TOC
 }
 
 \glssetcategoryattribute{acronym}{postdot}{}
+
+\setlength{\glsentryitem}{0pt}
 
 \newacronym{AI}{AI}{Artificial Intelligence}
 \newacronym{XAI}{XAI}{eXplainable Artificial Intelligence}
@@ -98,12 +100,14 @@
 \newacronym{MARL}{MARL}{Multi-Agent Reinforcement Learning}
 \newacronym{AML}{AML}{Adversarial Machine Learning}
 \newacronym{MDP}{MDP}{Markov Decision Process}
+\newacronym{POMDP}{POMDP}{Partially-Observable Markov Decision Process}
 \newacronym{DNN}{DNN}{Deep Neural Network}
 \newacronym{RNN}{RNN}{Recurrent Neural Network}
 \newacronym{CNN}{CNN}{Convolutional Neural Network}
+\newacronym{LLM}{LLM}{Large Language Model}
 \newacronym{SVM}{SVM}{Support Vector Machine}
 \newacronym{NLP}{NLP}{Natural Language Processing}
-\newacronym{GAN}{GAN}{Generative Adversarial Network}
+\newacronym{GAN}{GAN}{Generative Adversarial Networks}
 \newacronym{IID}{IID}{Independent and Identically Distributed}
 \newacronym{OOD}{OOD}{Out of Distribution}
 \newacronym{PPO}{PPO}{Proximal Policy Optimization}

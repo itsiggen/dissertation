@@ -377,7 +377,7 @@ This process is illustrated in Figure \ref{mouse}.
 
 \begin{figure}
 \centerline{\includegraphics[width=0.95\columnwidth]{mouse.png}}
-\caption[Agent controlled mouse movement.]{Agent controlled mouse movement. In red and blue are Piecewise and Bézier trajectories respectively.}
+\caption[Agent controlled mouse movement.]{Agent controlled mouse movement. The top and bottom are Piecewise and Bézier trajectories respectively.}
 \label{mouse}
 \end{figure}
 
@@ -554,18 +554,6 @@ This is strong evidence that the temporal dynamics of incoming requests are take
 Figure \ref{swos} plots the average cumulative score each methodology achieves over the period of evaluation.
 Once again there is a clear divide between the Baseline and the \gls{RL} enabled agents, with Bézier being the approach getting most consistently high scores.
 
-\begin{figure*}[ht!]
-  \centerline{\includegraphics[width=0.95\textwidth]{SPPS.png}}
-  \caption[reCaptcha score evolution in sessions initially flagged as bot]{Score evolution in sessions initially flagged as bot, on Website A and Website B.}
-  \label{spps}
-  \end{figure*}
-
-\begin{figure*}[ht!]
-\centerline{\includegraphics[width=0.95\textwidth]{SWOS.png}}
-\caption[Average cumulative score over the period of evaluation.]{Average cumulative score over the period of evaluation, for Website A and Website B.}
-\label{swos}
-\end{figure*}
-
 \textbf{Website B}. Since website A is practically an artificial web environment, offering ease of access and unlimited querying, it does not fully represent a real-world scenario where the risk analysis system adapts based on actual traffic patterns.
 To properly assess the capabilities of our automation, we transition to Website B, which experiences live web traffic.
 As detailed in Section \ref{sec:approachre}, in coordination with the administrators we deploy reCAPTCHA v3 on Website B and allowed it to observe traffic for one week to avoid skewing its patterns.
@@ -577,6 +565,18 @@ We observe a clear but less prominent gap between the Baseline and the \gls{RL} 
 In this environment saturation and depletion still occur but differently than on Website A.
 While it is still possible to deplete the score due to an overabundance of requests, when it happens it concerns only the IP address where the requests were submitted from and does not propagate to others.
 The sessions where the score reached depletion due to excessive requests were less than 3\% of the total.
+
+\begin{figure*}[ht!]
+  \centerline{\includegraphics[width=0.95\textwidth]{SPPS.png}}
+  \caption[reCaptcha score evolution in sessions initially flagged as bot]{Score evolution in sessions initially flagged as bot, on Website A and Website B.}
+  \label{spps}
+  \end{figure*}
+
+\begin{figure*}[ht!]
+\centerline{\includegraphics[width=0.95\textwidth]{SWOS.png}}
+\caption[Average cumulative score over the period of evaluation.]{Average cumulative score over the period of evaluation, for Website A and Website B.}
+\label{swos}
+\end{figure*}
 
 Figure \ref{swos} illustrates the average cumulative score each methodology achieves over the period of evaluation.
 One thing we immediately observe is that Bézier performs the best out of the box, however Abstract diminishes the gap over time as the Bézier agent no longer updates its parameters.

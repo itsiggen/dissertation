@@ -155,31 +155,32 @@ To facilitate comparison, in~\autoref{tab:comparison} we highlight the most impo
 Note the importance for an attack to function without assuming rejection, and respectively for a defense to function without access to query metadata like IP addresses or accounts.
 
 \begin{table}[h]
-\caption[Prominent decision-based attacks and defenses.]{Prominent decision-based attacks and defenses and their individual aspects: op=optimized, ev=evasive, aa=attack adaptation, $\neg$rj=doess not require rejection, ac=Active, ad=defense adaptation, $\neg$md=does not use metadata, ms=misdirection. While all works are situated either on the offensive or the defensive side, ours brings these two together.} 
+\caption[Prominent decision-based attacks and defenses.]{Prominent decision-based attacks and defenses and their individual aspects: op=optimized, ev=evasive, aa=attack adaptation, $\neg$rj=does not require rejection, ac=Active, ad=defense adaptation, $\neg$md=does not use metadata, ms=misdirection. While all works are situated either on the offensive or the defensive side, ours brings these two together.} 
 \centering
 \begin{tabular}{r|cccc|cccc}
 \toprule
-\multirow{2}{*}{\textbf{Work}} & \multicolumn{4}{c}{\textbf{\textcolor{purple!80}{Offensive}}} & \multicolumn{4}{c}{\textbf{\textcolor{teal!80}{Defensive}}} \\
+\multirow{2}{*}{\textbf{Work}} & \multicolumn{4}{c}{\textbf{Offensive}} & \multicolumn{4}{c}{\textbf{Defensive}} \\
 \cmidrule{2-9}
-& \textbf{op} & \textbf{ev} & \textbf{aa} & \textbf{$\neg$rj} & \textbf{ac} & \textbf{ad} & \textbf{$\neg$md} &\textbf{ms} \\
+& \textbf{op} & \textbf{ev} & \textbf{aa} & \textbf{$\neg$rj} & \textbf{ac} & \textbf{ad} & \textbf{$\neg$md} & \textbf{ms} \\
 \midrule
-\textbf{\textcolor{purple!80}{Boundary}}  \cite{brendel2018decision} & \emptycirc & \emptycirc & \emptycirc & \fullcirc & \emptycirc & \emptycirc & --- & --- \\
-\textbf{\textcolor{purple!80}{BAGS}} \cite{brunner2019guessing} & \emptycirc & \emptycirc & \emptycirc & \fullcirc & \emptycirc & \emptycirc & --- & --- \\
-\textbf{\textcolor{purple!80}{HSJA}} \cite{chen2020hopskipjumpattack} & \fullcirc & \emptycirc & \emptycirc & \fullcirc & \emptycirc & \emptycirc & --- & --- \\
-\textbf{\textcolor{purple!80}{OARS}} \cite{feng2023stateful} & \fullcirc & \fullcirc & \halfcirc & \emptycirc & \fullcirc & \emptycirc & --- & --- \\
+\textbf{Boundary}  \cite{brendel2018decision} & \emptycirc & \emptycirc & \emptycirc & \fullcirc & \emptycirc & \emptycirc & --- & --- \\
+\textbf{BAGS} \cite{brunner2019guessing} & \emptycirc & \emptycirc & \emptycirc & \fullcirc & \emptycirc & \emptycirc & --- & --- \\
+\textbf{HSJA} \cite{chen2020hopskipjumpattack} & \fullcirc & \emptycirc & \emptycirc & \fullcirc & \emptycirc & \emptycirc & --- & --- \\
+\textbf{OARS} \cite{feng2023stateful} & \fullcirc & \fullcirc & \halfcirc & \emptycirc & \fullcirc & \emptycirc & --- & --- \\
 \midrule
-\textbf{\textcolor{teal!80}{Adv. Train}} \cite{madry2017towards} & \fullcirc & \emptycirc & \emptycirc & --- & \emptycirc & \emptycirc & --- & ---\\
-\textbf{\textcolor{teal!80}{Stateful}} \cite{chen2020stateful} & \fullcirc & \fullcirc & \emptycirc & \emptycirc & \fullcirc & \emptycirc & \emptycirc & \emptycirc \\
-\textbf{\textcolor{teal!80}{Blacklight}}  \cite{li2022blacklight} & \fullcirc & \fullcirc & \emptycirc & \emptycirc & \fullcirc & \emptycirc & \fullcirc & \emptycirc \\
+\textbf{Adv. Train} \cite{madry2017towards} & \fullcirc & \emptycirc & \emptycirc & --- & \emptycirc & \emptycirc & --- & ---\\
+\textbf{Stateful} \cite{chen2020stateful} & \fullcirc & \fullcirc & \emptycirc & \emptycirc & \fullcirc & \emptycirc & \emptycirc & \emptycirc \\
+\textbf{Blacklight}  \cite{li2022blacklight} & \fullcirc & \fullcirc & \emptycirc & \emptycirc & \fullcirc & \emptycirc & \fullcirc & \emptycirc \\
 \midrule
-\textbf{\textcolor{orange!80}{Our work}}  & \fullcirc & \fullcirc & \fullcirc & \fullcirc & \fullcirc & \fullcirc & \fullcirc & \fullcirc \\
+\textbf{Our work}  & \fullcirc & \fullcirc & \fullcirc & \fullcirc & \fullcirc & \fullcirc & \fullcirc & \fullcirc \\
 \bottomrule
 \label{tab:comparison}
 \end{tabular}
 \end{table}
+  
 
 \label{sec:approach}
-To investigate the robustness to evasion of real-world systems, two closely related perspectives are pertinent: a) thwarting decision-based attacks, and b) adapting attacks and evasive capabilities \textit{in tandem}.
+To investigate the robustness to evasion of real-world systems, two closely related perspectives are pertinent: (a) thwarting decision-based attacks, and (b) adapting attacks and evasive capabilities \textit{in tandem}.
 For the latter, when attacks (and defenses) are evaluated in a non-adaptive manner, in the expansive sense we outlined in \autoref{sub:adaptive}, results are rendered incomplete and untrustworthy~\cite{tramer2020adaptive, pintor2022indicators}.
 Nevertheless, when offensive or defensive techniques adapt the environments that they inhabit become non-stationary~\cite{hernandez2017survey}, putting further pressure on the IID foundations that ML builds on.
 To understand the implications of such techniques adapting, we perform a theoretical analysis of the possible interactions around the exposed interface of an ML-based system, interactions that can be more generally considered as sequential zero-sum games~\cite{littman1994markov, hardt2016strategic, bose2020adversarial}.
@@ -395,7 +396,7 @@ However, adversaries can collude, create multiple accounts, use VPNs, or in fact
 To address this, we treat queries irrespective to their source.
 This is a strictly more challenging setting for stateful defenses, where we operate solely on the content of queries and not on any other metadata, similar to~\cite{li2022blacklight}.
 Unlike Blacklight however, instead of rejecting queries, something that by itself can provide \textit{more} information to the adversary and thus facilitate evasion (cf. OARS \cite{feng2023stateful}, \autoref{tab:comparison}), we misdirect by returning the second highest probability class.
-Furthermore, Gaussian noise is added to the benign queries to simulate a noisy channel and a shift in distribution and so that is not trivial for a defense to tell adversarial noise apart.
+Furthermore, Gaussian noise is added to the benign queries to simulate a noisy channel and a shift in distribution, making it non-trivial for a defense to tell adversarial noise apart.
 In summary, the black-box threat model we consider is delineated as follows:
 
 \begin{itemize}
@@ -551,43 +552,43 @@ The empirical results, as yielded by months of CPU hours and an inordinate amoun
 \begin{table*}[!ht]
 \setlength{\tabcolsep}{0.3cm} % Adjust column spacing here
 \centering
-  \caption[ASR and mean $l_2$ perturbation for BAGS in CIFAR-10.]{\textbf{CIFAR-10 / BAGS}: ASR and mean $l_2$ perturbation for 1K, 2K, and 5K queries, against normally and adversarially trained models. C.Acc reports the clean accuracy on benign queries of the base model plus any defenses present; in the first two scenarios (no active defense) the baseline clean accuracy is reported. Yellow scenarios denote the baseline attack performance, green denote active and/or adaptive defenses, and red denote adaptive attacks. Scenarios 9-13 compare our Adaptive Attack (AA) and Adaptive Defense (AD) to Blacklight (BD) and OARS (OA).}
+  \caption[ASR and mean $L_2$ perturbation for BAGS in CIFAR-10.]{\textbf{CIFAR-10 / BAGS}: ASR and mean $L_2$ perturbation for 1K, 2K, and 5K queries, against normally and adversarially trained models. C.Acc reports the clean accuracy on benign queries of the base model plus any defenses present; in the first two scenarios (no active defense) the baseline clean accuracy is reported. In scenarios 0-9, odd ones refer to adaptive attacks while even refer to active and/or adaptive defenses. Scenarios 9-13 compare our Adaptive Attack (AA) and Adaptive Defense (AD) to Blacklight (BD) and OARS (OA).}
   \begin{tabular}{c|c|rrrr|r}
     \toprule
       \multirow{2}{*}{\parbox{1cm}{\centering Adv.\\Trained}} & \multirow{2}{*}{Scenario} & \multicolumn{5}{c}{\textbf{CIFAR-10 Gap: 20.01}} \\
       & & {1K} & {2K} & {5K} & {ASR} & {C.Acc} \\
       \toprule
-    \multirow{14}{*}{\xmark} & \raggedright\textbf{\textcolor{orange!70}{\phantom{*}0: VA-ND}} & 8.27 & 7.86 & 7.26 & \textcolor{t5!100}{\textbf{5\%}} & 91.69 \\
-    & \raggedright\textbf{\textcolor{purple!70}{\phantom{*}1: AA-ND}} & 1.26 & 0.71 & 0.49 & \textcolor{t100!100}{\textbf{100\%}} & 91.69 \\
-    & \raggedright\textbf{\textcolor{teal!70}{\phantom{*}2: VA-VD}} & 15.27 & 15.26 & 15.20 & \textcolor{t0!100}{\textbf{0\%}} & 91.68 \\
-    & \raggedright\textbf{\textcolor{purple!70}{\phantom{*}3: AA-VD}} & 2.63 & 2.03 & 1.77 & \textcolor{t93!100}{\textbf{93\%}} & 91.69 \\
-    & \raggedright\textbf{\textcolor{teal!70}{\phantom{*}4: VA-AD}} & 20.01 & 20.01 & 20.00 & \textcolor{t0!100}{\textbf{0\%}} & 91.60 \\
-    & \raggedright\textbf{\textcolor{purple!70}{\phantom{*}5: AA-TD}} & 6.28 & 5.45 & 4.52 & \textcolor{t30!100}{\textbf{30\%}} & 91.52 \\
-    & \raggedright\textbf{\textcolor{teal!70}{\phantom{*}6: TA-AD}} & 19.52 & 19.40 & 18.95 & \textcolor{t0!100}{\textbf{0\%}} & 91.38 \\
-    & \raggedright\textbf{\textcolor{purple!70}{\phantom{*}7: AA-AD}} & 9.95 & 9.80 & 9.80 & \textcolor{t5!100}{\textbf{5\%}} & 91.66 \\
-    & \raggedright\textbf{\textcolor{teal!70}{\phantom{*}8: AA-AD}} & 19.85 & 19.85 & 19.85 & \textcolor{t0!100}{\textbf{0\%}} & 91.69 \\
-    \cline{2-7}
-    & \raggedright\textbf{\textcolor{orange!70}{\phantom{*}9: VA-BD}} & 9.55 & 9.32 & 9.17 & \textcolor{t0!100}{\textbf{0\%}} & 91.71 \\
-    & \raggedright\textbf{\textcolor{purple!70}{10: OA-BD}} & 9.46 & 9.46 & 9.46 & \textcolor{t1!100}{\textbf{1\%}} & 91.71 \\
-    & \raggedright\textbf{\textcolor{purple!70}{11: AA-BD}} & 2.26 & 1.39 & 1.32 & \textcolor{t98!100}{\textbf{98\%}} & 91.71 \\
-    & \raggedright\textbf{\textcolor{teal!70}{12: OA-TD}} & 20.01 & 20.01 & 20.01 & \textcolor{t0!100}{\textbf{0\%}} & 91.61 \\
-    & \raggedright\textbf{\textcolor{teal!70}{13: OA-AD}} & 20.01 & 20.01 & 20.01 & \textcolor{t0!100}{\textbf{0\%}} & 91.61 \\
-    \midrule
-    \multirow{14}{*}{\cmark} & \raggedright\textbf{\textcolor{orange!70}{\phantom{*}0: VA-ND}} & 8.72 & 8.42 & 7.94 & \textcolor{t4!100}{\textbf{4\%}} & 87.76 \\
-    & \raggedright\textbf{\textcolor{purple!70}{\phantom{*}1: AA-ND}} & 1.74 & 1.13 & 0.79 & \textcolor{t100!100}{\textbf{100\%}} & 87.76 \\
-    & \raggedright\textbf{\textcolor{teal!70}{\phantom{*}2: VA-VD}} & 15.42 & 15.35 & 15.20 & \textcolor{t0!100}{\textbf{0\%}} & 87.72 \\
-    & \raggedright\textbf{\textcolor{purple!70}{\phantom{*}3: AA-VD}} & 2.82 & 2.26 & 2.06 & \textcolor{t81!100}{\textbf{81\%}} & 87.74 \\
-    & \raggedright\textbf{\textcolor{teal!70}{\phantom{*}4: VA-AD}} & 20.01 & 20.01 & 20.00 & \textcolor{t0!100}{\textbf{0\%}} & 87.66 \\
-    & \raggedright\textbf{\textcolor{purple!70}{\phantom{*}5: AA-TD}} & 8.48 & 7.68 & 6.82 & \textcolor{t9!100}{\textbf{9\%}} & 87.58 \\
-    & \raggedright\textbf{\textcolor{teal!70}{\phantom{*}6: TA-AD}} & 19.58 & 19.40 & 18.95 & \textcolor{t0!100}{\textbf{0\%}} & 87.50 \\
-    & \raggedright\textbf{\textcolor{purple!70}{\phantom{*}7: AA-AD}} & 10.43 & 10.24 & 10.17 & \textcolor{t1!100}{\textbf{1\%}} & 87.73 \\
-    & \raggedright\textbf{\textcolor{teal!70}{\phantom{*}8: AA-AD}} & 19.86 & 19.86 & 19.86 & \textcolor{t0!100}{\textbf{0\%}} & 87.67 \\
-    \cline{2-7}
-    & \raggedright\textbf{\textcolor{orange!70}{\phantom{*}9: VA-BD}} & 9.75 & 9.56 & 9.46 & \textcolor{t0!100}{\textbf{0\%}} & 87.76 \\
-    & \raggedright\textbf{\textcolor{purple!70}{10: OA-BD}} & 9.79 & 9.79 & 9.79 & \textcolor{t1!100}{\textbf{1\%}} & 87.76 \\
-    & \raggedright\textbf{\textcolor{purple!70}{11: AA-BD}} & 5.59 & 4.04 & 2.55 & \textcolor{t79!100}{\textbf{79\%}} & 87.76 \\
-    & \raggedright\textbf{\textcolor{teal!70}{12: OA-TD}} & 20.01 & 20.01 & 20.01 & \textcolor{t0!100}{\textbf{0\%}} & 87.66 \\
-    & \raggedright\textbf{\textcolor{teal!70}{13: OA-AD}} & 20.01 & 20.01 & 20.01 & \textcolor{t0!100}{\textbf{0\%}} & 87.66 \\
+      \multirow{14}{*}{\xmark} & \raggedright\textbf{\phantom{*}0: VA-ND} & 8.27 & 7.86 & 7.26 & \textbf{5\%} & 91.69 \\
+      & \raggedright\textbf{\phantom{*}1: AA-ND} & 1.26 & 0.71 & 0.49 & \textbf{100\%} & 91.69 \\
+      & \raggedright\textbf{\phantom{*}2: VA-VD} & 15.27 & 15.26 & 15.20 & \textbf{0\%} & 91.68 \\
+      & \raggedright\textbf{\phantom{*}3: AA-VD} & 2.63 & 2.03 & 1.77 & \textbf{93\%} & 91.69 \\
+      & \raggedright\textbf{\phantom{*}4: VA-AD} & 20.01 & 20.01 & 20.00 & \textbf{0\%} & 91.60 \\
+      & \raggedright\textbf{\phantom{*}5: AA-TD} & 6.28 & 5.45 & 4.52 & \textbf{30\%} & 91.52 \\
+      & \raggedright\textbf{\phantom{*}6: TA-AD} & 19.52 & 19.40 & 18.95 & \textbf{0\%} & 91.38 \\
+      & \raggedright\textbf{\phantom{*}7: AA-AD} & 9.95 & 9.80 & 9.80 & \textbf{5\%} & 91.66 \\
+      & \raggedright\textbf{\phantom{*}8: AA-AD} & 19.85 & 19.85 & 19.85 & \textbf{0\%} & 91.69 \\
+      \cline{2-7}
+      & \raggedright\textbf{\phantom{*}9: VA-BD} & 9.55 & 9.32 & 9.17 & \textbf{0\%} & 91.71 \\
+      & \raggedright\textbf{10: OA-BD} & 9.46 & 9.46 & 9.46 & \textbf{1\%} & 91.71 \\
+      & \raggedright\textbf{11: AA-BD} & 2.26 & 1.39 & 1.32 & \textbf{98\%} & 91.71 \\
+      & \raggedright\textbf{12: OA-TD} & 20.01 & 20.01 & 20.01 & \textbf{0\%} & 91.61 \\
+      & \raggedright\textbf{13: OA-AD} & 20.01 & 20.01 & 20.01 & \textbf{0\%} & 91.61 \\
+      \midrule
+      \multirow{14}{*}{\cmark} & \raggedright\textbf{\phantom{*}0: VA-ND} & 8.72 & 8.42 & 7.94 & \textbf{4\%} & 87.76 \\
+      & \raggedright\textbf{\phantom{*}1: AA-ND} & 1.74 & 1.13 & 0.79 & \textbf{100\%} & 87.76 \\
+      & \raggedright\textbf{\phantom{*}2: VA-VD} & 15.42 & 15.35 & 15.20 & \textbf{0\%} & 87.72 \\
+      & \raggedright\textbf{\phantom{*}3: AA-VD} & 2.82 & 2.26 & 2.06 & \textbf{81\%} & 87.74 \\
+      & \raggedright\textbf{\phantom{*}4: VA-AD} & 20.01 & 20.01 & 20.00 & \textbf{0\%} & 87.66 \\
+      & \raggedright\textbf{\phantom{*}5: AA-TD} & 8.48 & 7.68 & 6.82 & \textbf{9\%} & 87.58 \\
+      & \raggedright\textbf{\phantom{*}6: TA-AD} & 19.58 & 19.40 & 18.95 & \textbf{0\%} & 87.50 \\
+      & \raggedright\textbf{\phantom{*}7: AA-AD} & 10.43 & 10.24 & 10.17 & \textbf{1\%} & 87.73 \\
+      & \raggedright\textbf{\phantom{*}8: AA-AD} & 19.86 & 19.86 & 19.86 & \textbf{0\%} & 87.67 \\
+      \cline{2-7}
+      & \raggedright\textbf{\phantom{*}9: VA-BD} & 9.75 & 9.56 & 9.46 & \textbf{0\%} & 87.76 \\
+      & \raggedright\textbf{10: OA-BD} & 9.79 & 9.79 & 9.79 & \textbf{1\%} & 87.76 \\
+      & \raggedright\textbf{11: AA-BD} & 5.59 & 4.04 & 2.55 & \textbf{79\%} & 87.76 \\
+      & \raggedright\textbf{12: OA-TD} & 20.01 & 20.01 & 20.01 & \textbf{0\%} & 87.66 \\
+      & \raggedright\textbf{13: OA-AD} & 20.01 & 20.01 & 20.01 & \textbf{0\%} & 87.66 \\  
     \bottomrule
   \end{tabular}
   \label{tab:BAGS_result}
@@ -596,43 +597,43 @@ The empirical results, as yielded by months of CPU hours and an inordinate amoun
 \begin{table*}[!ht]
 \setlength{\tabcolsep}{0.3cm} % Adjust column spacing here
 \centering
-  \caption[ASR and mean $l_2$ perturbation for HSJA in CIFAR-10.]{\textbf{CIFAR-10 / HSJA}: ASR and mean $l_2$ perturbation for 1K, 2K, and 5K queries, against normally and adversarially trained models.}
+  \caption[ASR and mean $L_2$ perturbation for HSJA in CIFAR-10.]{\textbf{CIFAR-10 / HSJA}: ASR and mean $L_2$ perturbation for 1K, 2K, and 5K queries, against normally and adversarially trained models.}
   \begin{tabular}{c|c|rrrr|r}
     \toprule
       \multirow{2}{*}{\parbox{1cm}{\centering Adv.\\Trained}} & \multirow{2}{*}{Scenario} & \multicolumn{5}{c}{\textbf{CIFAR-10 Gap: 20.01}} \\
       & & {1K} & {2K} & {5K} & {ASR} & {C.Acc} \\
       \toprule
-    \multirow{14}{*}{\xmark} & \raggedright\textbf{\textcolor{orange!70}{\phantom{*}0: VA-ND}} & 3.42 & 1.43 & 0.41 & \textcolor{t100!100}{\textbf{100\%}} & 91.69 \\
-    & \raggedright\textbf{\textcolor{purple!70}{\phantom{*}1: AA-ND}} & 3.14 & 1.31 & 0.39 & \textcolor{t100!100}{\textbf{100\%}} & 91.69 \\
-    & \raggedright\textbf{\textcolor{teal!70}{\phantom{*}2: VA-VD}} & 11.14 & 10.81 & 10.33 & \textcolor{t7!100}{\textbf{7\%}} & 91.68 \\
-    & \raggedright\textbf{\textcolor{purple!70}{\phantom{*}3: AA-VD}} & 5.68 & 3.61 & 2.12 & \textcolor{t85!100}{\textbf{85\%}} & 91.69 \\
-    & \raggedright\textbf{\textcolor{teal!70}{\phantom{*}4: VA-AD}} & 17.17 & 16.35 & 15.56 & \textcolor{t0!100}{\textbf{0\%}} & 91.50 \\
-    & \raggedright\textbf{\textcolor{purple!70}{\phantom{*}5: AA-TD}} & 13.19 & 11.82 & 10.69 & \textcolor{t2!100}{\textbf{2\%}} & 91.46 \\
-    & \raggedright\textbf{\textcolor{teal!70}{\phantom{*}6: TA-AD}} & 16.48 & 16.13 & 15.69 & \textcolor{t0!100}{\textbf{0\%}} & 91.62 \\
-    & \raggedright\textbf{\textcolor{purple!70}{\phantom{*}7: AA-AD}} & 10.30 & 9.04 & 7.55 & \textcolor{t23!100}{\textbf{23\%}} & 91.55 \\
-    & \raggedright\textbf{\textcolor{teal!70}{\phantom{*}8: AA-AD}} & 14.46 & 13.93 & 13.08 & \textcolor{t1!100}{\textbf{1\%}} & 91.37 \\
-    \cline{2-7}
-    & \raggedright\textbf{\textcolor{orange!70}{\phantom{*}9: VA-BD}} & 8.41 & 8.19 & 7.80 & \textcolor{t15!100}{\textbf{15\%}} & 91.71 \\
-    & \raggedright\textbf{\textcolor{purple!70}{10: OA-BD}} & 6.54 & 5.83 & 4.67 & \textcolor{t50!100}{\textbf{50\%}} & 91.71 \\
-    & \raggedright\textbf{\textcolor{purple!70}{11: AA-BD}} & 4.55 & 3.08 & 2.44 & \textcolor{t78!100}{\textbf{78\%}} & 91.71 \\
-    & \raggedright\textbf{\textcolor{teal!70}{12: OA-TD}} & 7.07 & 6.38 & 5.53 & \textcolor{t50!100}{\textbf{50\%}} & 91.59 \\
-    & \raggedright\textbf{\textcolor{teal!70}{13: OA-AD}} & 11.03 & 11.00 & 10.95 & \textcolor{t5!100}{\textbf{5\%}} & 91.69 \\
-    \midrule
-    \multirow{14}{*}{\cmark} & \raggedright\textbf{\textcolor{orange!70}{\phantom{*}0: VA-ND}} & 3.73 & 1.74 & 0.75 & \textcolor{t100!100}{\textbf{100\%}} & 87.76 \\
-    & \raggedright\textbf{\textcolor{purple!70}{\phantom{*}1: AA-ND}} & 3.64 & 1.77 & 0.73 & \textcolor{t100!100}{\textbf{100\%}} & 87.76 \\
-    & \raggedright\textbf{\textcolor{teal!70}{\phantom{*}2: VA-VD}} & 11.10 & 10.73 & 10.38 & \textcolor{t4!100}{\textbf{4\%}} & 87.73 \\
-    & \raggedright\textbf{\textcolor{purple!70}{\phantom{*}3: AA-VD}} & 5.66 & 3.36 & 1.94 & \textcolor{t86!100}{\textbf{86\%}} & 87.74 \\
-    & \raggedright\textbf{\textcolor{teal!70}{\phantom{*}4: VA-AD}} & 17.06 & 16.40 & 15.81 & \textcolor{t0!100}{\textbf{0\%}} & 87.66 \\
-    & \raggedright\textbf{\textcolor{purple!70}{\phantom{*}5: AA-TD}} & 13.59 & 12.65 & 11.39 & \textcolor{t1!100}{\textbf{1\%}} & 87.52 \\
-    & \raggedright\textbf{\textcolor{teal!70}{\phantom{*}6: TA-AD}} & 16.60 & 16.26 & 15.99 & \textcolor{t0!100}{\textbf{0\%}} & 87.68 \\
-    & \raggedright\textbf{\textcolor{purple!70}{\phantom{*}7: AA-AD}} & 10.21 & 9.22 & 7.82 & \textcolor{t12!100}{\textbf{12\%}} & 87.61 \\
-    & \raggedright\textbf{\textcolor{teal!70}{\phantom{*}8: AA-AD}} & 15.71 & 15.35 & 14.30 & \textcolor{t1!100}{\textbf{1\%}} & 87.40 \\
-    \cline{2-7}
-    & \raggedright\textbf{\textcolor{orange!70}{\phantom{*}9: VA-BD}} & 8.67 & 8.50 & 8.28 & \textcolor{t7!100}{\textbf{7\%}} & 87.76 \\
-    & \raggedright\textbf{\textcolor{purple!70}{10: OA-BD}} & 5.77 & 4.53 & 3.26 & \textcolor{t72!100}{\textbf{72\%}} & 87.76 \\
-    & \raggedright\textbf{\textcolor{purple!70}{11: AA-BD}} & 5.59 & 4.04 & 2.55 & \textcolor{t79!100}{\textbf{79\%}} & 87.76 \\
-    & \raggedright\textbf{\textcolor{teal!70}{12: OA-TD}} & 6.44 & 5.49 & 4.38 & \textcolor{t65!100}{\textbf{65\%}} & 87.64 \\
-    & \raggedright\textbf{\textcolor{teal!70}{13: OA-AD}} & 11.31 & 11.12 & 10.97 & \textcolor{t7!100}{\textbf{7\%}} & 87.74 \\
+      \multirow{14}{*}{\xmark} & \raggedright\textbf{\phantom{*}0: VA-ND} & 3.42 & 1.43 & 0.41 & \textbf{100\%} & 91.69 \\
+      & \raggedright\textbf{\phantom{*}1: AA-ND} & 3.14 & 1.31 & 0.39 & \textbf{100\%} & 91.69 \\
+      & \raggedright\textbf{\phantom{*}2: VA-VD} & 11.14 & 10.81 & 10.33 & \textbf{7\%} & 91.68 \\
+      & \raggedright\textbf{\phantom{*}3: AA-VD} & 5.68 & 3.61 & 2.12 & \textbf{85\%} & 91.69 \\
+      & \raggedright\textbf{\phantom{*}4: VA-AD} & 17.17 & 16.35 & 15.56 & \textbf{0\%} & 91.50 \\
+      & \raggedright\textbf{\phantom{*}5: AA-TD} & 13.19 & 11.82 & 10.69 & \textbf{2\%} & 91.46 \\
+      & \raggedright\textbf{\phantom{*}6: TA-AD} & 16.48 & 16.13 & 15.69 & \textbf{0\%} & 91.62 \\
+      & \raggedright\textbf{\phantom{*}7: AA-AD} & 10.30 & 9.04 & 7.55 & \textbf{23\%} & 91.55 \\
+      & \raggedright\textbf{\phantom{*}8: AA-AD} & 14.46 & 13.93 & 13.08 & \textbf{1\%} & 91.37 \\
+      \cline{2-7}
+      & \raggedright\textbf{\phantom{*}9: VA-BD} & 8.41 & 8.19 & 7.80 & \textbf{15\%} & 91.71 \\
+      & \raggedright\textbf{10: OA-BD} & 6.54 & 5.83 & 4.67 & \textbf{50\%} & 91.71 \\
+      & \raggedright\textbf{11: AA-BD} & 4.55 & 3.08 & 2.44 & \textbf{78\%} & 91.71 \\
+      & \raggedright\textbf{12: OA-TD} & 7.07 & 6.38 & 5.53 & \textbf{50\%} & 91.59 \\
+      & \raggedright\textbf{13: OA-AD} & 11.03 & 11.00 & 10.95 & \textbf{5\%} & 91.69 \\
+      \midrule
+      \multirow{14}{*}{\cmark} & \raggedright\textbf{\phantom{*}0: VA-ND} & 3.73 & 1.74 & 0.75 & \textbf{100\%} & 87.76 \\
+      & \raggedright\textbf{\phantom{*}1: AA-ND} & 3.64 & 1.77 & 0.73 & \textbf{100\%} & 87.76 \\
+      & \raggedright\textbf{\phantom{*}2: VA-VD} & 11.10 & 10.73 & 10.38 & \textbf{4\%} & 87.73 \\
+      & \raggedright\textbf{\phantom{*}3: AA-VD} & 5.66 & 3.36 & 1.94 & \textbf{86\%} & 87.74 \\
+      & \raggedright\textbf{\phantom{*}4: VA-AD} & 17.06 & 16.40 & 15.81 & \textbf{0\%} & 87.66 \\
+      & \raggedright\textbf{\phantom{*}5: AA-TD} & 13.59 & 12.65 & 11.39 & \textbf{1\%} & 87.52 \\
+      & \raggedright\textbf{\phantom{*}6: TA-AD} & 16.60 & 16.26 & 15.99 & \textbf{0\%} & 87.68 \\
+      & \raggedright\textbf{\phantom{*}7: AA-AD} & 10.21 & 9.22 & 7.82 & \textbf{12\%} & 87.61 \\
+      & \raggedright\textbf{\phantom{*}8: AA-AD} & 15.71 & 15.35 & 14.30 & \textbf{1\%} & 87.40 \\
+      \cline{2-7}
+      & \raggedright\textbf{\phantom{*}9: VA-BD} & 8.67 & 8.50 & 8.28 & \textbf{7\%} & 87.76 \\
+      & \raggedright\textbf{10: OA-BD} & 5.77 & 4.53 & 3.26 & \textbf{72\%} & 87.76 \\
+      & \raggedright\textbf{11: AA-BD} & 5.59 & 4.04 & 2.55 & \textbf{79\%} & 87.76 \\
+      & \raggedright\textbf{12: OA-TD} & 6.44 & 5.49 & 4.38 & \textbf{65\%} & 87.64 \\
+      & \raggedright\textbf{13: OA-AD} & 11.31 & 11.12 & 10.97 & \textbf{7\%} & 87.74 \\  
     \bottomrule
   \end{tabular}
   \label{tab:HSJA_result}
@@ -641,44 +642,44 @@ The empirical results, as yielded by months of CPU hours and an inordinate amoun
 \begin{table*}[!ht]
   \setlength{\tabcolsep}{0.3cm} % Adjust column spacing here
   \centering
-    \caption[ASR and mean $l_2$ perturbation for BAGS in MNIST.]{\textbf{MNIST / BAGS}: ASR and mean $l_2$ perturbation for 1K, 2K, and 5K queries, against normally and adversarially trained models.}
+    \caption[ASR and mean $L_2$ perturbation for BAGS in MNIST.]{\textbf{MNIST / BAGS}: ASR and mean $L_2$ perturbation for 1K, 2K, and 5K queries, against normally and adversarially trained models.}
     \begin{tabular}{c|c|rrrr|r}
       \toprule
         \multirow{2}{*}{\parbox{1cm}{\centering Adv.\\Trained}} & \multirow{2}{*}{Scenario} &
         \multicolumn{5}{c}{\textbf{MNIST Gap: 10.62}} \\
         & & {1K} & {2K} & {5K} & {ASR} & {C.Acc} \\
         \toprule
-      \multirow{14}{*}{\xmark} & \raggedright\textbf{\textcolor{orange!70}{0: VA-ND}} & 5.30 &  5.28 & 5.26 & \textcolor{t3!100}{\textbf{3\%}} & 99.37\\
-      & \raggedright\textbf{\textcolor{purple!70}{1: AA-ND}} & 2.74 & 2.57 & 2.47 & \textcolor{t78!100}{\textbf{78\%}} & 99.37\\
-      & \raggedright\textbf{\textcolor{teal!70}{2: VA-VD}} & 7.44 & 6.66 & 5.63 & \textcolor{t22!100}{\textbf{22\%}} & 99.34\\
-      & \raggedright\textbf{\textcolor{purple!70}{3: AA-VD}} & 3.79 & 3.66 & 3.44 & \textcolor{t29!100}{\textbf{29\%}} & 99.37\\
-      & \raggedright\textbf{\textcolor{teal!70}{4: VA-AD}} & 10.57 & 10.57 & 10.57 & \textcolor{t0!100}{\textbf{0\%}} & 99.31\\
-      & \raggedright\textbf{\textcolor{purple!70}{5: AA-TD}} &  3.57 &  3.29 &  3.14 & \textcolor{t39!100}{\textbf{39\%}} & 99.32\\
-      & \raggedright\textbf{\textcolor{teal!70}{6: TA-AD}} & 10.62 & 10.62 & 10.62 & \textcolor{t0!100}{\textbf{0\%}} & 99.28\\
-      & \raggedright\textbf{\textcolor{purple!70}{7: AA-AD}} &  4.89 &  4.89 &  4.86 & \textcolor{t8!100}{\textbf{8\%}} & 99.31\\
-      & \raggedright\textbf{\textcolor{teal!70}{8: AA-AD}} & 10.62 & 10.62 & 10.62 & \textcolor{t0!100}{\textbf{0\%}} & 99.32\\
-      \cline{2-7}
-      & \raggedright\textbf{\textcolor{orange!70}{09: VA-BD}} & 10.62 & 10.62 & 10.62 & \textcolor{t0!100}{\textbf{0\%}} & 99.37\\
-      & \raggedright\textbf{\textcolor{purple!70}{10: OA-BD}} & 10.62 & 10.62 & 10.62 & \textcolor{t0!100}{\textbf{0\%}} & 99.37\\
-      & \raggedright\textbf{\textcolor{purple!70}{11: AA-BD}} & 3.83 & 3.69 & 3.60 & \textcolor{t17!100}{\textbf{17\%}} & 99.37\\
-      & \raggedright\textbf{\textcolor{teal!70}{12: OA-TD}} & 10.62 & 10.62 & 10.62 & \textcolor{t0!100}{\textbf{0\%}} & 99.22\\
-      & \raggedright\textbf{\textcolor{teal!70}{13: OA-AD}} & 10.62 & 10.62 & 10.62 & \textcolor{t0!100}{\textbf{0\%}} & 99.32\\
-      \midrule
-      \multirow{14}{*}{\cmark} & \raggedright\textbf{\textcolor{orange!70}{0: VA-ND}} &  5.26 &  5.25 &  5.24 & \textcolor{t2!100}{\textbf{2\%}} & 99.15\\
-      & \raggedright\textbf{\textcolor{purple!70}{1: AA-ND}} &  3.28 &  3.08 &  2.96 & \textcolor{t51!100}{\textbf{51\%}} & 99.15\\
-      & \raggedright\textbf{\textcolor{teal!70}{2: VA-VD}} &  7.70 &  6.86 &  5.86 & \textcolor{t17!100}{\textbf{17\%}} & 99.14\\
-      & \raggedright\textbf{\textcolor{purple!70}{3 AA-VD}} &  4.18 &  4.08 &  3.86 & \textcolor{t22!100}{\textbf{22\%}} & 99.13\\
-      & \raggedright\textbf{\textcolor{teal!70}{4: VA-AD}} & 10.55 & 10.55 & 10.55 & \textcolor{t0!100}{\textbf{0\%}} & 99.09\\
-      & \raggedright\textbf{\textcolor{purple!70}{5: AA-TD}} &  4.04 &  3.74 &  3.54 & \textcolor{t27!100}{\textbf{27\%}} & 99.11\\
-      & \raggedright\textbf{\textcolor{teal!70}{6: TA-AD}} & 10.62 & 10.62 & 10.62 & \textcolor{t0!100}{\textbf{0\%}} & 99.06\\
-      & \raggedright\textbf{\textcolor{purple!70}{7: AA-AD}} &  5.59 &  5.56 &  5.56 & \textcolor{t5!100}{\textbf{5\%}} & 99.09\\
-      & \raggedright\textbf{\textcolor{teal!70}{8: AA-AD}} & 10.62 & 10.62 & 10.62 & \textcolor{t0!100}{\textbf{0\%}} & 99.10\\
-      \cline{2-7}
-      & \raggedright\textbf{\textcolor{orange!70}{09: VA-BD}} & 10.62 & 10.62 & 10.62 & \textcolor{t0!100}{\textbf{0\%}} & 99.15\\
-      & \raggedright\textbf{\textcolor{purple!70}{10: OA-BD}} & 10.62 & 10.62 & 10.62 & \textcolor{t0!100}{\textbf{0\%}} & 99.15\\
-      & \raggedright\textbf{\textcolor{purple!70}{11: AA-BD}} & 4.31 & 4.07 & 3.96 & \textcolor{t13!100}{\textbf{13\%}} & 99.15\\
-      & \raggedright\textbf{\textcolor{teal!70}{12: OA-TD}} & 10.62 & 10.62 & 10.62 & \textcolor{t0!100}{\textbf{0\%}} & 99.00\\
-      & \raggedright\textbf{\textcolor{teal!70}{13: OA-AD}} & 10.62 & 10.62 & 10.62 & \textcolor{t0!100}{\textbf{0\%}} & 99.10\\
+        \multirow{14}{*}{\xmark} & \raggedright\textbf{0: VA-ND} & 5.30 &  5.28 & 5.26 & \textbf{3\%} & 99.37\\
+        & \raggedright\textbf{1: AA-ND} & 2.74 & 2.57 & 2.47 & \textbf{78\%} & 99.37\\
+        & \raggedright\textbf{2: VA-VD} & 7.44 & 6.66 & 5.63 & \textbf{22\%} & 99.34\\
+        & \raggedright\textbf{3: AA-VD} & 3.79 & 3.66 & 3.44 & \textbf{29\%} & 99.37\\
+        & \raggedright\textbf{4: VA-AD} & 10.57 & 10.57 & 10.57 & \textbf{0\%} & 99.31\\
+        & \raggedright\textbf{5: AA-TD} &  3.57 &  3.29 &  3.14 & \textbf{39\%} & 99.32\\
+        & \raggedright\textbf{6: TA-AD} & 10.62 & 10.62 & 10.62 & \textbf{0\%} & 99.28\\
+        & \raggedright\textbf{7: AA-AD} &  4.89 &  4.89 &  4.86 & \textbf{8\%} & 99.31\\
+        & \raggedright\textbf{8: AA-AD} & 10.62 & 10.62 & 10.62 & \textbf{0\%} & 99.32\\
+        \cline{2-7}
+        & \raggedright\textbf{09: VA-BD} & 10.62 & 10.62 & 10.62 & \textbf{0\%} & 99.37\\
+        & \raggedright\textbf{10: OA-BD} & 10.62 & 10.62 & 10.62 & \textbf{0\%} & 99.37\\
+        & \raggedright\textbf{11: AA-BD} & 3.83 & 3.69 & 3.60 & \textbf{17\%} & 99.37\\
+        & \raggedright\textbf{12: OA-TD} & 10.62 & 10.62 & 10.62 & \textbf{0\%} & 99.22\\
+        & \raggedright\textbf{13: OA-AD} & 10.62 & 10.62 & 10.62 & \textbf{0\%} & 99.32\\
+        \midrule
+        \multirow{14}{*}{\cmark} & \raggedright\textbf{0: VA-ND} &  5.26 &  5.25 &  5.24 & \textbf{2\%} & 99.15\\
+        & \raggedright\textbf{1: AA-ND} &  3.28 &  3.08 &  2.96 & \textbf{51\%} & 99.15\\
+        & \raggedright\textbf{2: VA-VD} &  7.70 &  6.86 &  5.86 & \textbf{17\%} & 99.14\\
+        & \raggedright\textbf{3 AA-VD} &  4.18 &  4.08 &  3.86 & \textbf{22\%} & 99.13\\
+        & \raggedright\textbf{4: VA-AD} & 10.55 & 10.55 & 10.55 & \textbf{0\%} & 99.09\\
+        & \raggedright\textbf{5: AA-TD} &  4.04 &  3.74 &  3.54 & \textbf{27\%} & 99.11\\
+        & \raggedright\textbf{6: TA-AD} & 10.62 & 10.62 & 10.62 & \textbf{0\%} & 99.06\\
+        & \raggedright\textbf{7: AA-AD} &  5.59 &  5.56 &  5.56 & \textbf{5\%} & 99.09\\
+        & \raggedright\textbf{8: AA-AD} & 10.62 & 10.62 & 10.62 & \textbf{0\%} & 99.10\\
+        \cline{2-7}
+        & \raggedright\textbf{09: VA-BD} & 10.62 & 10.62 & 10.62 & \textbf{0\%} & 99.15\\
+        & \raggedright\textbf{10: OA-BD} & 10.62 & 10.62 & 10.62 & \textbf{0\%} & 99.15\\
+        & \raggedright\textbf{11: AA-BD} & 4.31 & 4.07 & 3.96 & \textbf{13\%} & 99.15\\
+        & \raggedright\textbf{12: OA-TD} & 10.62 & 10.62 & 10.62 & \textbf{0\%} & 99.00\\
+        & \raggedright\textbf{13: OA-AD} & 10.62 & 10.62 & 10.62 & \textbf{0\%} & 99.10\\  
       \bottomrule
     \end{tabular}
     \label{tab:BAGS_resultM}
@@ -704,45 +705,44 @@ The empirical results, as yielded by months of CPU hours and an inordinate amoun
 \begin{table*}[!ht]
 \setlength{\tabcolsep}{0.3cm} % Adjust column spacing here
 \centering
-  \caption[ASR and mean $l_2$ perturbation for HSJA in MNIST.]{\textbf{MNIST / HSJA}: ASR and mean $l_2$ perturbation for 1K, 2K, and 5K queries, against normally and adversarially trained models.}
+  \caption[ASR and mean $L_2$ perturbation for HSJA in MNIST.]{\textbf{MNIST / HSJA}: ASR and mean $L_2$ perturbation for 1K, 2K, and 5K queries, against normally and adversarially trained models.}
   \begin{tabular}{c|c|rrrr|r}
     \toprule
       \multirow{2}{*}{\parbox{1cm}{\centering Adv.\\Trained}} & \multirow{2}{*}{Scenario} &
       \multicolumn{5}{c}{\textbf{MNIST Gap: 10.62}}\\
       & & {1K} & {2K} & {5K} & {ASR} & {C.Acc}\\
       \toprule
-    \multirow{14}{*}{\xmark} & \raggedright\textbf{\textcolor{orange!70}{0: VA-ND}} & 3.59 & 3.07 & 2.61 & \textcolor{t73!100}{\textbf{73\%}} & 99.37\\
-    & \raggedright\textbf{\textcolor{purple!70}{1: AA-ND}} & 3.61 & 3.09 & 2.60 & \textcolor{t74!100}{\textbf{74\%}} & 99.37\\
-    & \raggedright\textbf{\textcolor{teal!70}{2: VA-VD}} & 5.82 & 5.78 & 5.73 & \textcolor{t2!100}{\textbf{2\%}} & 99.20\\
-    & \raggedright\textbf{\textcolor{purple!70}{3: AA-VD}} & 3.54 & 3.09 & 2.77 & \textcolor{t61!100}{\textbf{61\%}} & 99.31\\
-    & \raggedright\textbf{\textcolor{teal!70}{4: VA-AD}} & 10.05 & 10.05 & 10.05 & \textcolor{t0!100}{\textbf{0\%}} & 99.30 \\
-    & \raggedright\textbf{\textcolor{purple!70}{5: AA-TD}} & 5.00 & 3.97 & 3.38 & \textcolor{t36!100}{\textbf{36\%}} & 98.84 \\
-    & \raggedright\textbf{\textcolor{teal!70}{6: TA-AD}} & 10.23 & 10.23 & 10.18 & \textcolor{t0!100}{\textbf{0\%}} & 99.34\\
-    & \raggedright\textbf{\textcolor{purple!70}{7: AA-AD}} & 5.06 & 4.76 & 4.38 & \textcolor{t36!100}{\textbf{36\%}} & 99.35\\
-    & \raggedright\textbf{\textcolor{teal!70}{8: AA-AD}} & 10.21 & 10.21 & 10.21 & \textcolor{t0!100}{\textbf{0\%}} & 99.23\\
-    \cline{2-7}
-    & \raggedright\textbf{\textcolor{orange!70}{09: VA-BD}} & 5.65 & 5.65 & 5.65 & \textcolor{t2!100}{\textbf{2\%}} & 99.37 \\
-    & \raggedright\textbf{\textcolor{purple!70}{10: OA-BD}} & 4.53 & 4.00 & 3.15 & \textcolor{t46!100}{\textbf{46\%}} & 99.37 \\
-    & \raggedright\textbf{\textcolor{purple!70}{11: AA-BD}} & 4.18 & 3.66 & 3.19 & \textcolor{t52!100}{\textbf{52\%}} & 99.37 \\
-    & \raggedright\textbf{\textcolor{teal!70}{12: OA-TD}} & 10.21 & 10.20 & 10.20 & \textcolor{t0!100}{\textbf{0\%}} & 99.28 \\
-    & \raggedright\textbf{\textcolor{teal!70}{13: OA-AD}} & 10.26 & 10.26 & 10.26 & \textcolor{t0!100}{\textbf{0\%}} & 99.28 \\
-    \midrule
-    \multirow{14}{*}{\cmark} & \raggedright\textbf{\textcolor{orange!70}{0: VA-ND}} &  4.61 &  4.04 &  3.41 & \textcolor{t30!100}{\textbf{30\%}} & 99.15\\
-    & \raggedright\textbf{\textcolor{purple!70}{1: AA-ND}} &  4.59 &  3.97 &  3.35 & \textcolor{t34!100}{\textbf{34\%}} & 99.15\\
-    & \raggedright\textbf{\textcolor{teal!70}{2: VA-VD}} &  5.81 &  5.78 &  5.76 & \textcolor{t2!100}{\textbf{2\%}} & 99.12\\
-    & \raggedright\textbf{\textcolor{purple!70}{3 AA-VD}} &  4.63 &  4.27 &  3.86 & \textcolor{t25!100}{\textbf{25\%}} & 99.15 \\
-    & \raggedright\textbf{\textcolor{teal!70}{4: VA-AD}} & 10.02 & 10.02 & 10.02 & \textcolor{t0!100}{\textbf{0\%}} & 99.08\\
-    & \raggedright\textbf{\textcolor{purple!70}{5: AA-TD}} &  5.82 &  5.09 &  4.26 & \textcolor{t16!100}{\textbf{16\%}} & 98.78 \\
-    & \raggedright\textbf{\textcolor{teal!70}{6: TA-AD}} & 10.20 & 10.20 & 10.20 & \textcolor{t0!100}{\textbf{0\%}} & 99.06\\
-    & \raggedright\textbf{\textcolor{purple!70}{7: AA-AD}} &  5.47 &  5.16 &  4.99 & \textcolor{t14!100}{\textbf{14\%}} & 99.13\\
-    & \raggedright\textbf{\textcolor{teal!70}{8: AA-AD}} & 10.12 & 10.12 & 10.12 & \textcolor{t0!100}{\textbf{0\%}} & 99.01 \\
-    \cline{2-7}
-    \cline{2-7}
-    & \raggedright\textbf{\textcolor{orange!70}{09: VA-BD}} & 5.65 & 5.64 & 5.64 & \textcolor{t1!100}{\textbf{1\%}} & 99.15\\
-    & \raggedright\textbf{\textcolor{purple!70}{10: OA-BD}} & 5.18 & 4.80 & 4.11 & \textcolor{t17!100}{\textbf{17\%}} & 99.15 \\
-    & \raggedright\textbf{\textcolor{purple!70}{11: AA-BD}} & 5.04 & 4.65 & 4.20 & \textcolor{t19!100}{\textbf{19\%}} & 99.15 \\
-    & \raggedright\textbf{\textcolor{teal!70}{12: OA-TD}} & 10.26 & 10.26 & 10.26 & \textcolor{t0!100}{\textbf{0\%}} & 99.06\\
-    & \raggedright\textbf{\textcolor{teal!70}{13: OA-AD}} & 10.26 & 10.26 & 10.26 & \textcolor{t0!100}{\textbf{0\%}} & 99.06 \\
+      \multirow{14}{*}{\xmark} & \raggedright\textbf{0: VA-ND} & 3.59 & 3.07 & 2.61 & \textbf{73\%} & 99.37\\
+      & \raggedright\textbf{1: AA-ND} & 3.61 & 3.09 & 2.60 & \textbf{74\%} & 99.37\\
+      & \raggedright\textbf{2: VA-VD} & 5.82 & 5.78 & 5.73 & \textbf{2\%} & 99.20\\
+      & \raggedright\textbf{3: AA-VD} & 3.54 & 3.09 & 2.77 & \textbf{61\%} & 99.31\\
+      & \raggedright\textbf{4: VA-AD} & 10.05 & 10.05 & 10.05 & \textbf{0\%} & 99.30 \\
+      & \raggedright\textbf{5: AA-TD} & 5.00 & 3.97 & 3.38 & \textbf{36\%} & 98.84 \\
+      & \raggedright\textbf{6: TA-AD} & 10.23 & 10.23 & 10.18 & \textbf{0\%} & 99.34\\
+      & \raggedright\textbf{7: AA-AD} & 5.06 & 4.76 & 4.38 & \textbf{36\%} & 99.35\\
+      & \raggedright\textbf{8: AA-AD} & 10.21 & 10.21 & 10.21 & \textbf{0\%} & 99.23\\
+      \cline{2-7}
+      & \raggedright\textbf{09: VA-BD} & 5.65 & 5.65 & 5.65 & \textbf{2\%} & 99.37 \\
+      & \raggedright\textbf{10: OA-BD} & 4.53 & 4.00 & 3.15 & \textbf{46\%} & 99.37 \\
+      & \raggedright\textbf{11: AA-BD} & 4.18 & 3.66 & 3.19 & \textbf{52\%} & 99.37 \\
+      & \raggedright\textbf{12: OA-TD} & 10.21 & 10.20 & 10.20 & \textbf{0\%} & 99.28 \\
+      & \raggedright\textbf{13: OA-AD} & 10.26 & 10.26 & 10.26 & \textbf{0\%} & 99.28 \\
+      \midrule
+      \multirow{14}{*}{\cmark} & \raggedright\textbf{0: VA-ND} &  4.61 &  4.04 &  3.41 & \textbf{30\%} & 99.15\\
+      & \raggedright\textbf{1: AA-ND} &  4.59 &  3.97 &  3.35 & \textbf{34\%} & 99.15\\
+      & \raggedright\textbf{2: VA-VD} &  5.81 &  5.78 &  5.76 & \textbf{2\%} & 99.12\\
+      & \raggedright\textbf{3 AA-VD} &  4.63 &  4.27 &  3.86 & \textbf{25\%} & 99.15 \\
+      & \raggedright\textbf{4: VA-AD} & 10.02 & 10.02 & 10.02 & \textbf{0\%} & 99.08\\
+      & \raggedright\textbf{5: AA-TD} &  5.82 &  5.09 &  4.26 & \textbf{16\%} & 98.78 \\
+      & \raggedright\textbf{6: TA-AD} & 10.20 & 10.20 & 10.20 & \textbf{0\%} & 99.06\\
+      & \raggedright\textbf{7: AA-AD} &  5.47 &  5.16 &  4.99 & \textbf{14\%} & 99.13\\
+      & \raggedright\textbf{8: AA-AD} & 10.12 & 10.12 & 10.12 & \textbf{0\%} & 99.01 \\
+      \cline{2-7}
+      & \raggedright\textbf{09: VA-BD} & 5.65 & 5.64 & 5.64 & \textbf{1\%} & 99.15\\
+      & \raggedright\textbf{10: OA-BD} & 5.18 & 4.80 & 4.11 & \textbf{17\%} & 99.15 \\
+      & \raggedright\textbf{11: AA-BD} & 5.04 & 4.65 & 4.20 & \textbf{19\%} & 99.15 \\
+      & \raggedright\textbf{12: OA-TD} & 10.26 & 10.26 & 10.26 & \textbf{0\%} & 99.06\\
+      & \raggedright\textbf{13: OA-AD} & 10.26 & 10.26 & 10.26 & \textbf{0\%} & 99.06 \\  
     \bottomrule
   \end{tabular}
   \label{tab:HSJA_resultM}
